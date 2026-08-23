@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Escolar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen" class="screen">
+        <div class="login-card">
+            <h1>DIÁRIO ESCOLAR</h1>
+            <p class="subtitle">Acesso ao Sistema do Professor</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Login</label>
+                    <input type="text" id="username" placeholder="Digite seu usuário" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">ENTRAR</button>
+            </form>
+            <div id="login-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- TELA DO PAINEL PRINCIPAL -->
+    <div id="app-screen" class="screen hidden">
+        <header class="header">
+            <div class="header-container">
+                <h1 class="logo">DIÁRIO ESCOLAR</h1>
+                <div class="user-info">
+                    <span>Professor: <strong id="user-display-name">Thyago</strong></span>
+                    <button id="btn-logout" class="btn btn-secondary btn-sm">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- VISÃO 1: LISTA DE TURMAS -->
+            <section id="view-classes" class="view-section">
+                <div class="section-header">
+                    <h2>Minhas Turmas</h2>
+                    <button id="btn-add-class" class="btn btn-primary">+ Nova Turma</button>
+                </div>
+                <div id="classes-grid" class="classes-grid"></div>
+            </section>
+
+            <!-- VISÃO 2: DETALHES DA TURMA -->
+            <section id="view-class-detail" class="view-section hidden">
+                <div class="breadcrumb">
+                    <button id="btn-back-classes" class="btn btn-link">&larr; Voltar para Minhas Turmas</button>
+                </div>
+
+                <div class="class-summary-card">
+                    <div class="class-title-area">
+                        <div>
+                            <h2 id="detail-class-name">--</h2>
+                            <p id="detail-class-info" class="text-muted">--</p>
+                        </div>
+                        <div>
+                            <button id="btn-edit-class" class="btn btn-secondary btn-sm">Editar Turma</button>
+                            <button id="btn-delete-class" class="btn btn-danger btn-sm">Excluir Turma</button>
+                        </div>
+                    </div>
+
+                    <!-- RESUMO ESTATÍSTICO DA TURMA -->
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-total-students">0</span>
+                            <span class="stat-label">Alunos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-class-avg">0,0</span>
+                            <span class="stat-label">Média Geral</span>
+                        </div>
+                        <div class="stat-item text-success">
+                            <span class="stat-value" id="stat-approved">0</span>
+                            <span class="stat-label">Aprovados</span>
+                        </div>
+                        <div class="stat-item text-warning">
+                            <span class="stat-value" id="stat-recovery">0</span>
+                            <span class="stat-label">Em Recuperação</span>
+                        </div>
+                        <div class="stat-item text-danger">
+                            <span class="stat-value" id="stat-total-absences">0</span>
+                            <span class="stat-label">Total Faltas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NAVEGAÇÃO DE ABAS -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="tab-students">ALUNOS</button>
+                    <button class="tab-btn" data-tab="tab-grades">NOTAS</button>
+                    <button class="tab-btn" data-tab="tab-attendance">FREQUÊNCIA</button>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="search-student-input" placeholder="Pesquisar aluno por nome ou matrícula...">
+                </div>
+
+                <!-- ABA ALUNOS -->
+                <div id="tab-students" class="tab-content active">
+                    <div class="tab-actions">
+                        <h3>Lista de Alunos</h3>
+                        <button id="btn-add-student" class="btn btn-primary btn-sm">+ Cadastrar Aluno</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Nome</th>
+                                    <th>Matrícula</th>
+                                    <th>CPF</th>
+                                    <th>Nascimento</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-students-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ABA NOTAS -->
+                <div id="tab-grades" class="tab-content">
+                    <div class="tab-actions">
+                        <h3>Lançamento de Notas</h3>
+                        <small class="text-muted">As notas e situações são salvas e calculadas automaticamente.</small>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>AV1</th>
+                                    <th>AV2</th>
+                                    <th>Trabalho</th>
+                                    <th>Recuperação</th>
+                                    <th>Média</th>
+                                    <th>Situação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-grades-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ABA FREQUÊNCIA -->
+                <div id="tab-attendance" class="tab-content">
+                    <div class="tab-actions">
+                        <h3>Controle de Frequência</h3>
+                    </div>
+
+                    <!-- REGISTRO POR DATA -->
+                    <div class="card attendance-date-picker">
+                        <h4>Registrar Frequência do Dia</h4>
+                        <div class="form-row">
+                            <div class="form-group mb-0">
+                                <label for="attendance-date">Selecione a Data:</label>
+                                <input type="date" id="attendance-date">
+                            </div>
+                            <button id="btn-load-date-attendance" class="btn btn-secondary">Carregar Lista</button>
+                        </div>
+                        <div id="date-attendance-area" class="mt-3 hidden">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Aluno</th>
+                                            <th>Status na Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-date-attendance-body"></tbody>
+                                </table>
+                            </div>
+                            <button id="btn-save-date-attendance" class="btn btn-primary mt-2">Salvar Frequência da Data</button>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4">Resumo Geral da Frequência</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>Total Aulas</th>
+                                    <th>Presenças</th>
+                                    <th>Faltas</th>
+                                    <th>Frequência (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-attendance-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL TURMA (CRIAR/EDITAR) -->
+    <div id="modal-class" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modal-class-title">Nova Turma</h3>
+            <form id="form-class">
+                <input type="hidden" id="class-id">
+                <div class="form-group">
+                    <label for="class-name">Nome da Turma</label>
+                    <input type="text" id="class-name" placeholder="Ex: 7º Ano A" required>
+                </div>
+                <div class="form-group">
+                    <label for="class-discipline">Disciplina</label>
+                    <input type="text" id="class-discipline" placeholder="Ex: Ciências" required>
+                </div>
+                <div class="form-group">
+                    <label for="class-shift">Turno</label>
+                    <select id="class-shift" required>
+                        <option value="Manhã">Manhã</option>
+                        <option value="Tarde">Tarde</option>
+                        <option value="Noite">Noite</option>
+                        <option value="Integral">Integral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="class-year">Ano Letivo</label>
+                    <input type="number" id="class-year" value="2026" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Turma</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ALUNO (CRIAR/EDITAR) -->
+    <div id="modal-student" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modal-student-title">Cadastrar Aluno</h3>
+            <form id="form-student">
+                <input type="hidden" id="student-id">
+                <div class="form-group">
+                    <label for="student-name">Nome Completo</label>
+                    <input type="text" id="student-name" placeholder="Ex: Ana Silva" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-registration">Matrícula</label>
+                    <input type="text" id="student-registration" placeholder="Ex: 2026001" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-cpf">CPF (opcional)</label>
+                    <input type="text" id="student-cpf" placeholder="000.000.000-00">
+                </div>
+                <div class="form-group">
+                    <label for="student-birth">Data de Nascimento (opcional)</label>
+                    <input type="date" id="student-birth">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Aluno</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
