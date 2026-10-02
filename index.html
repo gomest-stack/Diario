@@ -117,11 +117,11 @@
       <div class="student-search-box card">
         <h2>Consultar Boletim Escolar</h2>
         <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px;">
-          Digite sua <strong>Matrícula</strong> ou <strong>CPF</strong> para acessar suas notas e médias do semestre.
+          Digite seu <strong>Código Único de Aluno</strong> (até 10 dígitos) para acessar suas notas e médias.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group">
-            <input type="text" id="student-search-input" placeholder="Ex: 2026001 ou 111.222.333-04" required>
+            <input type="text" id="student-search-input" placeholder="Digite seu código único (ex: 2026001)" maxlength="10" required>
           </div>
           <button type="submit" class="btn btn-primary btn-block">🔍 Consultar Boletim Consolidado</button>
         </form>
@@ -142,7 +142,7 @@
               <div id="bol-student-photo-container"></div>
               <div>
                 <h2 id="bol-student-name">Nome do Aluno</h2>
-                <p style="color: #64748b; font-size: 0.875rem;">Matrícula: <span id="bol-student-reg">--</span> | CPF: <span id="bol-student-cpf">--</span></p>
+                <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#2563eb;">--</strong></p>
                 <div class="no-print" style="margin-top:6px;">
                   <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
                     📷 Enviar / Alterar Minha Foto
@@ -166,7 +166,7 @@
           <!-- RESUMO DE DESEMPENHO NO RODAPÉ -->
           <div id="student-footer-metrics" style="margin-top:20px; background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; font-size:0.95rem;"></div>
 
-          <!-- CHAT COM PROFESSOR COM ANEXO DE ARQUIVO -->
+          <!-- CHAT COM PROFESSOR -->
           <div class="no-print" style="margin-top: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
             <h4>💬 Mensagens com os Professores</h4>
             <div id="student-chat-history" class="chat-box" style="margin-top:10px;"></div>
@@ -188,7 +188,7 @@
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
-        ⚠️ Nenhum aluno encontrado com esta Matrícula ou CPF.
+        ⚠️ Nenhum aluno encontrado com este Código Único.
       </div>
     </section>
 
@@ -364,11 +364,11 @@
 
           <!-- ABA ALUNOS -->
           <div id="tab-content-alunos">
-            <button onclick="openStudentModal()" class="btn btn-primary btn-sm" style="margin-bottom: 12px;">+ Cadastrar Aluno nesta Turma</button>
+            <button onclick="openStudentModal()" class="btn btn-primary btn-sm" style="margin-bottom: 12px;">+ Cadastrar / Vincular Aluno nesta Turma</button>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
-                  <tr><th>Foto</th><th>Matrícula</th><th>Nome</th><th>CPF</th><th>Ações</th></tr>
+                  <tr><th>Foto</th><th>Código Único</th><th>Nome do Aluno</th><th>Ações</th></tr>
                 </thead>
                 <tbody id="students-table-body"></tbody>
               </table>
@@ -413,7 +413,7 @@
   <div id="toast-message" class="toast-success hidden">✅ Operação realizada com sucesso!</div>
 
   <script>
-    // ESTADO E BANCADAGENS
+    // ESTADO E BANCO DE DADOS LOCAL
     const INITIAL_SETTINGS = {
       schoolName: "Diário Escolar Digital",
       schoolLogo: null,
@@ -441,7 +441,7 @@
         },
         students: [
           {
-            id: "al-1", name: "Thyago Gomes Barreto", registration: "2026001", cpf: "111.222.333-04", photo: null,
+            id: "al-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
             grades: {
               "A1": { "act-1": 7.0, "act-2": 8.0 },
               "A2": { "act-3": 4.0 },
@@ -466,7 +466,7 @@
         },
         students: [
           {
-            id: "al-1-mat", name: "Thyago Gomes Barreto", registration: "2026001", cpf: "111.222.333-04", photo: null,
+            id: "al-1-mat", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
             grades: {
               "A1": { "act-m1": 8.5 },
               "A2": { "act-m2": 7.5 },
@@ -493,19 +493,19 @@
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v10");
+      const sStored = localStorage.getItem("diario_settings_v12");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v10");
+      const tStored = localStorage.getItem("diario_teachers_v12");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v10");
+      const cStored = localStorage.getItem("diario_classes_v12");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v10");
+      const mStored = localStorage.getItem("diario_mural_v12");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v10");
+      const uStored = localStorage.getItem("diario_session_v12");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
       saveData();
@@ -513,14 +513,14 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v10", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v10", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v10", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v10", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v12", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v12", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v12", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v12", JSON.stringify(state.mural));
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v10", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v12", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v10");
+        localStorage.removeItem("diario_session_v12");
       }
     }
 
@@ -554,6 +554,20 @@
       toast.innerText = msg || "✅ Operação realizada com sucesso!";
       toast.classList.remove('hidden');
       setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+    }
+
+    // OBTER TODOS OS ALUNOS CADASTRADOS NA ESCOLA
+    function getAllSystemStudents() {
+      const map = new Map();
+      state.classes.forEach(c => {
+        (c.students || []).forEach(s => {
+          const key = (s.code || s.name).trim().toLowerCase();
+          if (key && !map.has(key)) {
+            map.set(key, { name: s.name, code: s.code, photo: s.photo });
+          }
+        });
+      });
+      return Array.from(map.values());
     }
 
     // REGRA DE CÁLCULO DE NOTAS E MÉDIAS
@@ -666,18 +680,17 @@
       }
     }
 
-    // PORTAL DO ALUNO - BUSCA CONSOLIDADA
+    // PORTAL DO ALUNO - BUSCA POR CÓDIGO ÚNICO (ATÉ 10 DÍGITOS)
     function handleStudentSearch(e) {
       e.preventDefault();
-      const query = document.getElementById('student-search-input').value.trim().toLowerCase().replace(/[\.\-]/g, '');
+      const query = document.getElementById('student-search-input').value.trim().toLowerCase();
       
       state.matchedStudentRecords = [];
 
       state.classes.forEach(c => {
-        c.students.forEach(s => {
-          const regClean = (s.registration || "").toLowerCase().replace(/[\.\-]/g, '');
-          const cpfClean = (s.cpf || "").toLowerCase().replace(/[\.\-]/g, '');
-          if ((query && regClean === query) || (query && cpfClean === query)) {
+        (c.students || []).forEach(s => {
+          const codeClean = (s.code || "").toLowerCase().trim();
+          if (query && codeClean === query) {
             state.matchedStudentRecords.push({
               class: c,
               student: s,
@@ -696,8 +709,7 @@
 
         const primary = state.matchedStudentRecords[0].student;
         document.getElementById('bol-student-name').innerText = primary.name;
-        document.getElementById('bol-student-reg').innerText = primary.registration || '--';
-        document.getElementById('bol-student-cpf').innerText = primary.cpf || '--';
+        document.getElementById('bol-student-code').innerText = primary.code || '--';
 
         const photoContainer = document.getElementById('bol-student-photo-container');
         if (primary.photo) {
@@ -783,14 +795,14 @@
 
       footerBox.innerHTML = `
         <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-          <div><strong>Total de Disciplinas:</strong> ${state.matchedStudentRecords.length}</div>
+          <div><strong>Total de Disciplinas Cursadas:</strong> ${state.matchedStudentRecords.length}</div>
           <div><strong>Coeficiente de Rendimento (CR Geral):</strong> <span class="grade-blue" style="font-size:1.1rem; font-weight:700;">${overallAvg}</span></div>
         </div>
       `;
     }
 
     function uploadStudentPhoto(e) {
-      const file = e.target.files[0];
+      const file = e.target.files;
       if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
@@ -1371,9 +1383,8 @@
         tbody.innerHTML += `
           <tr>
             <td>${imgHtml}</td>
-            <td>${s.registration || '-'}</td>
+            <td><code>${s.code || '-'}</code></td>
             <td><strong>${s.name}</strong></td>
-            <td>${s.cpf || '-'}</td>
             <td>
               <button onclick="deleteStudent('${s.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>
             </td>
@@ -1382,15 +1393,78 @@
       });
     }
 
+    // CADASTRO / SELEÇÃO COM CÓDIGO ÚNICO (ATÉ 10 DÍGITOS)
     function openStudentModal() {
-      const name = prompt("Nome Completo do Aluno:"); if (!name) return;
-      const reg = prompt("Matrícula:"); const cpf = prompt("CPF:");
+      const existingStudents = getAllSystemStudents();
+      let selectedStudent = null;
+
+      if (existingStudents.length > 0) {
+        let optionsText = "Alunos já cadastrados na escola:\n\n";
+        existingStudents.forEach((st, i) => {
+          optionsText += `${i + 1}. ${st.name} (Código: ${st.code || 'S/C'})\n`;
+        });
+        optionsText += `\nDigite o NÚMERO do aluno para vinculá-lo a esta turma, ou digite '0' para cadastrar um NOVO aluno:`;
+
+        const choice = prompt(optionsText, "0");
+        if (choice === null) return;
+        const num = parseInt(choice.trim());
+        if (!isNaN(num) && num > 0 && num <= existingStudents.length) {
+          selectedStudent = existingStudents[num - 1];
+        }
+      }
+
+      let name, code, photo;
+      if (selectedStudent) {
+        name = selectedStudent.name;
+        code = selectedStudent.code;
+        photo = selectedStudent.photo;
+      } else {
+        name = prompt("Nome Completo do Novo Aluno:");
+        if (!name) return;
+
+        let validCode = false;
+        while (!validCode) {
+          code = prompt("Digite o CÓDIGO ÚNICO do Aluno (Até 10 dígitos, números ou letras):");
+          if (!code) return;
+          code = code.trim();
+
+          if (code.length > 10) {
+            alert("⚠️ O código do aluno deve ter no máximo 10 dígitos!");
+            continue;
+          }
+
+          const duplicate = existingStudents.find(st => (st.code || "").toLowerCase() === code.toLowerCase());
+          if (duplicate) {
+            alert(`⚠️ O código "${code}" já pertence ao aluno "${duplicate.name}". Cada aluno deve ter um código exclusivo!`);
+            continue;
+          }
+
+          validCode = true;
+        }
+        photo = null;
+      }
+
       const c = state.classes.find(item => item.id === state.currentClassId);
-      c.students.push({ id: "al-" + Date.now(), name, registration: reg || "", cpf: cpf || "", photo: null, grades: {}, messages: [] });
+
+      const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === code.toLowerCase());
+      if (alreadyInClass) {
+        alert("⚠️ Este aluno já está cadastrado nesta mesma turma!");
+        return;
+      }
+
+      c.students.push({
+        id: "al-" + Date.now(),
+        name: name,
+        code: code,
+        photo: photo || null,
+        grades: {},
+        messages: []
+      });
+
       saveData();
       renderStudentsTable();
       renderTeacherGradesTable(c);
-      showToast("Aluno cadastrado!");
+      showToast(`Aluno ${name} (Código: ${code}) vinculado com sucesso!`);
     }
 
     function deleteStudent(studentId) {
@@ -1450,7 +1524,7 @@
 
           container.innerHTML += `
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-              <h5 style="margin-bottom:8px;">👤 ${s.name} (${s.registration})</h5>
+              <h5 style="margin-bottom:8px;">👤 ${s.name} (Código: ${s.code})</h5>
               <div class="chat-box">${chatHtml}</div>
               <div style="display:flex; gap:8px; align-items:center;">
                 <input type="text" id="reply-input-${s.id}" placeholder="Responder..." style="flex:1; padding:6px; border:1px solid #cbd5e1; border-radius:4px;">
