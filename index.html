@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diário Escolar Digital & Portal do Aluno</title>
+  <title id="page-title">Diário Escolar Digital & Portal do Aluno</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f4f6f8; color: #2c3e50; line-height: 1.5; }
+    body { background-color: #f4f6f8; color: #2c3e50; line-height: 1.5; background-size: cover; background-position: center; background-attachment: fixed; transition: background 0.3s; }
     .hidden { display: none !important; }
     .container { max-width: 1150px; margin: 0 auto; padding: 20px; }
     
@@ -23,15 +23,17 @@
     .btn-sm { padding: 4px 10px; font-size: 0.85rem; }
 
     /* TOPO E NAVEGAÇÃO */
-    .header { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 16px 0; }
+    .header { background-color: rgba(255, 255, 255, 0.95); border-bottom: 1px solid #e2e8f0; padding: 16px 0; backdrop-filter: blur(8px); }
     .header-container { max-width: 1150px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .logo { font-size: 1.25rem; font-weight: 700; color: #1e293b; }
+    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .logo-img { max-height: 48px; max-width: 160px; object-fit: contain; }
+    .logo-text { font-size: 1.25rem; font-weight: 700; color: #1e293b; }
     .nav-tabs-profile { display: flex; background-color: #f1f5f9; padding: 4px; border-radius: 8px; gap: 4px; }
     .nav-tab-btn { padding: 6px 14px; border: none; background: none; font-weight: 600; font-size: 0.875rem; color: #64748b; border-radius: 6px; cursor: pointer; }
     .nav-tab-btn.active { background-color: #ffffff; color: #2563eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
     /* CARDS E FORMULÁRIOS */
-    .card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); backdrop-filter: blur(4px); }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #334155; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #ffffff; }
@@ -75,14 +77,14 @@
     /* PROFESSOR & ADMIN */
     .login-card { max-width: 420px; margin: 40px auto; }
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
-    .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; }
-    .class-card:hover { border-color: #2563eb; }
+    .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
+    .class-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
     .period-tab-btn { padding: 6px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
     .period-tab-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
 
-    /* NOTIFICAÇÃO DE SUCESSO */
-    .toast-success { position: fixed; top: 20px; right: 20px; background-color: #16a34a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999; }
+    /* NOTIFICAÇÃO FLUTUANTE */
+    .toast-success { position: fixed; top: 20px; right: 20px; background-color: #16a34a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; }
 
     @media print {
       body * { visibility: hidden; }
@@ -94,10 +96,13 @@
 </head>
 <body>
 
-  <!-- CABEÇALHO -->
+  <!-- CABEÇALHO DA PLATAFORMA -->
   <header class="header">
     <div class="header-container">
-      <div class="logo">🏫 Diário Escolar Digital</div>
+      <div class="logo-box">
+        <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
+        <div id="header-school-name" class="logo-text">🏫 Diário Escolar Digital</div>
+      </div>
       <div class="nav-tabs-profile">
         <button id="nav-btn-aluno" class="nav-tab-btn active" onclick="switchProfile('aluno')">👨‍🎓 Portal do Aluno</button>
         <button id="nav-btn-professor" class="nav-tab-btn" onclick="switchProfile('professor')">👨‍🏫 Área do Professor / Gestão</button>
@@ -112,7 +117,7 @@
       <div class="student-search-box card">
         <h2>Consultar Boletim Escolar</h2>
         <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px;">
-          Digite sua <strong>Matrícula</strong> ou <strong>CPF</strong> para acessar suas notas e médias.
+          Digite sua <strong>Matrícula</strong> ou <strong>CPF</strong> para acessar suas notas e médias do semestre.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group">
@@ -161,13 +166,17 @@
           <!-- RESUMO DE DESEMPENHO NO RODAPÉ -->
           <div id="student-footer-metrics" style="margin-top:20px; background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; font-size:0.95rem;"></div>
 
-          <!-- CHAT COM PROFESSOR -->
+          <!-- CHAT COM PROFESSOR COM ANEXO DE ARQUIVO -->
           <div class="no-print" style="margin-top: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
             <h4>💬 Mensagens com os Professores</h4>
             <div id="student-chat-history" class="chat-box" style="margin-top:10px;"></div>
             <form onsubmit="sendStudentMessage(event)">
-              <div class="form-group" style="display: flex; gap: 8px;">
-                <input type="text" id="student-msg-input" placeholder="Escreva sua dúvida..." required>
+              <div class="form-group" style="display: flex; gap: 8px; align-items:center;">
+                <input type="text" id="student-msg-input" placeholder="Escreva sua dúvida..." style="flex:1;">
+                <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo">
+                  📎
+                  <input type="file" id="student-msg-file" style="display:none;">
+                </label>
                 <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
               </div>
             </form>
@@ -255,22 +264,52 @@
           <span id="user-role-badge" style="font-size:0.8rem; background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:12px; font-weight:600;">Organizador</span>
         </div>
         <div>
-          <button onclick="openProfileModal()" class="btn btn-secondary" style="margin-right:6px;">✏️ Meus Dados</button>
+          <button onclick="openProfileModal()" class="btn btn-secondary" style="margin-right:4px;">✏️ Meus Dados</button>
           
-          <button id="btn-manage-teachers" onclick="switchMainTab('teachers')" class="btn btn-secondary hidden" style="margin-right:6px;">
+          <button id="btn-customize-theme" onclick="switchMainTab('settings')" class="btn btn-secondary hidden" style="margin-right:4px;">⚙️ Personalizar Plataforma</button>
+
+          <button id="btn-manage-teachers" onclick="switchMainTab('teachers')" class="btn btn-secondary hidden" style="margin-right:4px;">
             👨‍🏫 Gerenciar Professores <span id="pending-badge" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;" class="hidden">0</span>
           </button>
           
-          <button onclick="switchMainTab('mural')" class="btn btn-secondary" style="margin-right:6px;">📢 Mural</button>
-          <button onclick="switchMainTab('classes')" class="btn btn-secondary" style="margin-right:6px;">🏫 Turmas</button>
+          <button onclick="switchMainTab('mural')" class="btn btn-secondary" style="margin-right:4px;">📢 Mural</button>
+          <button onclick="switchMainTab('classes')" class="btn btn-secondary" style="margin-right:4px;">🏫 Turmas</button>
           <button onclick="openClassModal()" class="btn btn-primary">+ Nova Turma</button>
-          <button onclick="handleTeacherLogout()" class="btn btn-secondary" style="margin-left: 6px;">Sair</button>
+          <button onclick="handleTeacherLogout()" class="btn btn-secondary" style="margin-left: 4px;">Sair</button>
         </div>
       </div>
 
       <!-- GRID DE TURMAS -->
       <div id="view-classes-section">
         <div id="classes-grid" class="classes-grid"></div>
+      </div>
+
+      <!-- PAINEL DE PERSONALIZAÇÃO E IDENTIDADE VISUAL (SÓ ADMIN) -->
+      <div id="view-settings-section" class="hidden card">
+        <h3>⚙️ Personalização da Plataforma e Identidade Visual</h3>
+        <p style="color:#64748b; font-size:0.88rem; margin-bottom:20px;">Altere o nome da escola, envie a logo e personalize o fundo do site.</p>
+
+        <form onsubmit="handleSaveSettings(event)">
+          <div class="form-group">
+            <label>Nome da Escola / Faculdade / Instituição</label>
+            <input type="text" id="set-school-name" placeholder="Ex: Faculdade Dom Pedro II" required>
+          </div>
+
+          <div class="form-group">
+            <label>Logo da Instituição (Substitui o título do topo e sai no boletim)</label>
+            <input type="file" id="set-school-logo" accept="image/*">
+            <div id="preview-logo-box" style="margin-top:8px;"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Imagem de Fundo do Site (Background)</label>
+            <input type="file" id="set-school-bg" accept="image/*">
+            <div id="preview-bg-box" style="margin-top:8px;"></div>
+          </div>
+
+          <button type="submit" class="btn btn-success">💾 Salvar Personalizações</button>
+          <button type="button" onclick="resetSettingsDefaults()" class="btn btn-secondary" style="margin-left:8px;">Restaurar Padrão</button>
+        </form>
       </div>
 
       <!-- GESTÃO DE PROFESSORES (ORGANIZADOR) -->
@@ -301,11 +340,11 @@
         </div>
       </div>
 
-      <!-- MURAL DE AVISOS -->
+      <!-- MURAL DE AVISOS E ATIVIDADES -->
       <div id="view-mural-section" class="hidden card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3>Mural de Recados para os Alunos</h3>
-          <button onclick="openAddMuralModal()" class="btn btn-primary btn-sm">+ Publicar Novo Recado</button>
+          <h3>Mural de Recados & Arquivos de Atividades</h3>
+          <button onclick="openAddMuralModal()" class="btn btn-primary btn-sm">+ Publicar Novo Recado / Anexo</button>
         </div>
         <div id="mural-admin-list"></div>
       </div>
@@ -371,10 +410,16 @@
   </main>
 
   <!-- ELEMENTO PARA NOTIFICAÇÃO FLUTUANTE -->
-  <div id="toast-message" class="toast-success hidden">✅ Notas salvas e publicadas com sucesso!</div>
+  <div id="toast-message" class="toast-success hidden">✅ Operação realizada com sucesso!</div>
 
   <script>
-    // ESTADO E PERFIS
+    // ESTADO E BANCADAGENS
+    const INITIAL_SETTINGS = {
+      schoolName: "Diário Escolar Digital",
+      schoolLogo: null,
+      bgImage: null
+    };
+
     const INITIAL_TEACHERS = [
       { id: "prof-thyago", name: "Prof. Thyago Gomes", username: "2026", password: "2026", role: "admin", discipline: "Ciências", status: "approved" },
       { id: "prof-joao", name: "Prof. João Silva", username: "joao", password: "123", role: "teacher", discipline: "Matemática", status: "approved" }
@@ -383,6 +428,7 @@
     const INITIAL_CLASSES = [
       {
         id: "turma-1",
+        teacherId: "prof-thyago",
         name: "Ensino Superior - Módulo 1",
         mode: "semestral",
         discipline: "Ciências",
@@ -407,6 +453,7 @@
       },
       {
         id: "turma-2",
+        teacherId: "prof-joao",
         name: "Ensino Superior - Módulo 1",
         mode: "semestral",
         discipline: "Matemática",
@@ -434,6 +481,7 @@
     const INITIAL_MURAL = [];
 
     let state = {
+      settings: {},
       teachers: [],
       classes: [],
       mural: [],
@@ -445,32 +493,59 @@
     };
 
     function loadData() {
-      const tStored = localStorage.getItem("diario_teachers_v9");
+      const sStored = localStorage.getItem("diario_settings_v10");
+      state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
+
+      const tStored = localStorage.getItem("diario_teachers_v10");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v9");
+      const cStored = localStorage.getItem("diario_classes_v10");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v9");
+      const mStored = localStorage.getItem("diario_mural_v10");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      // RECUPERAR SESSÃO DO PROFESSOR (LOGADO ANTERIORMENTE)
-      const uStored = localStorage.getItem("diario_session_v9");
-      if (uStored) {
-        state.currentUser = JSON.parse(uStored);
-      }
+      const uStored = localStorage.getItem("diario_session_v10");
+      if (uStored) state.currentUser = JSON.parse(uStored);
 
       saveData();
+      applySettingsUI();
     }
 
     function saveData() {
-      localStorage.setItem("diario_teachers_v9", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v9", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v9", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v10", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v10", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v10", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v10", JSON.stringify(state.mural));
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v9", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v10", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v9");
+        localStorage.removeItem("diario_session_v10");
+      }
+    }
+
+    function applySettingsUI() {
+      const set = state.settings || {};
+      const nameEl = document.getElementById('header-school-name');
+      const logoEl = document.getElementById('header-logo');
+      const titleEl = document.getElementById('page-title');
+
+      const name = set.schoolName || "Diário Escolar Digital";
+      nameEl.innerText = name;
+      titleEl.innerText = name;
+
+      if (set.schoolLogo) {
+        logoEl.src = set.schoolLogo;
+        logoEl.classList.remove('hidden');
+      } else {
+        logoEl.classList.add('hidden');
+      }
+
+      if (set.bgImage) {
+        document.body.style.backgroundImage = `url('${set.bgImage}')`;
+      } else {
+        document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundColor = '#f4f6f8';
       }
     }
 
@@ -572,6 +647,7 @@
       if (u.role === 'admin') {
         document.getElementById('user-role-badge').innerText = 'Organizador / Admin (Acesso Total)';
         document.getElementById('btn-manage-teachers').classList.remove('hidden');
+        document.getElementById('btn-customize-theme').classList.remove('hidden');
         
         const pendingCount = state.teachers.filter(t => t.status === 'pending').length;
         if (pendingCount > 0) {
@@ -585,11 +661,12 @@
       } else {
         document.getElementById('user-role-badge').innerText = `Prof. (${u.discipline})`;
         document.getElementById('btn-manage-teachers').classList.add('hidden');
+        document.getElementById('btn-customize-theme').classList.add('hidden');
         document.getElementById('admin-pending-alert').classList.add('hidden');
       }
     }
 
-    // PORTAL DO ALUNO - BUSCA GLOBAL CONSOLIDADA
+    // PORTAL DO ALUNO - BUSCA CONSOLIDADA
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim().toLowerCase().replace(/[\.\-]/g, '');
@@ -629,7 +706,6 @@
           photoContainer.innerHTML = `<div class="student-avatar student-avatar-lg">👤</div>`;
         }
 
-        // VERIFICA SE ESTÁ APROVADO EM TODAS AS MATÉRIAS
         const allPassed = state.matchedStudentRecords.every(r => r.status.isPassed);
         const badge = document.getElementById('bol-status-badge');
         if (allPassed) {
@@ -648,7 +724,6 @@
       }
     }
 
-    // MONTA A TABELA DE TODAS AS DISCIPLINAS DO ALUNO
     function renderAcademicConsolidatedTable() {
       const summaryBox = document.getElementById('student-academic-summary-table');
       const footerBox = document.getElementById('student-footer-metrics');
@@ -740,10 +815,12 @@
       if (activeNotices.length > 0) {
         box.classList.remove('hidden');
         activeNotices.forEach(m => {
+          const fileHtml = m.file ? `<div style="margin-top:6px;"><a href="${m.file.data}" download="${m.file.name}" class="btn btn-secondary btn-sm">📎 Baixar Anexo: ${m.file.name}</a></div>` : '';
           container.innerHTML += `
             <div class="mural-item">
               <div class="mural-title">${m.title}</div>
               <div style="font-size:0.88rem; color:#334155; margin-top:4px;">${m.message}</div>
+              ${fileHtml}
               <div class="mural-date">Publicado por ${m.author}</div>
             </div>
           `;
@@ -755,7 +832,6 @@
 
     function renderStudentPeriodSelector() {
       const container = document.getElementById('student-period-selector');
-      const content = document.getElementById('student-period-content');
       container.innerHTML = '';
       
       state.matchedStudentRecords.forEach((rec, idx) => {
@@ -820,7 +896,8 @@
       allMsgs.forEach(m => {
         const div = document.createElement('div');
         div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
-        div.innerHTML = `<div>${m.text}</div><div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>`;
+        const fileHtml = m.file ? `<div style="margin-top:4px;"><a href="${m.file.data}" download="${m.file.name}" style="color:inherit; font-weight:600;">📎 ${m.file.name}</a></div>` : '';
+        div.innerHTML = `<div>${m.text}</div>${fileHtml}<div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>`;
         container.appendChild(div);
       });
       container.scrollTop = container.scrollHeight;
@@ -829,23 +906,38 @@
     function sendStudentMessage(e) {
       e.preventDefault();
       const input = document.getElementById('student-msg-input');
+      const fileInput = document.getElementById('student-msg-file');
       const text = input.value.trim();
-      if (!text || state.matchedStudentRecords.length === 0) return;
+      const file = fileInput.files[0];
 
-      state.matchedStudentRecords.forEach(rec => {
-        if (!rec.student.messages) rec.student.messages = [];
-        rec.student.messages.push({
-          id: "m-" + Date.now(), sender: "aluno", text: text,
-          date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+      if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
+
+      const pushMsg = (fileObj) => {
+        state.matchedStudentRecords.forEach(rec => {
+          if (!rec.student.messages) rec.student.messages = [];
+          rec.student.messages.push({
+            id: "m-" + Date.now(), sender: "aluno", text: text || "Envio de arquivo anexado", file: fileObj,
+            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
         });
-      });
+        saveData();
+        input.value = '';
+        fileInput.value = '';
+        renderStudentChatHistory();
+      };
 
-      saveData();
-      input.value = '';
-      renderStudentChatHistory();
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          pushMsg({ name: file.name, data: evt.target.result });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        pushMsg(null);
+      }
     }
 
-    // LOGIN E REGISTRO DE PROFESSOR
+    // LOGIN E REGISTRO
     function toggleRegisterForm(show) {
       if (show) {
         document.getElementById('login-form-box').classList.add('hidden');
@@ -884,7 +976,7 @@
           return;
         }
         state.currentUser = found;
-        saveData(); // SALVA SESSÃO PERMANENTE
+        saveData();
         document.getElementById('login-error').classList.add('hidden');
         switchProfile('professor');
       } else {
@@ -902,6 +994,7 @@
       document.getElementById('view-classes-section').classList.add('hidden');
       document.getElementById('view-teachers-section').classList.add('hidden');
       document.getElementById('view-mural-section').classList.add('hidden');
+      document.getElementById('view-settings-section').classList.add('hidden');
       document.getElementById('class-detail-view').classList.add('hidden');
 
       if (tab === 'classes') {
@@ -913,13 +1006,23 @@
       } else if (tab === 'mural') {
         document.getElementById('view-mural-section').classList.remove('hidden');
         renderMuralAdminList();
+      } else if (tab === 'settings') {
+        document.getElementById('view-settings-section').classList.remove('hidden');
+        renderSettingsForm();
       }
     }
 
+    // PRIVACIDADE DE TURMAS: PROFESSOR VÊ APENAS SUAS TURMAS / ADMIN VÊ TODAS
     function renderClassesGrid() {
       const grid = document.getElementById('classes-grid');
       grid.innerHTML = '';
-      state.classes.forEach(c => {
+      const u = state.currentUser;
+
+      const visibleClasses = (u && u.role === 'admin') 
+        ? state.classes 
+        : state.classes.filter(c => c.teacherId === u.id || c.teacherName === u.name);
+
+      visibleClasses.forEach(c => {
         const card = document.createElement('div');
         card.className = 'class-card';
         card.onclick = () => openClassDetail(c.id);
@@ -930,6 +1033,10 @@
         `;
         grid.appendChild(card);
       });
+
+      if (visibleClasses.length === 0) {
+        grid.innerHTML = '<p style="color:#64748b; grid-column: 1/-1;">Você não possui turmas cadastradas ainda. Clique em "+ Nova Turma" acima.</p>';
+      }
     }
 
     function renderTeachersManagement() {
@@ -1017,15 +1124,76 @@
       alert("Seus dados foram atualizados com sucesso!");
     }
 
-    // MURAL
+    // FORMULÁRIO DE PERSONALIZAÇÃO DA ESCOLA
+    function renderSettingsForm() {
+      const set = state.settings || {};
+      document.getElementById('set-school-name').value = set.schoolName || "Diário Escolar Digital";
+      
+      const logoBox = document.getElementById('preview-logo-box');
+      logoBox.innerHTML = set.schoolLogo ? `<img src="${set.schoolLogo}" style="max-height:60px;">` : '<em>Nenhuma logo personalizada configurada.</em>';
+
+      const bgBox = document.getElementById('preview-bg-box');
+      bgBox.innerHTML = set.bgImage ? `<em>Imagem de fundo configurada.</em>` : '<em>Nenhum plano de fundo personalizado configurado.</em>';
+    }
+
+    function handleSaveSettings(e) {
+      e.preventDefault();
+      const schoolName = document.getElementById('set-school-name').value.trim();
+      const logoFile = document.getElementById('set-school-logo').files[0];
+      const bgFile = document.getElementById('set-school-bg').files[0];
+
+      state.settings.schoolName = schoolName;
+
+      const processBg = () => {
+        if (bgFile) {
+          const readerBg = new FileReader();
+          readerBg.onload = (evt) => {
+            state.settings.bgImage = evt.target.result;
+            saveData();
+            applySettingsUI();
+            showToast("🎨 Personalizações salvas!");
+          };
+          readerBg.readAsDataURL(bgFile);
+        } else {
+          saveData();
+          applySettingsUI();
+          showToast("🎨 Personalizações salvas!");
+        }
+      };
+
+      if (logoFile) {
+        const readerLogo = new FileReader();
+        readerLogo.onload = (evt) => {
+          state.settings.schoolLogo = evt.target.result;
+          processBg();
+        };
+        readerLogo.readAsDataURL(logoFile);
+      } else {
+        processBg();
+      }
+    }
+
+    function resetSettingsDefaults() {
+      if (confirm("Restaurar as configurações originais de tema?")) {
+        state.settings = { schoolName: "Diário Escolar Digital", schoolLogo: null, bgImage: null };
+        saveData();
+        applySettingsUI();
+        renderSettingsForm();
+        showToast("Configurações restauradas!");
+      }
+    }
+
+    // MURAL COM ATIVIDADES E ARQUIVOS
     function renderMuralAdminList() {
       const container = document.getElementById('mural-admin-list');
       container.innerHTML = '';
       state.mural.forEach(m => {
+        const fileHtml = m.file ? `<div style="margin-top:6px;"><a href="${m.file.data}" download="${m.file.name}" class="btn btn-secondary btn-sm">📎 Anexo: ${m.file.name}</a></div>` : '';
         container.innerHTML += `
           <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:10px;">
             <strong>${m.title}</strong>
             <div style="font-size:0.88rem; color:#475569; margin-top:4px;">${m.message}</div>
+            ${fileHtml}
             <button onclick="deleteMural('${m.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626; float:right; margin-top:-20px;">Apagar</button>
           </div>
         `;
@@ -1034,15 +1202,40 @@
     }
 
     function openAddMuralModal() {
-      const title = prompt("Título do Recado:"); if (!title) return;
-      const msg = prompt("Mensagem:"); if (!msg) return;
+      const title = prompt("Título do Recado / Atividade:"); if (!title) return;
+      const msg = prompt("Mensagem ou Instrução:"); if (!msg) return;
+
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            pushMural(title, msg, { name: file.name, data: evt.target.result });
+          };
+          reader.readAsDataURL(file);
+        } else {
+          pushMural(title, msg, null);
+        }
+      };
+      
+      if (confirm("Deseja anexar um arquivo/documento neste recado?")) {
+        fileInput.click();
+      } else {
+        pushMural(title, msg, null);
+      }
+    }
+
+    function pushMural(title, msg, fileObj) {
       state.mural.push({
-        id: "mural-" + Date.now(), title, message: msg,
+        id: "mural-" + Date.now(), title, message: msg, file: fileObj,
         author: state.currentUser ? state.currentUser.name : "Professor",
-        createdAt: Date.now(), expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000)
+        createdAt: Date.now(), expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
       });
       saveData();
       renderMuralAdminList();
+      showToast("Aviso publicado no mural!");
     }
 
     function deleteMural(id) {
@@ -1151,10 +1344,9 @@
       saveData();
     }
 
-    // SALVAMENTO EXPLÍCITO COM NOTIFICAÇÃO
     function saveGradesExplicitly() {
       saveData();
-      showToast("💾 Notas salvas e publicadas para os alunos com sucesso!");
+      showToast("💾 Notas salvas e publicadas com sucesso!");
     }
 
     function openAddActivityModal() {
@@ -1164,7 +1356,7 @@
       c.periods[state.currentPeriod].push({ id: "act-" + Date.now(), name: name });
       saveData();
       renderTeacherGradesTable(c);
-      showToast("Atividade criada com sucesso!");
+      showToast("Atividade criada!");
     }
 
     function renderStudentsTable() {
@@ -1222,6 +1414,7 @@
 
       state.classes.push({
         id: "turma-" + Date.now(),
+        teacherId: state.currentUser ? state.currentUser.id : "prof-thyago",
         name: name,
         discipline: disc || "Geral",
         teacherName: state.currentUser ? state.currentUser.name : "Prof. Responsável",
@@ -1244,18 +1437,27 @@
         const msgs = s.messages || [];
         if (msgs.length > 0) {
           count++;
-          let chatHtml = msgs.map(m => `
-            <div class="chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}">
-              <div><strong>${m.sender === 'aluno' ? s.name : 'Você'}:</strong> ${m.text}</div>
-              <div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>
-            </div>
-          `).join('');
+          let chatHtml = msgs.map(m => {
+            const fileHtml = m.file ? `<div style="margin-top:4px;"><a href="${m.file.data}" download="${m.file.name}" style="color:inherit; font-weight:600;">📎 Anexo: ${m.file.name}</a></div>` : '';
+            return `
+              <div class="chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}">
+                <div><strong>${m.sender === 'aluno' ? s.name : 'Você'}:</strong> ${m.text}</div>
+                ${fileHtml}
+                <div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>
+              </div>
+            `;
+          }).join('');
+
           container.innerHTML += `
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
               <h5 style="margin-bottom:8px;">👤 ${s.name} (${s.registration})</h5>
               <div class="chat-box">${chatHtml}</div>
-              <div style="display:flex; gap:8px;">
-                <input type="text" id="reply-input-${s.id}" placeholder="Responder..." style="width:100%; padding:6px; border:1px solid #cbd5e1; border-radius:4px;">
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input type="text" id="reply-input-${s.id}" placeholder="Responder..." style="flex:1; padding:6px; border:1px solid #cbd5e1; border-radius:4px;">
+                <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo para o aluno">
+                  📎
+                  <input type="file" id="reply-file-${s.id}" style="display:none;">
+                </label>
                 <button onclick="sendTeacherReply('${s.id}')" class="btn btn-primary btn-sm">Responder</button>
               </div>
             </div>
@@ -1269,15 +1471,31 @@
       const c = state.classes.find(item => item.id === state.currentClassId);
       const s = c.students.find(item => item.id === studentId);
       const input = document.getElementById(`reply-input-${studentId}`);
-      const text = input.value.trim(); if (!text) return;
+      const fileInput = document.getElementById(`reply-file-${studentId}`);
+      const text = input.value.trim();
+      const file = fileInput.files[0];
 
-      if (!s.messages) s.messages = [];
-      s.messages.push({
-        id: "m-" + Date.now(), sender: "professor", text: text,
-        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
-      });
-      saveData();
-      renderTeacherMessages();
+      if (!text && !file) return;
+
+      const pushReply = (fileObj) => {
+        if (!s.messages) s.messages = [];
+        s.messages.push({
+          id: "m-" + Date.now(), sender: "professor", text: text || "Envio de arquivo anexado", file: fileObj,
+          date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+        });
+        saveData();
+        renderTeacherMessages();
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          pushReply({ name: file.name, data: evt.target.result });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        pushReply(null);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
