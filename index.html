@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diário Escolar Digital & Portal do Aluno</title>
-  <!-- Supabase CDN (para integração com banco de dados em nuvem) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     /* --- RESET E ESTILOS GERAIS --- */
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -23,7 +21,7 @@
     .btn-block { width: 100%; }
     .btn-sm { padding: 4px 10px; font-size: 0.85rem; }
 
-    /* --- TOPO E NAVEGAÇÃO DE PERFIL --- */
+    /* --- TOPO E NAVEGAÇÃO --- */
     .header { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 16px 0; }
     .header-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .logo { font-size: 1.25rem; font-weight: 700; color: #1e293b; }
@@ -35,12 +33,12 @@
     .card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #334155; }
-    .form-group input, .form-group select { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #ffffff; }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: #2563eb; ring: 2px #2563eb; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #ffffff; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2563eb; }
 
     /* --- PORTAL DO ALUNO --- */
-    .student-search-box { max-width: 500px; margin: 40px auto 20px auto; text-align: center; }
-    .boletim-card { max-width: 700px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; padding: 28px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .student-search-box { max-width: 500px; margin: 30px auto 20px auto; text-align: center; }
+    .boletim-card { max-width: 750px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; padding: 28px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
     .boletim-header { border-bottom: 2px solid #2563eb; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
     .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
     .status-aprovado { background-color: #dcfce7; color: #15803d; }
@@ -52,8 +50,15 @@
     .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
     .data-table th, .data-table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; }
     .data-table th { background-color: #f8fafc; font-weight: 600; color: #475569; }
-    
-    /* --- LOGIN E PAINEL DO PROFESSOR --- */
+
+    /* --- CHAT E MENSAGENS --- */
+    .chat-box { max-height: 250px; overflow-y: auto; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+    .chat-msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 6px; max-width: 80%; font-size: 0.875rem; }
+    .chat-msg-aluno { background-color: #e0f2fe; color: #0369a1; margin-right: auto; }
+    .chat-msg-prof { background-color: #dcfce7; color: #15803d; margin-left: auto; text-align: right; }
+    .chat-time { font-size: 0.7rem; color: #64748b; margin-top: 2px; }
+
+    /* --- PROFESSOR --- */
     .login-card { max-width: 380px; margin: 60px auto; }
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
     .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s; }
@@ -69,7 +74,7 @@
 </head>
 <body>
 
-  <!-- CABEÇALHO COM NAVEGAÇÃO -->
+  <!-- CABEÇALHO -->
   <header class="header">
     <div class="header-container">
       <div class="logo">🏫 Diário Escolar Digital</div>
@@ -87,7 +92,7 @@
       <div class="student-search-box card">
         <h2>Consultar Boletim Escolar</h2>
         <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px;">
-          Digite sua <strong>Matrícula</strong> ou <strong>CPF</strong> para visualizar suas notas e frequência.
+          Digite sua <strong>Matrícula</strong> ou <strong>CPF</strong> para acessar suas notas.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group">
@@ -97,7 +102,7 @@
         </form>
       </div>
 
-      <!-- RESULTADO DO BOLETIM DO ALUNO -->
+      <!-- BOLETIM DO ALUNO -->
       <div id="boletim-result" class="hidden">
         <div id="printable-boletim" class="boletim-card">
           <div class="boletim-header">
@@ -120,9 +125,9 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>AV1</th>
-                  <th>AV2</th>
-                  <th>Trabalho</th>
+                  <th id="lbl-ev1">AV1</th>
+                  <th id="lbl-ev2">AV2</th>
+                  <th id="lbl-ev3">Trabalho</th>
                   <th>Recuperação</th>
                   <th>Média Final</th>
                 </tr>
@@ -160,32 +165,47 @@
             </table>
           </div>
 
-          <div class="no-print" style="margin-top: 24px; text-align: right;">
-            <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir Boletim</button>
+          <!-- CANAL DE MENSAGENS NO BOLETIM DO ALUNO -->
+          <div class="no-print" style="margin-top: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <h4>💬 Fale com o Professor</h4>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">Envie dúvidas ou recados diretamente para o seu professor.</p>
+            
+            <div id="student-chat-history" class="chat-box"></div>
+
+            <form onsubmit="sendStudentMessage(event)">
+              <div class="form-group" style="display: flex; gap: 8px;">
+                <input type="text" id="student-msg-input" placeholder="Escreva sua mensagem..." required>
+                <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+              </div>
+            </form>
+
+            <div style="text-align: right; margin-top: 16px;">
+              <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir Boletim</button>
+            </div>
           </div>
         </div>
       </div>
+
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px; font-weight: 500;">
-        ⚠️ NENHUM ALUNO ENCONTRADO COM ESTE NÚMERO DE MATRÍCULA OU CPF.
+        ⚠️ NENHUM ALUNO ENCONTRADO COM ESTA MATRÍCULA OU CPF.
       </div>
     </section>
 
-    <!-- ==================== TELA 2: ÁREA DO PROFESSOR (LOGIN) ==================== -->
+    <!-- ==================== TELA 2: LOGIN DO PROFESSOR ==================== -->
     <section id="screen-professor-login" class="hidden">
       <div class="card login-card">
         <h2 style="text-align: center; margin-bottom: 8px;">Acesso do Professor</h2>
-        <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Digite suas credenciais para gerenciar o diário.</p>
         <form onsubmit="handleTeacherLogin(event)">
           <div class="form-group">
-            <label for="username">Usuário</label>
-            <input type="text" id="username" placeholder="Ex: 2026" required>
+            <label>Usuário</label>
+            <input type="text" id="username" placeholder="2026" required>
           </div>
           <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" id="password" placeholder="Ex: 2026" required>
+            <label>Senha</label>
+            <input type="password" id="password" placeholder="2026" required>
           </div>
           <div id="login-error" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 12px;" class="hidden">Usuário ou senha incorretos.</div>
-          <button type="submit" class="btn btn-primary btn-block">Entrar no Sistema</button>
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button>
         </form>
       </div>
     </section>
@@ -202,23 +222,22 @@
 
       <div id="classes-grid" class="classes-grid"></div>
 
-      <!-- DETALHES DA TURMA SELECIONADA -->
+      <!-- VISUALIZAÇÃO DA TURMA -->
       <div id="class-detail-view" class="hidden" style="margin-top: 30px;">
-        <button onclick="closeClassDetail()" class="btn btn-secondary btn-sm" style="margin-bottom: 16px;">← Voltar para as Turmas</button>
+        <button onclick="closeClassDetail()" class="btn btn-secondary btn-sm" style="margin-bottom: 16px;">← Voltar para Turmas</button>
         <div class="card">
           <h3 id="detail-class-title">Nome da Turma</h3>
-          <p id="detail-class-subtitle" style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">Disciplina - Turno</p>
+          <p id="detail-class-subtitle" style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;"></p>
 
-          <div style="display: flex; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; pb: 8px;">
+          <div style="display: flex; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
             <button onclick="switchClassTab('alunos')" class="btn btn-secondary btn-sm">👥 Alunos</button>
-            <button onclick="switchClassTab('notas')" class="btn btn-secondary btn-sm">📝 Lançar Notas</button>
+            <button onclick="switchClassTab('notas')" class="btn btn-secondary btn-sm">📝 Lançar Notas & Frequência</button>
+            <button onclick="switchClassTab('mensagens')" class="btn btn-secondary btn-sm">💬 Mensagens dos Alunos</button>
           </div>
 
-          <!-- TAB ALUNOS -->
+          <!-- ABA 1: ALUNOS -->
           <div id="tab-content-alunos">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-              <button onclick="openStudentModal()" class="btn btn-primary btn-sm">+ Cadastrar Aluno</button>
-            </div>
+            <button onclick="openStudentModal()" class="btn btn-primary btn-sm" style="margin-bottom: 12px;">+ Cadastrar Aluno</button>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
@@ -234,23 +253,41 @@
             </div>
           </div>
 
-          <!-- TAB NOTAS -->
+          <!-- ABA 2: NOTAS E FREQUÊNCIA (COM NOMES PERSONALIZADOS) -->
           <div id="tab-content-notas" class="hidden">
+            <!-- PERSONALIZAR NOMES DAS AVALIAÇÕES -->
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+              <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: #475569;">✏️ Personalizar Nomes das Avaliações desta Turma:</h4>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="text" id="cfg-ev1" placeholder="Avaliação 1" style="width: 140px; padding: 4px 8px; font-size: 0.85rem;" onchange="updateEvalNames()">
+                <input type="text" id="cfg-ev2" placeholder="Avaliação 2" style="width: 140px; padding: 4px 8px; font-size: 0.85rem;" onchange="updateEvalNames()">
+                <input type="text" id="cfg-ev3" placeholder="Avaliação 3" style="width: 140px; padding: 4px 8px; font-size: 0.85rem;" onchange="updateEvalNames()">
+              </div>
+            </div>
+
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
                     <th>Aluno</th>
-                    <th>AV1</th>
-                    <th>AV2</th>
-                    <th>Trabalho</th>
-                    <th>Recuperação</th>
+                    <th id="th-ev1">AV1</th>
+                    <th id="th-ev2">AV2</th>
+                    <th id="th-ev3">Trabalho</th>
+                    <th>Rec.</th>
                     <th>Média</th>
+                    <th>Aulas Dadas</th>
+                    <th>Faltas</th>
                   </tr>
                 </thead>
                 <tbody id="grades-table-body"></tbody>
               </table>
             </div>
+          </div>
+
+          <!-- ABA 3: MENSAGENS RECEBIDAS -->
+          <div id="tab-content-mensagens" class="hidden">
+            <h4>Mensagens dos Alunos da Turma</h4>
+            <div id="teacher-messages-list" style="margin-top: 12px;"></div>
           </div>
 
         </div>
@@ -260,7 +297,7 @@
   </main>
 
   <script>
-    // --- DADOS INICIAIS DE EXEMPLO (PADRÃO) ---
+    // --- DADOS INICIAIS ---
     const INITIAL_DATA = [
       {
         id: "turma-1",
@@ -268,21 +305,28 @@
         discipline: "Ciências",
         shift: "Manhã",
         year: 2026,
+        evalNames: { ev1: "AV1", ev2: "AV2", ev3: "Trabalho" },
         students: [
-          { id: "al-1", name: "Ana Silva", registration: "2026001", cpf: "111.222.333-04", av1: 8.0, av2: 7.0, work: 9.0, rec: null, totalClasses: 20, absences: 2 },
-          { id: "al-2", name: "João Santos", registration: "2026002", cpf: "222.333.444-05", av1: 5.0, av2: 6.0, work: 7.0, rec: null, totalClasses: 20, absences: 4 }
+          { 
+            id: "al-1", name: "Ana Silva", registration: "2026001", cpf: "111.222.333-04", 
+            av1: 8.0, av2: 7.0, work: 9.0, rec: null, totalClasses: 20, absences: 2,
+            messages: [{ id: "m1", sender: "aluno", text: "Professor, quando será a vista de prova?", date: "02/10/2026 09:30" }]
+          },
+          { 
+            id: "al-2", name: "João Santos", registration: "2026002", cpf: "222.333.444-05", 
+            av1: 5.0, av2: 6.0, work: 7.0, rec: null, totalClasses: 20, absences: 4, messages: [] 
+          }
         ]
       }
     ];
 
-    // --- ESTADO GLOBAL ---
     let state = {
       classes: [],
       currentClassId: null,
-      currentUser: null
+      currentUser: null,
+      activeStudent: null
     };
 
-    // --- GERENCIAMENTO DE DADOS ---
     function loadData() {
       const stored = localStorage.getItem("diario_escolar_classes");
       if (!stored) {
@@ -297,7 +341,7 @@
       localStorage.setItem("diario_escolar_classes", JSON.stringify(state.classes));
     }
 
-    // --- CÁLCULO DE MÉDIA ---
+    // --- CÁLCULO DA MÉDIA ---
     function calcAverage(av1, av2, work, rec) {
       const n1 = parseFloat(av1) || 0;
       const n2 = parseFloat(av2) || 0;
@@ -310,7 +354,6 @@
       return avg.toFixed(1);
     }
 
-    // --- TROCA DE NAVEGAÇÃO DE PERFIL ---
     function switchProfile(profile) {
       document.getElementById('nav-btn-aluno').classList.remove('active');
       document.getElementById('nav-btn-professor').classList.remove('active');
@@ -332,7 +375,7 @@
       }
     }
 
-    // --- BUSCA DO ALUNO (PORTAL DO ALUNO) ---
+    // --- PORTAL DO ALUNO ---
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim().toLowerCase().replace(/[\.\-]/g, '');
@@ -354,6 +397,7 @@
       const notFoundCard = document.getElementById('student-not-found');
 
       if (foundStudent && foundClass) {
+        state.activeStudent = foundStudent;
         notFoundCard.classList.add('hidden');
         resultCard.classList.remove('hidden');
 
@@ -363,6 +407,12 @@
         document.getElementById('bol-class-name').innerText = foundClass.name;
         document.getElementById('bol-discipline').innerText = foundClass.discipline;
         document.getElementById('bol-year').innerText = foundClass.year;
+
+        // NOMES PERSONALIZADOS DAS AVALIAÇÕES
+        const evs = foundClass.evalNames || { ev1: "AV1", ev2: "AV2", ev3: "Trabalho" };
+        document.getElementById('lbl-ev1').innerText = evs.ev1 || "AV1";
+        document.getElementById('lbl-ev2').innerText = evs.ev2 || "AV2";
+        document.getElementById('lbl-ev3').innerText = evs.ev3 || "Trabalho";
 
         document.getElementById('bol-av1').innerText = foundStudent.av1 ?? '-';
         document.getElementById('bol-av2').innerText = foundStudent.av2 ?? '-';
@@ -374,14 +424,11 @@
 
         const badge = document.getElementById('bol-status-badge');
         if (avg >= 6.0) {
-          badge.innerText = "Aprovado";
-          badge.className = "status-badge status-aprovado";
+          badge.innerText = "Aprovado"; badge.className = "status-badge status-aprovado";
         } else if (avg >= 4.0) {
-          badge.innerText = "Recuperação";
-          badge.className = "status-badge status-recuperacao";
+          badge.innerText = "Recuperação"; badge.className = "status-badge status-recuperacao";
         } else {
-          badge.innerText = "Reprovado";
-          badge.className = "status-badge status-reprovado";
+          badge.innerText = "Reprovado"; badge.className = "status-badge status-reprovado";
         }
 
         const total = foundStudent.totalClasses || 20;
@@ -390,13 +437,51 @@
         document.getElementById('bol-total-classes').innerText = total;
         document.getElementById('bol-absences').innerText = absences;
         document.getElementById('bol-attendance-pct').innerText = `${pct}%`;
+
+        renderStudentChatHistory();
       } else {
         resultCard.classList.add('hidden');
         notFoundCard.classList.remove('hidden');
       }
     }
 
-    // --- LOGIN DO PROFESSOR ---
+    function renderStudentChatHistory() {
+      const container = document.getElementById('student-chat-history');
+      container.innerHTML = '';
+      const msgs = state.activeStudent.messages || [];
+      if (msgs.length === 0) {
+        container.innerHTML = '<div style="font-size:0.8rem; color:#94a3b8; text-align:center;">Nenhuma mensagem enviada ainda.</div>';
+        return;
+      }
+      msgs.forEach(m => {
+        const div = document.createElement('div');
+        div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
+        div.innerHTML = `<div>${m.text}</div><div class="chat-time">${m.date}</div>`;
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendStudentMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('student-msg-input');
+      const text = input.value.trim();
+      if (!text || !state.activeStudent) return;
+
+      if (!state.activeStudent.messages) state.activeStudent.messages = [];
+      state.activeStudent.messages.push({
+        id: "msg-" + Date.now(),
+        sender: "aluno",
+        text: text,
+        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+      });
+
+      saveData();
+      input.value = '';
+      renderStudentChatHistory();
+    }
+
+    // --- PROFESSOR ---
     function handleTeacherLogin(e) {
       e.preventDefault();
       const user = document.getElementById('username').value.trim();
@@ -416,7 +501,6 @@
       switchProfile('professor');
     }
 
-    // --- PAINEL DO PROFESSOR (RENDERIZAR TURMAS) ---
     function renderClassesGrid() {
       const grid = document.getElementById('classes-grid');
       grid.innerHTML = '';
@@ -427,7 +511,7 @@
         card.innerHTML = `
           <h3>${c.name}</h3>
           <p>${c.discipline} - ${c.shift} (${c.year})</p>
-          <div style="font-size: 0.85rem; color: #2563eb; font-weight: 600;">👥 ${c.students.length} alunos cadastrados</div>
+          <div style="font-size: 0.85rem; color: #2563eb; font-weight: 600; margin-top: 6px;">👥 ${c.students.length} alunos cadastrados</div>
         `;
         grid.appendChild(card);
       });
@@ -439,7 +523,25 @@
       document.getElementById('detail-class-title').innerText = c.name;
       document.getElementById('detail-class-subtitle').innerText = `${c.discipline} | ${c.shift} (${c.year})`;
       document.getElementById('class-detail-view').classList.remove('hidden');
+
+      const evs = c.evalNames || { ev1: "AV1", ev2: "AV2", ev3: "Trabalho" };
+      document.getElementById('cfg-ev1').value = evs.ev1 || "AV1";
+      document.getElementById('cfg-ev2').value = evs.ev2 || "AV2";
+      document.getElementById('cfg-ev3').value = evs.ev3 || "Trabalho";
+
       renderStudentsTable();
+      renderGradesTable();
+      renderTeacherMessages();
+    }
+
+    function updateEvalNames() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      c.evalNames = {
+        ev1: document.getElementById('cfg-ev1').value || "AV1",
+        ev2: document.getElementById('cfg-ev2').value || "AV2",
+        ev3: document.getElementById('cfg-ev3').value || "Trabalho"
+      };
+      saveData();
       renderGradesTable();
     }
 
@@ -448,13 +550,13 @@
     }
 
     function switchClassTab(tab) {
-      if (tab === 'alunos') {
-        document.getElementById('tab-content-alunos').classList.remove('hidden');
-        document.getElementById('tab-content-notas').classList.add('hidden');
-      } else {
-        document.getElementById('tab-content-alunos').classList.add('hidden');
-        document.getElementById('tab-content-notas').classList.remove('hidden');
-      }
+      document.getElementById('tab-content-alunos').classList.add('hidden');
+      document.getElementById('tab-content-notas').classList.add('hidden');
+      document.getElementById('tab-content-mensagens').classList.add('hidden');
+
+      if (tab === 'alunos') document.getElementById('tab-content-alunos').classList.remove('hidden');
+      if (tab === 'notas') document.getElementById('tab-content-notas').classList.remove('hidden');
+      if (tab === 'mensagens') document.getElementById('tab-content-mensagens').classList.remove('hidden');
     }
 
     function renderStudentsTable() {
@@ -476,23 +578,31 @@
     function renderGradesTable() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const tbody = document.getElementById('grades-table-body');
+      const evs = c.evalNames || { ev1: "AV1", ev2: "AV2", ev3: "Trabalho" };
+
+      document.getElementById('th-ev1').innerText = evs.ev1;
+      document.getElementById('th-ev2').innerText = evs.ev2;
+      document.getElementById('th-ev3').innerText = evs.ev3;
+
       tbody.innerHTML = '';
       c.students.forEach(s => {
         const avg = calcAverage(s.av1, s.av2, s.work, s.rec);
         tbody.innerHTML += `
           <tr>
-            <td>${s.name}</td>
-            <td><input type="number" step="0.5" value="${s.av1 ?? ''}" style="width: 55px;" onchange="updateGrade('${s.id}', 'av1', this.value)"></td>
-            <td><input type="number" step="0.5" value="${s.av2 ?? ''}" style="width: 55px;" onchange="updateGrade('${s.id}', 'av2', this.value)"></td>
-            <td><input type="number" step="0.5" value="${s.work ?? ''}" style="width: 55px;" onchange="updateGrade('${s.id}', 'work', this.value)"></td>
-            <td><input type="number" step="0.5" value="${s.rec ?? ''}" style="width: 55px;" onchange="updateGrade('${s.id}', 'rec', this.value)"></td>
+            <td><strong>${s.name}</strong></td>
+            <td><input type="number" step="0.5" value="${s.av1 ?? ''}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'av1', this.value)"></td>
+            <td><input type="number" step="0.5" value="${s.av2 ?? ''}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'av2', this.value)"></td>
+            <td><input type="number" step="0.5" value="${s.work ?? ''}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'work', this.value)"></td>
+            <td><input type="number" step="0.5" value="${s.rec ?? ''}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'rec', this.value)"></td>
             <td><strong>${avg}</strong></td>
+            <td><input type="number" value="${s.totalClasses ?? 20}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'totalClasses', this.value)"></td>
+            <td><input type="number" value="${s.absences ?? 0}" style="width: 55px;" onchange="updateStudentVal('${s.id}', 'absences', this.value)"></td>
           </tr>
         `;
       });
     }
 
-    function updateGrade(studentId, field, value) {
+    function updateStudentVal(studentId, field, value) {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const s = c.students.find(item => item.id === studentId);
       s[field] = value !== "" ? parseFloat(value) : null;
@@ -500,20 +610,71 @@
       renderGradesTable();
     }
 
+    function renderTeacherMessages() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const container = document.getElementById('teacher-messages-list');
+      container.innerHTML = '';
+
+      let count = 0;
+      c.students.forEach(s => {
+        const msgs = s.messages || [];
+        if (msgs.length > 0) {
+          count++;
+          const card = document.createElement('div');
+          card.style.cssText = "background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 12px;";
+          
+          let chatHtml = msgs.map(m => `
+            <div class="chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}">
+              <div><strong>${m.sender === 'aluno' ? s.name : 'Você'}:</strong> ${m.text}</div>
+              <div class="chat-time">${m.date}</div>
+            </div>
+          `).join('');
+
+          card.innerHTML = `
+            <h5 style="margin-bottom: 8px;">👤 ${s.name} (Matrícula: ${s.registration})</h5>
+            <div class="chat-box">${chatHtml}</div>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="reply-input-${s.id}" placeholder="Responder aluno..." style="width: 100%; padding: 6px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px;">
+              <button onclick="sendTeacherReply('${s.id}')" class="btn btn-primary btn-sm">Responder</button>
+            </div>
+          `;
+          container.appendChild(card);
+        }
+      });
+
+      if (count === 0) {
+        container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem;">Nenhum aluno desta turma enviou mensagens ainda.</p>';
+      }
+    }
+
+    function sendTeacherReply(studentId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const s = c.students.find(item => item.id === studentId);
+      const input = document.getElementById(`reply-input-${studentId}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      if (!s.messages) s.messages = [];
+      s.messages.push({
+        id: "msg-" + Date.now(),
+        sender: "professor",
+        text: text,
+        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+      });
+
+      saveData();
+      renderTeacherMessages();
+    }
+
     function openStudentModal() {
       const name = prompt("Nome do Aluno:");
       if (!name) return;
-      const reg = prompt("Matrícula do Aluno (ex: 2026003):");
-      const cpf = prompt("CPF do Aluno:");
-      
+      const reg = prompt("Matrícula:");
+      const cpf = prompt("CPF:");
       const c = state.classes.find(item => item.id === state.currentClassId);
       c.students.push({
-        id: "al-" + Date.now(),
-        name: name,
-        registration: reg || "",
-        cpf: cpf || "",
-        av1: null, av2: null, work: null, rec: null,
-        totalClasses: 20, absences: 0
+        id: "al-" + Date.now(), name, registration: reg || "", cpf: cpf || "",
+        av1: null, av2: null, work: null, rec: null, totalClasses: 20, absences: 0, messages: []
       });
       saveData();
       renderStudentsTable();
@@ -531,23 +692,17 @@
     }
 
     function openClassModal() {
-      const name = prompt("Nome da Nova Turma (ex: 8º Ano B):");
+      const name = prompt("Nome da Turma:");
       if (!name) return;
-      const disc = prompt("Disciplina (ex: Matemática):");
-      
+      const disc = prompt("Disciplina:");
       state.classes.push({
-        id: "turma-" + Date.now(),
-        name: name,
-        discipline: disc || "Geral",
-        shift: "Manhã",
-        year: 2026,
-        students: []
+        id: "turma-" + Date.now(), name, discipline: disc || "Geral", shift: "Manhã", year: 2026,
+        evalNames: { ev1: "AV1", ev2: "AV2", ev3: "Trabalho" }, students: []
       });
       saveData();
       renderClassesGrid();
     }
 
-    // --- INICIALIZAÇÃO ---
     document.addEventListener("DOMContentLoaded", () => {
       loadData();
     });
