@@ -81,6 +81,9 @@
     .period-tab-btn { padding: 6px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
     .period-tab-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
 
+    /* NOTIFICAÇÃO DE SUCESSO */
+    .toast-success { position: fixed; top: 20px; right: 20px; background-color: #16a34a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999; }
+
     @media print {
       body * { visibility: hidden; }
       #printable-boletim, #printable-boletim * { visibility: visible; }
@@ -115,11 +118,11 @@
           <div class="form-group">
             <input type="text" id="student-search-input" placeholder="Ex: 2026001 ou 111.222.333-04" required>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">🔍 Consultar Boletim</button>
+          <button type="submit" class="btn btn-primary btn-block">🔍 Consultar Boletim Consolidado</button>
         </form>
       </div>
 
-      <!-- RESULTADO DO BOLETIM -->
+      <!-- RESULTADO DO BOLETIM CONSOLIDADO -->
       <div id="boletim-result" class="hidden">
         
         <!-- MURAL DE AVISOS ATIVOS -->
@@ -146,18 +149,13 @@
             <div id="bol-status-badge" class="status-badge status-aprovado">Aprovado</div>
           </div>
 
-          <div style="margin-bottom: 16px; font-size: 0.9rem; color: #334155;">
-            <strong>Turma:</strong> <span id="bol-class-name">--</span> | 
-            <strong>Disciplina & Docente:</strong> <span id="bol-discipline-prof" style="font-weight:600; color:#1d4ed8;">--</span>
-          </div>
-
-          <!-- TABELA COMPLETA DE DESEMPENHO E MÉDIAS (ESTILO ACADÊMICO) -->
-          <h4 style="margin-bottom:8px; color:#1e293b;">📊 Rendimento Acadêmico</h4>
+          <!-- TABELA MULTI-DISCIPLINAS (ESTILO BOLETIM ACADÊMICO) -->
+          <h4 style="margin-bottom:8px; color:#1e293b;">📊 Rendimento Acadêmico (Todas as Disciplinas)</h4>
           <div id="student-academic-summary-table" class="table-responsive"></div>
 
           <!-- SELETOR DE ETAPAS E ATIVIDADES DETALHADAS -->
-          <h4 style="margin-top:24px; margin-bottom:8px; color:#1e293b;">📝 Detalhamento das Atividades por Etapa</h4>
-          <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:12px;"></div>
+          <h4 style="margin-top:24px; margin-bottom:8px; color:#1e293b;">📝 Detalhamento de Atividades por Disciplina</h4>
+          <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;"></div>
           <div id="student-period-content"></div>
 
           <!-- RESUMO DE DESEMPENHO NO RODAPÉ -->
@@ -165,7 +163,7 @@
 
           <!-- CHAT COM PROFESSOR -->
           <div class="no-print" style="margin-top: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-            <h4>💬 Mensagens com o Professor</h4>
+            <h4>💬 Mensagens com os Professores</h4>
             <div id="student-chat-history" class="chat-box" style="margin-top:10px;"></div>
             <form onsubmit="sendStudentMessage(event)">
               <div class="form-group" style="display: flex; gap: 8px;">
@@ -338,11 +336,14 @@
             </div>
           </div>
 
-          <!-- ABA NOTAS E ATIVIDADES -->
+          <!-- ABA NOTAS E ATIVIDADES COM BOTÃO DE SALVAR -->
           <div id="tab-content-notas" class="hidden">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
               <div id="teacher-period-selector" style="display:flex; gap:6px;"></div>
-              <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-primary btn-sm">+ Adicionar Atividade na Etapa</button>
+              <div>
+                <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-secondary btn-sm" style="margin-right:6px;">+ Adicionar Atividade</button>
+                <button onclick="saveGradesExplicitly()" class="btn btn-success btn-sm">💾 SALVAR NOTAS</button>
+              </div>
             </div>
 
             <div class="table-responsive">
@@ -350,6 +351,10 @@
                 <thead id="teacher-grades-thead"></thead>
                 <tbody id="teacher-grades-tbody"></tbody>
               </table>
+            </div>
+            
+            <div style="margin-top:12px; text-align:right;">
+              <button onclick="saveGradesExplicitly()" class="btn btn-success">💾 SALVAR E PUBLICAR NOTAS PARA OS ALUNOS</button>
             </div>
           </div>
 
@@ -365,10 +370,14 @@
 
   </main>
 
+  <!-- ELEMENTO PARA NOTIFICAÇÃO FLUTUANTE -->
+  <div id="toast-message" class="toast-success hidden">✅ Notas salvas e publicadas com sucesso!</div>
+
   <script>
     // ESTADO E PERFIS
     const INITIAL_TEACHERS = [
-      { id: "prof-thyago", name: "Prof. Thyago Gomes", username: "2026", password: "2026", role: "admin", discipline: "Ciências", status: "approved" }
+      { id: "prof-thyago", name: "Prof. Thyago Gomes", username: "2026", password: "2026", role: "admin", discipline: "Ciências", status: "approved" },
+      { id: "prof-joao", name: "Prof. João Silva", username: "joao", password: "123", role: "teacher", discipline: "Matemática", status: "approved" }
     ];
 
     const INITIAL_CLASSES = [
@@ -386,11 +395,35 @@
         },
         students: [
           {
-            id: "al-1", name: "Ana Silva", registration: "2026001", cpf: "111.222.333-04", photo: null,
+            id: "al-1", name: "Thyago Gomes Barreto", registration: "2026001", cpf: "111.222.333-04", photo: null,
             grades: {
               "A1": { "act-1": 7.0, "act-2": 8.0 },
               "A2": { "act-3": 4.0 },
               "A3 (Prova Final)": { a3Note: 6.0 }
+            },
+            messages: []
+          }
+        ]
+      },
+      {
+        id: "turma-2",
+        name: "Ensino Superior - Módulo 1",
+        mode: "semestral",
+        discipline: "Matemática",
+        teacherName: "Prof. João Silva",
+        year: 2026,
+        periods: {
+          "A1": [{ id: "act-m1", name: "Prova M1" }],
+          "A2": [{ id: "act-m2", name: "Trabalho M2" }],
+          "A3 (Prova Final)": []
+        },
+        students: [
+          {
+            id: "al-1-mat", name: "Thyago Gomes Barreto", registration: "2026001", cpf: "111.222.333-04", photo: null,
+            grades: {
+              "A1": { "act-m1": 8.5 },
+              "A2": { "act-m2": 7.5 },
+              "A3 (Prova Final)": {}
             },
             messages: []
           }
@@ -407,27 +440,45 @@
       currentClassId: null,
       currentPeriod: "A1",
       currentUser: null,
-      activeStudent: null,
+      matchedStudentRecords: [],
       activeStudentPeriod: "A1"
     };
 
     function loadData() {
-      const tStored = localStorage.getItem("diario_teachers_v8");
+      const tStored = localStorage.getItem("diario_teachers_v9");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v8");
+      const cStored = localStorage.getItem("diario_classes_v9");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v8");
+      const mStored = localStorage.getItem("diario_mural_v9");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
+
+      // RECUPERAR SESSÃO DO PROFESSOR (LOGADO ANTERIORMENTE)
+      const uStored = localStorage.getItem("diario_session_v9");
+      if (uStored) {
+        state.currentUser = JSON.parse(uStored);
+      }
 
       saveData();
     }
 
     function saveData() {
-      localStorage.setItem("diario_teachers_v8", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v8", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v8", JSON.stringify(state.mural));
+      localStorage.setItem("diario_teachers_v9", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v9", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v9", JSON.stringify(state.mural));
+      if (state.currentUser) {
+        localStorage.setItem("diario_session_v9", JSON.stringify(state.currentUser));
+      } else {
+        localStorage.removeItem("diario_session_v9");
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-message');
+      toast.innerText = msg || "✅ Operação realizada com sucesso!";
+      toast.classList.remove('hidden');
+      setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
 
     // REGRA DE CÁLCULO DE NOTAS E MÉDIAS
@@ -538,20 +589,23 @@
       }
     }
 
-    // PORTAL DO ALUNO
+    // PORTAL DO ALUNO - BUSCA GLOBAL CONSOLIDADA
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim().toLowerCase().replace(/[\.\-]/g, '');
-      let foundStudent = null;
-      let foundClass = null;
+      
+      state.matchedStudentRecords = [];
 
       state.classes.forEach(c => {
         c.students.forEach(s => {
           const regClean = (s.registration || "").toLowerCase().replace(/[\.\-]/g, '');
           const cpfClean = (s.cpf || "").toLowerCase().replace(/[\.\-]/g, '');
           if ((query && regClean === query) || (query && cpfClean === query)) {
-            foundStudent = s;
-            foundClass = c;
+            state.matchedStudentRecords.push({
+              class: c,
+              student: s,
+              status: calcStudentAcademicStatus(s, c)
+            });
           }
         });
       });
@@ -559,38 +613,34 @@
       const resultCard = document.getElementById('boletim-result');
       const notFoundCard = document.getElementById('student-not-found');
 
-      if (foundStudent && foundClass) {
-        state.activeStudent = foundStudent;
+      if (state.matchedStudentRecords.length > 0) {
         notFoundCard.classList.add('hidden');
         resultCard.classList.remove('hidden');
 
-        document.getElementById('bol-student-name').innerText = foundStudent.name;
-        document.getElementById('bol-student-reg').innerText = foundStudent.registration || '--';
-        document.getElementById('bol-student-cpf').innerText = foundStudent.cpf || '--';
-        document.getElementById('bol-class-name').innerText = foundClass.name;
-        document.getElementById('bol-discipline-prof').innerText = `${foundClass.discipline} - ${foundClass.teacherName || 'Prof. Responsável'}`;
+        const primary = state.matchedStudentRecords[0].student;
+        document.getElementById('bol-student-name').innerText = primary.name;
+        document.getElementById('bol-student-reg').innerText = primary.registration || '--';
+        document.getElementById('bol-student-cpf').innerText = primary.cpf || '--';
 
         const photoContainer = document.getElementById('bol-student-photo-container');
-        if (foundStudent.photo) {
-          photoContainer.innerHTML = `<img src="${foundStudent.photo}" class="student-avatar student-avatar-lg">`;
+        if (primary.photo) {
+          photoContainer.innerHTML = `<img src="${primary.photo}" class="student-avatar student-avatar-lg">`;
         } else {
           photoContainer.innerHTML = `<div class="student-avatar student-avatar-lg">👤</div>`;
         }
 
-        const status = calcStudentAcademicStatus(foundStudent, foundClass);
-        
+        // VERIFICA SE ESTÁ APROVADO EM TODAS AS MATÉRIAS
+        const allPassed = state.matchedStudentRecords.every(r => r.status.isPassed);
         const badge = document.getElementById('bol-status-badge');
-        if (status.isPassed) {
-          badge.innerText = "Aprovado"; badge.className = "status-badge status-aprovado";
+        if (allPassed) {
+          badge.innerText = "Aprovado no Semestre"; badge.className = "status-badge status-aprovado";
         } else {
-          badge.innerText = status.isA3Needed ? "Em Prova Final (A3)" : "Reprovado";
-          badge.className = "status-badge status-reprovado";
+          badge.innerText = "Pendências Acadêmicas"; badge.className = "status-badge status-reprovado";
         }
 
-        renderAcademicSummaryTable(foundStudent, foundClass, status);
+        renderAcademicConsolidatedTable();
         renderStudentMural();
-        renderStudentPeriodTabs(foundClass);
-        renderStudentPeriodContent(foundClass);
+        renderStudentPeriodSelector();
         renderStudentChatHistory();
       } else {
         resultCard.classList.add('hidden');
@@ -598,83 +648,84 @@
       }
     }
 
-    // TABELA RESUMO NO ESTILO ACADÊMICO
-    function renderAcademicSummaryTable(s, c, status) {
+    // MONTA A TABELA DE TODAS AS DISCIPLINAS DO ALUNO
+    function renderAcademicConsolidatedTable() {
       const summaryBox = document.getElementById('student-academic-summary-table');
       const footerBox = document.getElementById('student-footer-metrics');
 
-      if (c.mode === 'semestral') {
-        summaryBox.innerHTML = `
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Componente Curricular / Disciplina</th>
-                <th>A1</th>
-                <th>A2</th>
-                <th>A3</th>
-                <th>Média Final (MF)</th>
-                <th>Situação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>${c.discipline}</strong></td>
-                <td>${status.sumA1}</td>
-                <td>${status.sumA2}</td>
-                <td>${status.a3Note ?? '-'}</td>
-                <td><strong class="${status.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${status.finalGrade}</strong></td>
-                <td>
-                  <span class="status-badge ${status.isPassed ? 'status-aprovado' : 'status-reprovado'}">
-                    ${status.isPassed ? 'Aprovado' : (status.isA3Needed ? 'Em A3' : 'Reprovado')}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        `;
+      let rowsHtml = '';
+      let sumGrades = 0;
 
-        footerBox.innerHTML = `
-          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div><strong>Média Geral das Disciplinas:</strong> <span class="grade-blue">${status.finalGrade}</span></div>
-            <div><strong>Coeficiente de Rendimento (CR):</strong> <span class="grade-blue">${status.finalGrade}</span></div>
-            <div><strong>Situação do Período:</strong> <strong>${status.isPassed ? 'Período Fechado (Aprovado)' : 'Pendente de A3 / Reprovado'}</strong></div>
-          </div>
-        `;
-      } else {
-        summaryBox.innerHTML = `
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Componente Curricular</th>
-                <th>Média Final (MF)</th>
-                <th>Situação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>${c.discipline}</strong></td>
-                <td><strong class="${status.isPassed ? 'grade-blue' : 'grade-red'}">${status.finalGrade}</strong></td>
-                <td><span class="status-badge ${status.isPassed ? 'status-aprovado' : 'status-reprovado'}">${status.isPassed ? 'Aprovado' : 'Reprovado'}</span></td>
-              </tr>
-            </tbody>
-          </table>
-        `;
+      state.matchedStudentRecords.forEach(rec => {
+        const c = rec.class;
+        const st = rec.status;
+        sumGrades += parseFloat(st.finalGrade) || 0;
 
-        footerBox.innerHTML = `
-          <div><strong>Média Geral Anual:</strong> <span class="grade-blue">${status.finalGrade}</span></div>
-        `;
-      }
+        if (c.mode === 'semestral') {
+          rowsHtml += `
+            <tr>
+              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">${c.teacherName || 'Prof. Responsável'}</small></td>
+              <td>${st.sumA1}</td>
+              <td>${st.sumA2}</td>
+              <td>${st.a3Note ?? '-'}</td>
+              <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${st.finalGrade}</strong></td>
+              <td>
+                <span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">
+                  ${st.isPassed ? 'Aprovado' : (st.isA3Needed ? 'Em A3' : 'Reprovado')}
+                </span>
+              </td>
+            </tr>
+          `;
+        } else {
+          rowsHtml += `
+            <tr>
+              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">${c.teacherName || 'Prof. Responsável'}</small></td>
+              <td colspan="3">-</td>
+              <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
+              <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Aprovado' : 'Reprovado'}</span></td>
+            </tr>
+          `;
+        }
+      });
+
+      const overallAvg = (sumGrades / state.matchedStudentRecords.length).toFixed(1);
+
+      summaryBox.innerHTML = `
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Componente Curricular / Docente</th>
+              <th>A1</th>
+              <th>A2</th>
+              <th>A3</th>
+              <th>Média Final (MF)</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      `;
+
+      footerBox.innerHTML = `
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <div><strong>Total de Disciplinas:</strong> ${state.matchedStudentRecords.length}</div>
+          <div><strong>Coeficiente de Rendimento (CR Geral):</strong> <span class="grade-blue" style="font-size:1.1rem; font-weight:700;">${overallAvg}</span></div>
+        </div>
+      `;
     }
 
     function uploadStudentPhoto(e) {
       const file = e.target.files[0];
-      if (!file || !state.activeStudent) return;
+      if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
       reader.onload = function(evt) {
-        state.activeStudent.photo = evt.target.result;
+        state.matchedStudentRecords.forEach(rec => {
+          rec.student.photo = evt.target.result;
+        });
         saveData();
         document.getElementById('bol-student-photo-container').innerHTML = `<img src="${evt.target.result}" class="student-avatar student-avatar-lg">`;
+        showToast("Foto atualizada com sucesso!");
       };
       reader.readAsDataURL(file);
     }
@@ -702,74 +753,71 @@
       }
     }
 
-    function renderStudentPeriodTabs(c) {
+    function renderStudentPeriodSelector() {
       const container = document.getElementById('student-period-selector');
+      const content = document.getElementById('student-period-content');
       container.innerHTML = '';
-      const pKeys = Object.keys(c.periods);
-      if (!pKeys.includes(state.activeStudentPeriod)) state.activeStudentPeriod = pKeys[0];
-
-      pKeys.forEach(pk => {
+      
+      state.matchedStudentRecords.forEach((rec, idx) => {
         const btn = document.createElement('button');
-        btn.className = `period-tab-btn ${pk === state.activeStudentPeriod ? 'active' : ''}`;
-        btn.innerText = pk;
-        btn.onclick = () => { state.activeStudentPeriod = pk; renderStudentPeriodTabs(c); renderStudentPeriodContent(c); };
+        btn.className = `period-tab-btn ${idx === 0 ? 'active' : ''}`;
+        btn.innerText = rec.class.discipline;
+        btn.onclick = () => {
+          Array.from(container.children).forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          renderStudentDetailsForClass(rec);
+        };
         container.appendChild(btn);
       });
+
+      if (state.matchedStudentRecords.length > 0) {
+        renderStudentDetailsForClass(state.matchedStudentRecords[0]);
+      }
     }
 
-    function renderStudentPeriodContent(c) {
+    function renderStudentDetailsForClass(rec) {
       const container = document.getElementById('student-period-content');
-      const period = state.activeStudentPeriod;
-      const acts = c.periods[period] || [];
-      const s = state.activeStudent;
-      const pGrades = (s.grades && s.grades[period]) ? s.grades[period] : {};
+      const c = rec.class;
+      const s = rec.student;
 
-      if (period === "A3 (Prova Final)") {
-        const a3Val = pGrades.a3Note ?? '-';
-        container.innerHTML = `
-          <div style="background:#f8fafc; padding:16px; border-radius:6px; margin-top:10px;">
-            <h4>Prova Final / Recuperação (A3)</h4>
-            <div style="margin-top:8px; font-size:1rem;">
-              <strong>Nota Obtida na A3:</strong> <span class="grade-blue">${a3Val}</span>
-            </div>
+      let html = '';
+      Object.keys(c.periods).forEach(pk => {
+        const acts = c.periods[pk] || [];
+        const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
+
+        let actsHtml = acts.map(act => `
+          <tr><td><strong>${act.name}</strong></td><td>${pGrades[act.id] ?? '-'}</td></tr>
+        `).join('');
+
+        if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade individual lançada nesta etapa.</td></tr>';
+
+        html += `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
+            <h5 style="color:#2563eb; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
+            <table class="data-table">
+              <thead><tr><th>Avaliação / Atividade</th><th>Nota</th></tr></thead>
+              <tbody>${actsHtml}</tbody>
+            </table>
           </div>
         `;
-        return;
-      }
+      });
 
-      let actsHtml = acts.map(act => `
-        <tr>
-          <td><strong>${act.name}</strong></td>
-          <td>${pGrades[act.id] ?? '-'}</td>
-        </tr>
-      `).join('');
-
-      if (acts.length === 0) actsHtml = '<tr><td colspan="2">Nenhuma atividade lançada nesta etapa ainda.</td></tr>';
-
-      let sum = 0; acts.forEach(act => sum += parseFloat(pGrades[act.id]) || 0);
-
-      container.innerHTML = `
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Atividade / Avaliação Lançada</th><th>Nota Obtida</th></tr></thead>
-            <tbody>${actsHtml}</tbody>
-          </table>
-        </div>
-        <div style="margin-top:12px; background:#f8fafc; padding:12px; border-radius:6px; font-size:0.9rem;">
-          <div><strong>Soma das Atividades na Etapa (${period}):</strong> <span class="grade-blue">${sum.toFixed(1)}</span></div>
-        </div>
-      `;
+      container.innerHTML = html;
     }
 
     function renderStudentChatHistory() {
       const container = document.getElementById('student-chat-history');
       container.innerHTML = '';
-      const msgs = state.activeStudent.messages || [];
-      if (msgs.length === 0) {
+      let allMsgs = [];
+      state.matchedStudentRecords.forEach(rec => {
+        (rec.student.messages || []).forEach(m => allMsgs.push(m));
+      });
+
+      if (allMsgs.length === 0) {
         container.innerHTML = '<div style="font-size:0.8rem; color:#94a3b8; text-align:center;">Nenhuma mensagem trocada ainda.</div>';
         return;
       }
-      msgs.forEach(m => {
+      allMsgs.forEach(m => {
         const div = document.createElement('div');
         div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
         div.innerHTML = `<div>${m.text}</div><div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>`;
@@ -782,19 +830,22 @@
       e.preventDefault();
       const input = document.getElementById('student-msg-input');
       const text = input.value.trim();
-      if (!text || !state.activeStudent) return;
+      if (!text || state.matchedStudentRecords.length === 0) return;
 
-      if (!state.activeStudent.messages) state.activeStudent.messages = [];
-      state.activeStudent.messages.push({
-        id: "m-" + Date.now(), sender: "aluno", text: text,
-        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+      state.matchedStudentRecords.forEach(rec => {
+        if (!rec.student.messages) rec.student.messages = [];
+        rec.student.messages.push({
+          id: "m-" + Date.now(), sender: "aluno", text: text,
+          date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+        });
       });
+
       saveData();
       input.value = '';
       renderStudentChatHistory();
     }
 
-    // LOGIN E REGISTRO
+    // LOGIN E REGISTRO DE PROFESSOR
     function toggleRegisterForm(show) {
       if (show) {
         document.getElementById('login-form-box').classList.add('hidden');
@@ -813,7 +864,7 @@
       const pass = document.getElementById('reg-password').value.trim();
 
       state.teachers.push({
-        id: "prof-" + Date.now(), name, discipline: disc, username: user, password: pass, role: "teacher", status: "pending"
+        id: "prof-" + Date.now(), name: name, discipline: disc, username: user, password: pass, role: "teacher", status: "pending"
       });
       saveData();
       alert("Sua solicitação foi enviada! O Organizador (Prof. Thyago Gomes) irá aprovar o seu acesso.");
@@ -829,10 +880,11 @@
 
       if (found) {
         if (found.status === 'pending') {
-          alert("Seu cadastro está aguardando aprovação do Organizador.");
+          alert("Seu cadastro está em análise aguardando aprovação do Organizador.");
           return;
         }
         state.currentUser = found;
+        saveData(); // SALVA SESSÃO PERMANENTE
         document.getElementById('login-error').classList.add('hidden');
         switchProfile('professor');
       } else {
@@ -840,7 +892,11 @@
       }
     }
 
-    function handleTeacherLogout() { state.currentUser = null; switchProfile('professor'); }
+    function handleTeacherLogout() {
+      state.currentUser = null;
+      saveData();
+      switchProfile('professor');
+    }
 
     function switchMainTab(tab) {
       document.getElementById('view-classes-section').classList.add('hidden');
@@ -995,7 +1051,7 @@
       renderMuralAdminList();
     }
 
-    // DETALHES DA TURMA & LISTA COM FOTO DOS ALUNOS
+    // DETALHES DA TURMA
     function openClassDetail(classId) {
       state.currentClassId = classId;
       const c = state.classes.find(item => item.id === classId);
@@ -1054,7 +1110,7 @@
           tbody.innerHTML += `
             <tr>
               <td><strong>${s.name}</strong></td>
-              <td><input type="number" step="0.5" value="${pGrades.a3Note ?? ''}" style="width:70px;" onchange="updateGradeVal('${s.id}', 'a3Note', this.value)"></td>
+              <td><input type="number" step="0.5" value="${pGrades.a3Note ?? ''}" style="width:75px; padding:4px;" onchange="updateGradeVal('${s.id}', 'a3Note', this.value)"></td>
             </tr>
           `;
         });
@@ -1077,7 +1133,7 @@
         let trHtml = `<tr><td><strong>${s.name}</strong></td>`;
         acts.forEach(act => {
           const val = pGrades[act.id] ?? '';
-          trHtml += `<td><input type="number" step="0.5" value="${val}" style="width:60px;" onchange="updateGradeVal('${s.id}', '${act.id}', this.value)"></td>`;
+          trHtml += `<td><input type="number" step="0.5" value="${val}" style="width:65px; padding:4px;" onchange="updateGradeVal('${s.id}', '${act.id}', this.value)"></td>`;
         });
 
         trHtml += `<td><span class="grade-blue">${sum.toFixed(1)}</span></td></tr>`;
@@ -1093,7 +1149,12 @@
 
       s.grades[state.currentPeriod][field] = val !== "" ? parseFloat(val) : null;
       saveData();
-      renderTeacherGradesTable(c);
+    }
+
+    // SALVAMENTO EXPLÍCITO COM NOTIFICAÇÃO
+    function saveGradesExplicitly() {
+      saveData();
+      showToast("💾 Notas salvas e publicadas para os alunos com sucesso!");
     }
 
     function openAddActivityModal() {
@@ -1103,6 +1164,7 @@
       c.periods[state.currentPeriod].push({ id: "act-" + Date.now(), name: name });
       saveData();
       renderTeacherGradesTable(c);
+      showToast("Atividade criada com sucesso!");
     }
 
     function renderStudentsTable() {
@@ -1136,6 +1198,7 @@
       saveData();
       renderStudentsTable();
       renderTeacherGradesTable(c);
+      showToast("Aluno cadastrado!");
     }
 
     function deleteStudent(studentId) {
@@ -1169,6 +1232,7 @@
       });
       saveData();
       renderClassesGrid();
+      showToast("Nova turma criada!");
     }
 
     function renderTeacherMessages() {
@@ -1216,7 +1280,12 @@
       renderTeacherMessages();
     }
 
-    document.addEventListener("DOMContentLoaded", () => { loadData(); });
+    document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+      if (state.currentUser) {
+        switchProfile('professor');
+      }
+    });
   </script>
 </body>
 </html>
