@@ -77,7 +77,7 @@
     /* PROFESSOR & ADMIN */
     .login-card { max-width: 420px; margin: 40px auto; }
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
-    .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
+    .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; position: relative; }
     .class-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
     .period-tab-btn { padding: 6px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
@@ -117,7 +117,7 @@
       <div class="student-search-box card">
         <h2>Consultar Boletim Escolar</h2>
         <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px;">
-          Digite seu <strong>Código Único de Aluno</strong> (até 10 dígitos) para acessar suas notas e médias.
+          Digite seu <strong>Código Único de Aluno</strong> (até 10 dígitos) para acessar suas notas e diário.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group">
@@ -154,12 +154,12 @@
             <div id="bol-status-badge" class="status-badge status-aprovado">Aprovado</div>
           </div>
 
-          <!-- TABELA MULTI-DISCIPLINAS (ESTILO BOLETIM ACADÊMICO) -->
-          <h4 style="margin-bottom:8px; color:#1e293b;">📊 Rendimento Acadêmico (Todas as Disciplinas)</h4>
+          <!-- TABELA MULTI-DISCIPLINAS -->
+          <h4 style="margin-bottom:8px; color:#1e293b;">📊 Rendimento Acadêmico & Frequência (Todas as Disciplinas)</h4>
           <div id="student-academic-summary-table" class="table-responsive"></div>
 
           <!-- SELETOR DE ETAPAS E ATIVIDADES DETALHADAS -->
-          <h4 style="margin-top:24px; margin-bottom:8px; color:#1e293b;">📝 Detalhamento de Atividades por Disciplina</h4>
+          <h4 style="margin-top:24px; margin-bottom:8px; color:#1e293b;">📝 Detalhamento de Atividades & Conteúdo Ministrado</h4>
           <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;"></div>
           <div id="student-period-content"></div>
 
@@ -181,7 +181,7 @@
               </div>
             </form>
             <div style="text-align: right; margin-top: 16px;">
-              <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir Boletim</button>
+              <button onclick="window.print()" class="btn btn-secondary">🖨️️ Imprimir Boletim</button>
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@
         <div id="classes-grid" class="classes-grid"></div>
       </div>
 
-      <!-- PAINEL DE PERSONALIZAÇÃO E IDENTIDADE VISUAL (SÓ ADMIN) -->
+      <!-- PAINEL DE PERSONALIZAÇÃO E IDENTIDADE VISUAL -->
       <div id="view-settings-section" class="hidden card">
         <h3>⚙️ Personalização da Plataforma e Identidade Visual</h3>
         <p style="color:#64748b; font-size:0.88rem; margin-bottom:20px;">Altere o nome da escola, envie a logo e personalize o fundo do site.</p>
@@ -296,7 +296,7 @@
           </div>
 
           <div class="form-group">
-            <label>Logo da Instituição (Substitui o título do topo e sai no boletim)</label>
+            <label>Logo da Instituição</label>
             <input type="file" id="set-school-logo" accept="image/*">
             <div id="preview-logo-box" style="margin-top:8px;"></div>
           </div>
@@ -312,7 +312,7 @@
         </form>
       </div>
 
-      <!-- GESTÃO DE PROFESSORES (ORGANIZADOR) -->
+      <!-- GESTÃO DE PROFESSORES -->
       <div id="view-teachers-section" class="hidden card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3>Aprovação e Controle de Professores</h3>
@@ -353,19 +353,22 @@
       <div id="class-detail-view" class="hidden" style="margin-top: 30px;">
         <button onclick="closeClassDetail()" class="btn btn-secondary btn-sm" style="margin-bottom: 16px;">← Voltar para Turmas</button>
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
             <div>
               <h3 id="detail-class-title">Turma</h3>
-              <p id="detail-class-subtitle" style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;"></p>
+              <p id="detail-class-subtitle" style="color: #64748b; font-size: 0.9rem;"></p>
             </div>
-            <div>
-              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Gerenciar Professores da Turma</button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button onclick="openEditClassModal()" class="btn btn-secondary btn-sm">✏️ Editar Turma</button>
+              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Gerenciar Professores</button>
+              <button onclick="deleteCurrentClass()" class="btn btn-danger btn-sm">🗑️ Excluir Turma</button>
             </div>
           </div>
 
-          <div style="display: flex; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+          <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; flex-wrap:wrap;">
             <button onclick="switchClassTab('alunos')" class="btn btn-secondary btn-sm">👥 Alunos & Fotos</button>
             <button onclick="switchClassTab('notas')" class="btn btn-secondary btn-sm">📝 Lançar Notas & Atividades</button>
+            <button onclick="switchClassTab('frequencia')" class="btn btn-secondary btn-sm">📅 Frequência & Diário de Classe</button>
             <button onclick="switchClassTab('mensagens')" class="btn btn-secondary btn-sm">💬 Mensagens dos Alunos</button>
           </div>
 
@@ -382,12 +385,12 @@
             </div>
           </div>
 
-          <!-- ABA NOTAS E ATIVIDADES COM BOTÃO DE SALVAR -->
+          <!-- ABA NOTAS E ATIVIDADES -->
           <div id="tab-content-notas" class="hidden">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
               <div id="teacher-period-selector" style="display:flex; gap:6px;"></div>
               <div>
-                <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-secondary btn-sm" style="margin-right:6px;">+ Adicionar Atividade</button>
+                <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-primary btn-sm" style="margin-right:6px;">+ Criar Atividade / Avaliação</button>
                 <button onclick="saveGradesExplicitly()" class="btn btn-success btn-sm">💾 SALVAR NOTAS</button>
               </div>
             </div>
@@ -404,6 +407,16 @@
             </div>
           </div>
 
+          <!-- ABA FREQUÊNCIA E DIÁRIO DE CLASSE -->
+          <div id="tab-content-frequencia" class="hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+              <h4>Registro de Aulas & Faltas</h4>
+              <button onclick="openAddLessonModal()" class="btn btn-primary btn-sm">+ Registrar Nova Aula / Presença</button>
+            </div>
+            
+            <div id="teacher-attendance-records"></div>
+          </div>
+
           <!-- ABA MENSAGENS -->
           <div id="tab-content-mensagens" class="hidden">
             <h4>Mensagens dos Alunos</h4>
@@ -416,7 +429,6 @@
 
   </main>
 
-  <!-- ELEMENTO PARA NOTIFICAÇÃO FLUTUANTE -->
   <div id="toast-message" class="toast-success hidden">✅ Operação realizada com sucesso!</div>
 
   <script>
@@ -443,10 +455,23 @@
         discipline: "Ciências",
         year: 2026,
         periods: {
-          "A1": [{ id: "act-1", name: "Teste 1" }, { id: "act-2", name: "Prova A1" }],
-          "A2": [{ id: "act-3", name: "Simulado A2" }],
+          "A1": [
+            { id: "act-1", name: "Teste 1", description: "Avaliação escrita de introdução às ciências" },
+            { id: "act-2", name: "Prova A1", description: "Prova geral A1" }
+          ],
+          "A2": [
+            { id: "act-3", name: "Simulado A2", description: "Simulado teórico e prático" }
+          ],
           "A3 (Prova Final)": []
         },
+        lessons: [
+          {
+            id: "les-1",
+            date: "2026-10-01",
+            content: "Sistema Digestório — órgãos e digestão química",
+            attendance: { "al-1": "P" }
+          }
+        ],
         students: [
           {
             id: "al-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
@@ -454,32 +479,6 @@
               "A1": { "act-1": 7.0, "act-2": 8.0 },
               "A2": { "act-3": 4.0 },
               "A3 (Prova Final)": { a3Note: 6.0 }
-            },
-            messages: []
-          }
-        ]
-      },
-      {
-        id: "turma-2",
-        teacherId: "prof-joao",
-        teacherName: "Prof. João Silva",
-        coTeacherIds: [],
-        name: "Ensino Superior - Módulo 1",
-        mode: "semestral",
-        discipline: "Matemática",
-        year: 2026,
-        periods: {
-          "A1": [{ id: "act-m1", name: "Prova M1" }],
-          "A2": [{ id: "act-m2", name: "Trabalho M2" }],
-          "A3 (Prova Final)": []
-        },
-        students: [
-          {
-            id: "al-1-mat", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
-            grades: {
-              "A1": { "act-m1": 8.5 },
-              "A2": { "act-m2": 7.5 },
-              "A3 (Prova Final)": {}
             },
             messages: []
           }
@@ -502,19 +501,19 @@
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v13");
+      const sStored = localStorage.getItem("diario_settings_v14");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v13");
+      const tStored = localStorage.getItem("diario_teachers_v14");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v13");
+      const cStored = localStorage.getItem("diario_classes_v14");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v13");
+      const mStored = localStorage.getItem("diario_mural_v14");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v13");
+      const uStored = localStorage.getItem("diario_session_v14");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
       saveData();
@@ -522,14 +521,14 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v13", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v13", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v13", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v13", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v14", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v14", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v14", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v14", JSON.stringify(state.mural));
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v13", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v14", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v13");
+        localStorage.removeItem("diario_session_v14");
       }
     }
 
@@ -565,7 +564,6 @@
       setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
 
-    // OBTER TODOS OS ALUNOS CADASTRADOS NA ESCOLA (DEDUPLICADO)
     function getAllSystemStudents() {
       const map = new Map();
       state.classes.forEach(c => {
@@ -579,7 +577,23 @@
       return Array.from(map.values());
     }
 
-    // REGRA DE CÁLCULO DE NOTAS E MÉDIAS
+    // CÁLCULO DE FREQUÊNCIA DO ALUNO
+    function calcStudentAttendance(student, c) {
+      const lessons = c.lessons || [];
+      if (lessons.length === 0) return { totalLessons: 0, absences: 0, frequency: "100.0%" };
+
+      let total = lessons.length;
+      let absences = 0;
+
+      lessons.forEach(l => {
+        const status = (l.attendance && l.attendance[student.id]) ? l.attendance[student.id] : "P";
+        if (status === "F") absences++;
+      });
+
+      const freqPct = (((total - absences) / total) * 100).toFixed(1) + "%";
+      return { totalLessons: total, absences, frequency: freqPct };
+    }
+
     function calcStudentAcademicStatus(student, c) {
       if (c.mode === 'semestral') {
         const gA1 = student.grades ? student.grades["A1"] || {} : {};
@@ -689,7 +703,7 @@
       }
     }
 
-    // PORTAL DO ALUNO - BUSCA POR CÓDIGO ÚNICO (E UNIFICAÇÃO DE TURMAS)
+    // PORTAL DO ALUNO - BUSCA
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim().toLowerCase();
@@ -703,7 +717,8 @@
             state.matchedStudentRecords.push({
               class: c,
               student: s,
-              status: calcStudentAcademicStatus(s, c)
+              status: calcStudentAcademicStatus(s, c),
+              attendance: calcStudentAttendance(s, c)
             });
           }
         });
@@ -716,7 +731,7 @@
         notFoundCard.classList.add('hidden');
         resultCard.classList.remove('hidden');
 
-        const primary = state.matchedStudentRecords[0].student;
+        const primary = state.matchedStudentRecords.student;
         document.getElementById('bol-student-name').innerText = primary.name;
         document.getElementById('bol-student-code').innerText = primary.code || '--';
 
@@ -755,9 +770,9 @@
       state.matchedStudentRecords.forEach(rec => {
         const c = rec.class;
         const st = rec.status;
+        const att = rec.attendance;
         sumGrades += parseFloat(st.finalGrade) || 0;
 
-        // NO BOLETIM: EXIBE APENAS O NOME DO PROFESSOR PRINCIPAL
         const mainTeacherName = c.teacherName || 'Prof. Responsável';
 
         if (c.mode === 'semestral') {
@@ -768,6 +783,7 @@
               <td>${st.sumA2}</td>
               <td>${st.a3Note ?? '-'}</td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${st.finalGrade}</strong></td>
+              <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
               <td>
                 <span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">
                   ${st.isPassed ? 'Aprovado' : (st.isA3Needed ? 'Em A3' : 'Reprovado')}
@@ -781,6 +797,7 @@
               <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">${mainTeacherName}</small></td>
               <td colspan="3">-</td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
+              <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
               <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Aprovado' : 'Reprovado'}</span></td>
             </tr>
           `;
@@ -798,6 +815,7 @@
               <th>A2</th>
               <th>A3</th>
               <th>Média Final (MF)</th>
+              <th>Faltas & Presença</th>
               <th>Situação</th>
             </tr>
           </thead>
@@ -814,7 +832,7 @@
     }
 
     function uploadStudentPhoto(e) {
-      const file = e.target.files[0];
+      const file = e.target.files;
       if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
@@ -871,7 +889,7 @@
       });
 
       if (state.matchedStudentRecords.length > 0) {
-        renderStudentDetailsForClass(state.matchedStudentRecords[0]);
+        renderStudentDetailsForClass(state.matchedStudentRecords);
       }
     }
 
@@ -881,26 +899,60 @@
       const s = rec.student;
 
       let html = '';
+
+      // NOTAS E DESCRIÇÃO DAS ATIVIDADES
       Object.keys(c.periods).forEach(pk => {
         const acts = c.periods[pk] || [];
         const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
 
         let actsHtml = acts.map(act => `
-          <tr><td><strong>${act.name}</strong></td><td>${pGrades[act.id] ?? '-'}</td></tr>
+          <tr>
+            <td>
+              <strong>${act.name}</strong>
+              ${act.description ? `<br><small style="color:#64748b;">${act.description}</small>` : ''}
+            </td>
+            <td><strong>${pGrades[act.id] ?? '-'}</strong></td>
+          </tr>
         `).join('');
 
-        if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade individual lançada nesta etapa.</td></tr>';
+        if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade lançada nesta etapa.</td></tr>';
 
         html += `
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
             <h5 style="color:#2563eb; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
             <table class="data-table">
-              <thead><tr><th>Avaliação / Atividade</th><th>Nota</th></tr></thead>
+              <thead><tr><th>Avaliação / Atividade & Descrição</th><th>Sua Nota</th></tr></thead>
               <tbody>${actsHtml}</tbody>
             </table>
           </div>
         `;
       });
+
+      // REGISTRO DE AULAS E CONTEÚDO MINISTRADO
+      const lessons = c.lessons || [];
+      let lessonsHtml = '';
+      lessons.forEach(l => {
+        const status = (l.attendance && l.attendance[s.id]) === 'F' ? '<span style="color:#dc2626; font-weight:700;">FALTA</span>' : '<span style="color:#16a34a; font-weight:700;">PRESENÇA</span>';
+        lessonsHtml += `
+          <tr>
+            <td>${l.date}</td>
+            <td><strong>${l.content}</strong></td>
+            <td>${status}</td>
+          </tr>
+        `;
+      });
+
+      if (lessons.length === 0) lessonsHtml = '<tr><td colspan="3" style="color:#94a3b8;">Nenhum conteúdo ministrado registrado até o momento.</td></tr>';
+
+      html += `
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
+          <h5 style="color:#2563eb; margin-bottom:8px;">📅 Diário de Aulas & Conteúdo Ministrado (${c.discipline})</h5>
+          <table class="data-table">
+            <thead><tr><th>Data</th><th>Conteúdo Ministrado na Aula</th><th>Sua Presença</th></tr></thead>
+            <tbody>${lessonsHtml}</tbody>
+          </table>
+        </div>
+      `;
 
       container.innerHTML = html;
     }
@@ -932,7 +984,7 @@
       const input = document.getElementById('student-msg-input');
       const fileInput = document.getElementById('student-msg-file');
       const text = input.value.trim();
-      const file = fileInput.files[0];
+      const file = fileInput.files;
 
       if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
 
@@ -961,7 +1013,7 @@
       }
     }
 
-    // LOGIN E REGISTRO
+    // LOGIN E REGISTRO DE PROFESSOR
     function toggleRegisterForm(show) {
       if (show) {
         document.getElementById('login-form-box').classList.add('hidden');
@@ -1036,7 +1088,6 @@
       }
     }
 
-    // PRIVACIDADE DE TURMAS: PROFESSOR VÊ SUAS TURMAS (SEJA PRINCIPAL OU CO-DOCENTE) / ADMIN VÊ TODAS
     function renderClassesGrid() {
       const grid = document.getElementById('classes-grid');
       grid.innerHTML = '';
@@ -1047,26 +1098,62 @@
         : state.classes.filter(c => c.teacherId === u.id || (c.coTeacherIds && c.coTeacherIds.includes(u.id)) || c.teacherName === u.name);
 
       visibleClasses.forEach(c => {
-        const coTeachersNames = (c.coTeacherIds || []).map(id => {
-          const t = state.teachers.find(item => item.id === id);
-          return t ? t.name : '';
-        }).filter(Boolean).join(', ');
-
-        const coTeachersText = coTeachersNames ? `<br><small style="color:#64748b;">Outros Professores: ${coTeachersNames}</small>` : '';
-
         const card = document.createElement('div');
         card.className = 'class-card';
-        card.onclick = () => openClassDetail(c.id);
         card.innerHTML = `
-          <h3>${c.name}</h3>
-          <p>Disciplina: <strong>${c.discipline}</strong> | Prof. Principal: <strong>${c.teacherName || 'Prof. Responsável'}</strong>${coTeachersText}</p>
-          <div style="font-size:0.85rem; color:#2563eb; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
+          <div onclick="openClassDetail('${c.id}')">
+            <h3>${c.name}</h3>
+            <p>Disciplina: <strong>${c.discipline}</strong> | Prof. Principal: <strong>${c.teacherName || 'Prof. Responsável'}</strong></p>
+            <div style="font-size:0.85rem; color:#2563eb; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
+          </div>
         `;
         grid.appendChild(card);
       });
 
       if (visibleClasses.length === 0) {
         grid.innerHTML = '<p style="color:#64748b; grid-column: 1/-1;">Você não possui turmas cadastradas ainda. Clique em "+ Nova Turma" acima.</p>';
+      }
+    }
+
+    // EDIÇÃO E EXCLUSÃO DE TURMA
+    function openEditClassModal() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+
+      const newName = prompt("Nome da Turma:", c.name); if (!newName) return;
+      const newDisc = prompt("Disciplina:", c.discipline);
+      
+      let teacherPrompt = "Escolha o Professor Principal da Turma:\n\n";
+      const approvedTeachers = state.teachers.filter(t => t.status === 'approved');
+      approvedTeachers.forEach((t, i) => {
+        teacherPrompt += `${i + 1}. ${t.name} (${t.discipline})\n`;
+      });
+      const choice = prompt(teacherPrompt, "1");
+      if (choice) {
+        const idx = parseInt(choice.trim()) - 1;
+        if (!isNaN(idx) && idx >= 0 && idx < approvedTeachers.length) {
+          c.teacherId = approvedTeachers[idx].id;
+          c.teacherName = approvedTeachers[idx].name;
+        }
+      }
+
+      c.name = newName;
+      if (newDisc) c.discipline = newDisc;
+
+      saveData();
+      openClassDetail(c.id);
+      showToast("Turma atualizada com sucesso!");
+    }
+
+    function deleteCurrentClass() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+
+      if (confirm(`⚠️ Tem certeza que deseja excluir a turma "${c.name}"? Todos os lançamentos e notas desta turma serão apagados!`)) {
+        state.classes = state.classes.filter(item => item.id !== state.currentClassId);
+        saveData();
+        closeClassDetail();
+        showToast("Turma excluída com sucesso!");
       }
     }
 
@@ -1097,7 +1184,7 @@
               <td><strong>${t.name}</strong> ${t.role === 'admin' ? '⭐ (Organizador)' : ''}</td>
               <td>${t.discipline}</td>
               <td><code>${t.username}</code></td>
-              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('\${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
+              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
             </tr>
           `;
         }
@@ -1155,7 +1242,6 @@
       alert("Seus dados foram atualizados com sucesso!");
     }
 
-    // FORMULÁRIO DE PERSONALIZAÇÃO DA ESCOLA
     function renderSettingsForm() {
       const set = state.settings || {};
       document.getElementById('set-school-name').value = set.schoolName || "Diário Escolar Digital";
@@ -1170,8 +1256,8 @@
     function handleSaveSettings(e) {
       e.preventDefault();
       const schoolName = document.getElementById('set-school-name').value.trim();
-      const logoFile = document.getElementById('set-school-logo').files[0];
-      const bgFile = document.getElementById('set-school-bg').files[0];
+      const logoFile = document.getElementById('set-school-logo').files;
+      const bgFile = document.getElementById('set-school-bg').files;
 
       state.settings.schoolName = schoolName;
 
@@ -1214,7 +1300,6 @@
       }
     }
 
-    // MURAL COM ATIVIDADES E ARQUIVOS
     function renderMuralAdminList() {
       const container = document.getElementById('mural-admin-list');
       container.innerHTML = '';
@@ -1239,7 +1324,7 @@
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.onchange = (e) => {
-        const file = e.target.files[0];
+        const file = e.target.files;
         if (file) {
           const reader = new FileReader();
           reader.onload = (evt) => {
@@ -1275,7 +1360,6 @@
       renderMuralAdminList();
     }
 
-    // GERENCIAR PROFESSORES ADICIONAIS NA TURMA (INTERNO)
     function openManageCoTeachersModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
@@ -1340,11 +1424,12 @@
       document.getElementById('class-detail-view').classList.remove('hidden');
       document.getElementById('view-classes-section').classList.add('hidden');
 
-      state.currentPeriod = Object.keys(c.periods)[0];
+      state.currentPeriod = Object.keys(c.periods);
 
       renderStudentsTable();
       renderTeacherPeriodTabs(c);
       renderTeacherGradesTable(c);
+      renderTeacherAttendanceTable(c);
       renderTeacherMessages();
     }
 
@@ -1357,10 +1442,12 @@
     function switchClassTab(tab) {
       document.getElementById('tab-content-alunos').classList.add('hidden');
       document.getElementById('tab-content-notas').classList.add('hidden');
+      document.getElementById('tab-content-frequencia').classList.add('hidden');
       document.getElementById('tab-content-mensagens').classList.add('hidden');
 
       if (tab === 'alunos') document.getElementById('tab-content-alunos').classList.remove('hidden');
       if (tab === 'notas') document.getElementById('tab-content-notas').classList.remove('hidden');
+      if (tab === 'frequencia') document.getElementById('tab-content-frequencia').classList.remove('hidden');
       if (tab === 'mensagens') document.getElementById('tab-content-mensagens').classList.remove('hidden');
     }
 
@@ -1376,6 +1463,7 @@
       });
     }
 
+    // TABELA DE NOTAS & CRIAÇÃO/EDIÇÃO/EXCLUSÃO DE ATIVIDADES
     function renderTeacherGradesTable(c) {
       const thead = document.getElementById('teacher-grades-thead');
       const tbody = document.getElementById('teacher-grades-tbody');
@@ -1401,7 +1489,19 @@
       if (btnAddAct) btnAddAct.classList.remove('hidden');
 
       let thHtml = `<tr><th>Aluno</th>`;
-      acts.forEach(act => { thHtml += `<th>${act.name}</th>`; });
+      acts.forEach(act => { 
+        thHtml += `
+          <th style="min-width:140px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span>${act.name}</span>
+              <span>
+                <button onclick="editActivity('${act.id}')" title="Editar Atividade" style="border:none; background:none; cursor:pointer;">✏️</button>
+                <button onclick="deleteActivity('${act.id}')" title="Excluir Atividade" style="border:none; background:none; cursor:pointer; color:#dc2626;">🗑️</button>
+              </span>
+            </div>
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
+          </th>`; 
+      });
       thHtml += `<th>Soma da Etapa</th></tr>`;
       thead.innerHTML = thHtml;
 
@@ -1422,6 +1522,49 @@
       });
     }
 
+    function openAddActivityModal() {
+      const name = prompt(`Nome da nova atividade em ${state.currentPeriod} (ex: Teste Surpresa, Prova, Simulado):`);
+      if (!name) return;
+      const desc = prompt(`Descrição / Detalhes da atividade (opcional, para o aluno visualizar):`);
+
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      c.periods[state.currentPeriod].push({
+        id: "act-" + Date.now(),
+        name: name,
+        description: desc || ""
+      });
+      saveData();
+      renderTeacherGradesTable(c);
+      showToast("Atividade criada com sucesso!");
+    }
+
+    function editActivity(actId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const acts = c.periods[state.currentPeriod] || [];
+      const act = acts.find(a => a.id === actId);
+      if (!act) return;
+
+      const newName = prompt("Editar Nome da Atividade:", act.name); if (!newName) return;
+      const newDesc = prompt("Editar Descrição / Detalhes:", act.description || "");
+
+      act.name = newName;
+      act.description = newDesc || "";
+
+      saveData();
+      renderTeacherGradesTable(c);
+      showToast("Atividade atualizada!");
+    }
+
+    function deleteActivity(actId) {
+      if (confirm("Deseja realmente excluir esta atividade? As notas lançadas para ela serão apagadas.")) {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.periods[state.currentPeriod] = c.periods[state.currentPeriod].filter(a => a.id !== actId);
+        saveData();
+        renderTeacherGradesTable(c);
+        showToast("Atividade excluída!");
+      }
+    }
+
     function updateGradeVal(studentId, field, val) {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const s = c.students.find(item => item.id === studentId);
@@ -1437,14 +1580,114 @@
       showToast("💾 Notas salvas e publicadas com sucesso!");
     }
 
-    function openAddActivityModal() {
-      const name = prompt(`Nome da nova atividade em ${state.currentPeriod} (ex: Teste Surpresa, Prova, Simulado):`);
-      if (!name) return;
+    // REGISTRO DE AULAS, FREQUÊNCIA E CONTEÚDO MINISTRADO
+    function renderTeacherAttendanceTable(c) {
+      const container = document.getElementById('teacher-attendance-records');
+      if (!c.lessons) c.lessons = [];
+
+      if (c.lessons.length === 0) {
+        container.innerHTML = '<p style="color:#64748b;">Nenhuma aula registrada ainda nesta turma. Clique em "+ Registrar Nova Aula" acima.</p>';
+        return;
+      }
+
+      let html = '';
+      c.lessons.forEach((les, idx) => {
+        let studentsRows = c.students.map(s => {
+          const status = (les.attendance && les.attendance[s.id]) ? les.attendance[s.id] : "P";
+          return `
+            <tr>
+              <td><strong>${s.name}</strong> (${s.code})</td>
+              <td>
+                <select onchange="updateAttendanceVal('${les.id}', '${s.id}', this.value)" style="padding:4px 8px; border-radius:4px; border:1px solid #cbd5e1;">
+                  <option value="P" ${status === 'P' ? 'selected' : ''}>✅ Presença (P)</option>
+                  <option value="F" ${status === 'F' ? 'selected' : ''}>❌ Falta (F)</option>
+                </select>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        html += `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
+              <div>
+                <strong style="color:#2563eb; font-size:1.05rem;">📅 Aula do dia ${les.date}</strong>
+                <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 <strong>Conteúdo Ministrado:</strong> ${les.content}</div>
+              </div>
+              <div>
+                <button onclick="editLesson('${les.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️️ Editar Aula</button>
+                <button onclick="deleteLesson('${les.id}')" class="btn btn-danger btn-sm">🗑️ Apagar Aula</button>
+              </div>
+            </div>
+
+            <table class="data-table">
+              <thead><tr><th>Nome do Aluno</th><th>Frequência</th></tr></thead>
+              <tbody>${studentsRows.length > 0 ? studentsRows : '<tr><td colspan="2" style="color:#94a3b8;">Nenhum aluno matriculado na turma.</td></tr>'}</tbody>
+            </table>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openAddLessonModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
-      c.periods[state.currentPeriod].push({ id: "act-" + Date.now(), name: name });
+      if (!c) return;
+
+      const defaultDate = new Date().toISOString().split('T')[0];
+      const date = prompt("Data da Aula (AAAA-MM-DD):", defaultDate); if (!date) return;
+      const content = prompt("Conteúdo Ministrado na Aula (ex: Sistema Digestório):"); if (!content) return;
+
+      if (!c.lessons) c.lessons = [];
+
+      const initialAtt = {};
+      c.students.forEach(s => initialAtt[s.id] = "P");
+
+      c.lessons.unshift({
+        id: "les-" + Date.now(),
+        date: date,
+        content: content,
+        attendance: initialAtt
+      });
+
       saveData();
-      renderTeacherGradesTable(c);
-      showToast("Atividade criada!");
+      renderTeacherAttendanceTable(c);
+      showToast("Aula registrada!");
+    }
+
+    function editLesson(lesId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const les = c.lessons.find(l => l.id === lesId);
+      if (!les) return;
+
+      const newDate = prompt("Editar Data da Aula:", les.date); if (!newDate) return;
+      const newContent = prompt("Editar Conteúdo Ministrado:", les.content); if (!newContent) return;
+
+      les.date = newDate;
+      les.content = newContent;
+
+      saveData();
+      renderTeacherAttendanceTable(c);
+      showToast("Aula atualizada!");
+    }
+
+    function deleteLesson(lesId) {
+      if (confirm("Deseja apagar o registro desta aula?")) {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.lessons = c.lessons.filter(l => l.id !== lesId);
+        saveData();
+        renderTeacherAttendanceTable(c);
+        showToast("Aula removida!");
+      }
+    }
+
+    function updateAttendanceVal(lesId, studentId, status) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const les = c.lessons.find(l => l.id === lesId);
+      if (!les.attendance) les.attendance = {};
+      les.attendance[studentId] = status;
+      saveData();
     }
 
     function renderStudentsTable() {
@@ -1469,7 +1712,6 @@
       });
     }
 
-    // CADASTRO / SELEÇÃO PERMITINDO MESMO ALUNO (MESMO CÓDIGO) EM TURMAS DIFERENTES
     function openStudentModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const existingStudents = getAllSystemStudents();
@@ -1508,7 +1750,6 @@
             continue;
           }
 
-          // VERIFICA SE O CÓDIGO JÁ EXISTE NO SISTEMA
           const matchSystem = existingStudents.find(st => (st.code || "").toLowerCase() === code.toLowerCase());
           
           if (matchSystem) {
@@ -1518,10 +1759,9 @@
               photo = matchSystem.photo;
               validCode = true;
             } else {
-              continue; // Pede outro código
+              continue;
             }
           } else {
-            // ALUNO REALMENTE NOVO
             name = prompt("Nome Completo do Novo Aluno:");
             if (!name) return;
             photo = null;
@@ -1530,7 +1770,6 @@
         }
       }
 
-      // VERIFICA SE O ALUNO JÁ ESTÁ NESTA MESMA TURMA
       const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === code.toLowerCase());
       if (alreadyInClass) {
         alert(`⚠️ O aluno "${name}" (Código: ${code}) já está cadastrado nesta turma!`);
@@ -1581,6 +1820,7 @@
         mode: isSemestral ? "semestral" : "bimestral",
         year: 2026,
         periods: periodsObj,
+        lessons: [],
         students: []
       });
       saveData();
@@ -1633,7 +1873,7 @@
       const input = document.getElementById(`reply-input-${studentId}`);
       const fileInput = document.getElementById(`reply-file-${studentId}`);
       const text = input.value.trim();
-      const file = fileInput.files[0];
+      const file = fileInput.files;
 
       if (!text && !file) return;
 
