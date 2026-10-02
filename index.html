@@ -360,7 +360,7 @@
             </div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <button onclick="openEditClassModal()" class="btn btn-secondary btn-sm">✏️ Editar Turma</button>
-              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍‍🏫 Gerenciar Professores</button>
+              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Gerenciar Professores</button>
               <button onclick="deleteCurrentClass()" class="btn btn-danger btn-sm">🗑️ Excluir Turma</button>
             </div>
           </div>
@@ -1354,7 +1354,7 @@
           </div>
         `;
       });
-      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenum aviso ativo.</p>';
+      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenhum aviso ativo.</p>';
     }
 
     function openAddMuralModal() {
@@ -1539,7 +1539,7 @@
                 <button onclick="deleteActivity('${act.id}')" title="Excluir Atividade" style="border:none; background:none; cursor:pointer; color:#dc2626;">🗑️</button>
               </span>
             </div>
-            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">${act.description}</div>` : ''}
           </th>`; 
       });
       thHtml += `<th>Soma da Etapa</th></tr>`;
