@@ -181,7 +181,7 @@
               </div>
             </form>
             <div style="text-align: right; margin-top: 16px;">
-              <button onclick="window.print()" class="btn btn-secondary">🖨️️ Imprimir Boletim</button>
+              <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir Boletim</button>
             </div>
           </div>
         </div>
@@ -360,7 +360,7 @@
             </div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <button onclick="openEditClassModal()" class="btn btn-secondary btn-sm">✏️ Editar Turma</button>
-              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Gerenciar Professores</button>
+              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍‍🏫 Gerenciar Professores</button>
               <button onclick="deleteCurrentClass()" class="btn btn-danger btn-sm">🗑️ Excluir Turma</button>
             </div>
           </div>
@@ -483,6 +483,44 @@
             messages: []
           }
         ]
+      },
+      {
+        id: "turma-2",
+        teacherId: "prof-joao",
+        teacherName: "Prof. João Silva",
+        coTeacherIds: [],
+        name: "Ensino Superior - Módulo 1",
+        mode: "semestral",
+        discipline: "Matemática",
+        year: 2026,
+        periods: {
+          "A1": [
+            { id: "act-m1", name: "Prova M1", description: "Cálculo e álgebra linear" }
+          ],
+          "A2": [
+            { id: "act-m2", name: "Trabalho M2", description: "Atividade em dupla" }
+          ],
+          "A3 (Prova Final)": []
+        },
+        lessons: [
+          {
+            id: "les-2",
+            date: "2026-10-02",
+            content: "Funções e Gráficos",
+            attendance: { "al-1-mat": "P" }
+          }
+        ],
+        students: [
+          {
+            id: "al-1-mat", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
+            grades: {
+              "A1": { "act-m1": 8.5 },
+              "A2": { "act-m2": 7.5 },
+              "A3 (Prova Final)": {}
+            },
+            messages: []
+          }
+        ]
       }
     ];
 
@@ -501,19 +539,19 @@
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v14");
+      const sStored = localStorage.getItem("diario_settings_v15");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v14");
+      const tStored = localStorage.getItem("diario_teachers_v15");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v14");
+      const cStored = localStorage.getItem("diario_classes_v15");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v14");
+      const mStored = localStorage.getItem("diario_mural_v15");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v14");
+      const uStored = localStorage.getItem("diario_session_v15");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
       saveData();
@@ -521,14 +559,14 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v14", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v14", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v14", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v14", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v15", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v15", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v15", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v15", JSON.stringify(state.mural));
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v14", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v15", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v14");
+        localStorage.removeItem("diario_session_v15");
       }
     }
 
@@ -731,7 +769,7 @@
         notFoundCard.classList.add('hidden');
         resultCard.classList.remove('hidden');
 
-        const primary = state.matchedStudentRecords.student;
+        const primary = state.matchedStudentRecords[0].student;
         document.getElementById('bol-student-name').innerText = primary.name;
         document.getElementById('bol-student-code').innerText = primary.code || '--';
 
@@ -889,12 +927,14 @@
       });
 
       if (state.matchedStudentRecords.length > 0) {
-        renderStudentDetailsForClass(state.matchedStudentRecords);
+        renderStudentDetailsForClass(state.matchedStudentRecords[0]);
       }
     }
 
     function renderStudentDetailsForClass(rec) {
       const container = document.getElementById('student-period-content');
+      if (!rec || !rec.class || !rec.student) return;
+
       const c = rec.class;
       const s = rec.student;
 
@@ -1314,7 +1354,7 @@
           </div>
         `;
       });
-      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenhum aviso ativo.</p>';
+      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenum aviso ativo.</p>';
     }
 
     function openAddMuralModal() {
@@ -1424,7 +1464,7 @@
       document.getElementById('class-detail-view').classList.remove('hidden');
       document.getElementById('view-classes-section').classList.add('hidden');
 
-      state.currentPeriod = Object.keys(c.periods);
+      state.currentPeriod = Object.keys(c.periods)[0];
 
       renderStudentsTable();
       renderTeacherPeriodTabs(c);
@@ -1615,7 +1655,7 @@
                 <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 <strong>Conteúdo Ministrado:</strong> ${les.content}</div>
               </div>
               <div>
-                <button onclick="editLesson('${les.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️️ Editar Aula</button>
+                <button onclick="editLesson('${les.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Editar Aula</button>
                 <button onclick="deleteLesson('${les.id}')" class="btn btn-danger btn-sm">🗑️ Apagar Aula</button>
               </div>
             </div>
