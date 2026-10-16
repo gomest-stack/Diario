@@ -11,7 +11,7 @@
     .container { max-width: 1150px; margin: 0 auto; padding: 20px; }
     
     /* TIPOGRAFIA E BOTÕES */
-    h1, h2, h3, h4 { font-weight: 600; color: #1a252f; }
+    h1, h2, h3, h4, h5 { font-weight: 600; color: #1a252f; }
     .btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; font-size: 0.95rem; font-weight: 500; border-radius: 6px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s; }
     .btn-primary { background-color: #2563eb; color: #ffffff; }
     .btn-primary:hover { background-color: #1d4ed8; }
@@ -25,18 +25,29 @@
     /* TOPO E NAVEGAÇÃO */
     .header { background-color: rgba(255, 255, 255, 0.95); border-bottom: 1px solid #e2e8f0; padding: 16px 0; backdrop-filter: blur(8px); }
     .header-container { max-width: 1150px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .logo-box { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .logo-img { max-height: 48px; max-width: 160px; object-fit: contain; }
     .logo-text { font-size: 1.25rem; font-weight: 700; color: #1e293b; }
     .nav-tabs-profile { display: flex; background-color: #f1f5f9; padding: 4px; border-radius: 8px; gap: 4px; }
     .nav-tab-btn { padding: 6px 14px; border: none; background: none; font-weight: 600; font-size: 0.875rem; color: #64748b; border-radius: 6px; cursor: pointer; }
     .nav-tab-btn.active { background-color: #ffffff; color: #2563eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
+    /* TELA DE PORTAL / LOGIN INICIAL */
+    .portal-welcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 30px; }
+    .portal-card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
+    .portal-card-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
     /* CARDS E FORMULÁRIOS */
     .card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); backdrop-filter: blur(4px); }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #334155; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #ffffff; }
+
+    /* NAVEGAÇÃO INTERNA DO ALUNO (4 ABAS) */
+    .student-main-nav { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
+    .student-nav-btn { padding: 10px 18px; font-weight: 600; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .student-nav-btn:hover { background-color: #f1f5f9; border-color: #94a3b8; }
+    .student-nav-btn.active { background-color: #2563eb; color: #ffffff; border-color: #2563eb; box-shadow: 0 2px 6px rgba(37,99,235,0.3); }
 
     /* AVATAR DO ALUNO */
     .student-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #2563eb; background-color: #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: #475569; }
@@ -52,8 +63,8 @@
     .mural-date { font-size: 0.75rem; color: #60a5fa; margin-top: 4px; }
 
     /* PORTAL DO ALUNO */
-    .student-search-box { max-width: 500px; margin: 30px auto 20px auto; text-align: center; }
-    .boletim-card { max-width: 950px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; padding: 28px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .student-search-box { max-width: 500px; margin: 20px auto; text-align: center; }
+    .boletim-card { max-width: 1000px; margin: 10px auto 30px auto; background-color: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     .boletim-header { border-bottom: 2px solid #2563eb; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
     .status-aprovado { background-color: #dcfce7; color: #15803d; }
@@ -69,8 +80,8 @@
     .data-table th { background-color: #f8fafc; font-weight: 600; color: #475569; }
 
     /* CHAT */
-    .chat-box { max-height: 220px; overflow-y: auto; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
-    .chat-msg { margin-bottom: 8px; padding: 8px 12px; border-radius: 6px; max-width: 80%; font-size: 0.85rem; }
+    .chat-box { max-height: 280px; overflow-y: auto; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; margin-bottom: 14px; }
+    .chat-msg { margin-bottom: 10px; padding: 10px 14px; border-radius: 8px; max-width: 80%; font-size: 0.9rem; }
     .chat-msg-aluno { background-color: #e0f2fe; color: #0369a1; margin-right: auto; }
     .chat-msg-prof { background-color: #dcfce7; color: #15803d; margin-left: auto; text-align: right; }
 
@@ -99,45 +110,140 @@
   <!-- CABEÇALHO DA PLATAFORMA -->
   <header class="header">
     <div class="header-container">
-      <div class="logo-box">
+      <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
         <div id="header-school-name" class="logo-text">🏫 Diário Escolar Digital</div>
       </div>
       <div class="nav-tabs-profile">
-        <button id="nav-btn-aluno" class="nav-tab-btn active" onclick="switchProfile('aluno')">👨‍🎓 Portal do Aluno</button>
-        <button id="nav-btn-professor" class="nav-tab-btn" onclick="switchProfile('professor')">👨‍🏫 Área do Professor / Gestão</button>
+        <button id="nav-btn-portal" class="nav-tab-btn active" onclick="switchProfile('portal')">🏠 Início / Login</button>
+        <button id="nav-btn-aluno" class="nav-tab-btn" onclick="switchProfile('aluno')">👨‍🎓 Área do Aluno</button>
+        <button id="nav-btn-professor" class="nav-tab-btn" onclick="switchProfile('professor')">👨‍🏫 Área do Professor</button>
       </div>
     </div>
   </header>
 
   <main class="container">
 
+    <!-- ==================== TELA INICIAL UNIFICADA / PORTAL ==================== -->
+    <section id="screen-portal">
+      <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Diário Escolar Digital</h1>
+        <p style="color: #64748b; font-size: 1rem; margin-top: 6px;">Selecione o seu tipo de acesso para continuar:</p>
+      </div>
+
+      <div class="portal-welcome-grid">
+        
+        <!-- CARD ACESSO ALUNO -->
+        <div class="portal-card">
+          <div>
+            <div class="portal-card-icon">👨‍🎓</div>
+            <h2 style="margin-bottom: 8px;">Área do Aluno</h2>
+            <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
+              Consulte seu boletim escolar, notas, diário de presença, fale com seus professores e acesse seu histórico acadêmico.
+            </p>
+            <form onsubmit="handlePortalStudentAccess(event)">
+              <div class="form-group">
+                <label>Código Único do Aluno</label>
+                <input type="text" id="portal-student-code" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">🔍 Acessar Área do Aluno</button>
+            </form>
+          </div>
+          <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
+            Acesso rápido direto pelo seu código individual
+          </div>
+        </div>
+
+        <!-- CARD ACESSO PROFESSOR / GESTOR -->
+        <div class="portal-card">
+          <div>
+            <div class="portal-card-icon">👨‍🏫</div>
+            <h2 style="margin-bottom: 8px;">Acesso do Docente / Gestor</h2>
+            <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
+              Lançamento de notas, atividades, diário de presença, gestão de turmas e avisos.
+            </p>
+            
+            <div id="portal-login-box">
+              <form onsubmit="handleTeacherLogin(event)">
+                <div class="form-group">
+                  <label>Usuário de Acesso</label>
+                  <input type="text" id="username" placeholder="2026 ou seu usuário" required>
+                </div>
+                <div class="form-group">
+                  <label>Senha</label>
+                  <input type="password" id="password" placeholder="Sua senha" required>
+                </div>
+                <div id="login-error" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 12px;" class="hidden">Usuário/senha incorretos ou cadastro pendente.</div>
+                <button type="submit" class="btn btn-primary btn-block">Entrar no Painel de Gestão</button>
+              </form>
+              <div style="text-align:center; margin-top:16px;">
+                <button onclick="toggleRegisterForm(true)" class="btn btn-secondary btn-sm">📝 Solicitar Cadastro de Professor</button>
+              </div>
+            </div>
+
+            <!-- ABA SOLICITAR CADASTRO DE PROFESSOR -->
+            <div id="register-form-box" class="hidden">
+              <h3 style="text-align: center; margin-bottom: 8px;">Solicitar Cadastro</h3>
+              <p style="font-size:0.8rem; color:#64748b; text-align:center; margin-bottom:16px;">Seu pedido será enviado ao Organizador (Prof. Thyago Gomes).</p>
+              <form onsubmit="handleRegisterSubmit(event)">
+                <div class="form-group">
+                  <label>Seu Nome Completo</label>
+                  <input type="text" id="reg-fullname" placeholder="Ex: Prof. João Silva" required>
+                </div>
+                <div class="form-group">
+                  <label>Sua Disciplina</label>
+                  <input type="text" id="reg-discipline" placeholder="Ex: Matemática, História" required>
+                </div>
+                <div class="form-group">
+                  <label>Usuário Desejado</label>
+                  <input type="text" id="reg-username" placeholder="Ex: joaosilva" required>
+                </div>
+                <div class="form-group">
+                  <label>Senha</label>
+                  <input type="password" id="reg-password" placeholder="Crie uma senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Enviar Pedido de Aprovação</button>
+              </form>
+              <div style="text-align:center; margin-top:16px;">
+                <button onclick="toggleRegisterForm(false)" class="btn btn-secondary btn-sm">← Voltar para o Login</button>
+              </div>
+            </div>
+
+          </div>
+          <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
+            Organizador Principal: <strong>2026</strong> / <strong>2026</strong>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- ==================== PORTAL DO ALUNO ==================== -->
-    <section id="screen-aluno">
+    <section id="screen-aluno" class="hidden">
+      
+      <!-- CAIXA DE BUSCA DE CÓDIGO -->
       <div class="student-search-box card">
-        <h2>Consultar Boletim Escolar</h2>
-        <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px;">
-          Digite seu <strong>Código Único de Aluno</strong> (até 10 dígitos) para acessar suas notas e diário.
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h2>Portal do Aluno</h2>
+          <button onclick="switchProfile('portal')" class="btn btn-secondary btn-sm">← Sair / Voltar à Inicial</button>
+        </div>
+        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">
+          Informe o <strong>Código Único de Aluno</strong> para acessar seu painel completo.
         </p>
         <form onsubmit="handleStudentSearch(event)">
-          <div class="form-group">
-            <input type="text" id="student-search-input" placeholder="Digite seu código único (ex: 2026001)" maxlength="10" required>
+          <div class="form-group" style="display:flex; gap:8px;">
+            <input type="text" id="student-search-input" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required style="flex:1;">
+            <button type="submit" class="btn btn-primary">🔍 Entrar</button>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">🔍 Consultar Boletim Consolidado</button>
         </form>
       </div>
 
-      <!-- RESULTADO DO BOLETIM CONSOLIDADO -->
-      <div id="boletim-result" class="hidden">
+      <!-- PAINEL PRINCIPAL DO ALUNO (COM 4 SEÇÕES SEPARADAS) -->
+      <div id="student-portal-content" class="hidden">
         
-        <!-- MURAL DE AVISOS ATIVOS -->
-        <div id="student-mural-box" class="mural-card hidden">
-          <h4 style="color:#1e3a8a;">📢 Mural de Avisos do Professor</h4>
-          <div id="student-mural-items"></div>
-        </div>
-
-        <div id="printable-boletim" class="boletim-card">
-          <div class="boletim-header">
+        <!-- CABEÇALHO DO ALUNO COM FOTO E DADOS -->
+        <div class="boletim-card" style="margin-bottom: 16px; padding: 20px;">
+          <div class="boletim-header" style="border-bottom:none; margin-bottom:0; padding-bottom:0;">
             <div style="display:flex; align-items:center; gap:16px;">
               <div id="bol-student-photo-container"></div>
               <div>
@@ -145,7 +251,7 @@
                 <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#2563eb;">--</strong></p>
                 <div class="no-print" style="margin-top:6px;">
                   <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
-                    📷 Enviar / Alterar Minha Foto
+                    📷 Alterar Minha Foto
                     <input type="file" accept="image/*" onchange="uploadStudentPhoto(event)" style="display:none;">
                   </label>
                 </div>
@@ -153,98 +259,82 @@
             </div>
             <div id="bol-status-badge" class="status-badge status-aprovado">Aprovado</div>
           </div>
-
-          <!-- TABELA MULTI-DISCIPLINAS -->
-          <h4 style="margin-bottom:8px; color:#1e293b;">📊 Rendimento Acadêmico & Frequência (Todas as Disciplinas)</h4>
-          <div id="student-academic-summary-table" class="table-responsive"></div>
-
-          <!-- SELETOR DE ETAPAS E ATIVIDADES DETALHADAS -->
-          <h4 style="margin-top:24px; margin-bottom:8px; color:#1e293b;">📝 Detalhamento de Atividades & Conteúdo Ministrado</h4>
-          <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;"></div>
-          <div id="student-period-content"></div>
-
-          <!-- RESUMO DE DESEMPENHO NO RODAPÉ -->
-          <div id="student-footer-metrics" style="margin-top:20px; background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; font-size:0.95rem;"></div>
-
-          <!-- CHAT COM PROFESSOR -->
-          <div class="no-print" style="margin-top: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-            <h4>💬 Mensagens com os Professores</h4>
-            <div id="student-chat-history" class="chat-box" style="margin-top:10px;"></div>
-            <form onsubmit="sendStudentMessage(event)">
-              <div class="form-group" style="display: flex; gap: 8px; align-items:center;">
-                <input type="text" id="student-msg-input" placeholder="Escreva sua dúvida..." style="flex:1;">
-                <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo">
-                  📎
-                  <input type="file" id="student-msg-file" style="display:none;">
-                </label>
-                <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
-              </div>
-            </form>
-            <div style="text-align: right; margin-top: 16px;">
-              <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir Boletim</button>
-            </div>
-          </div>
         </div>
+
+        <!-- MURAL DE AVISOS DO PROFESSOR -->
+        <div id="student-mural-box" class="mural-card hidden">
+          <h4 style="color:#1e3a8a;">📢 Mural de Avisos da Escola</h4>
+          <div id="student-mural-items"></div>
+        </div>
+
+        <!-- MENU DE NAVEGAÇÃO DO ALUNO (4 SEÇÕES SEPARADAS) -->
+        <div class="student-main-nav">
+          <button id="st-tab-boletim" class="student-nav-btn active" onclick="switchStudentTab('boletim')">📊 1. Boletim</button>
+          <button id="st-tab-diarios" class="student-nav-btn" onclick="switchStudentTab('diarios')">📖 2. Diários</button>
+          <button id="st-tab-mensagens" class="student-nav-btn" onclick="switchStudentTab('mensagens')">💬 3. Caixa de Mensagens</button>
+          <button id="st-tab-historico" class="student-nav-btn" onclick="switchStudentTab('historico')">📜 4. Histórico</button>
+        </div>
+
+        <!-- ================= SEÇÃO 1: BOLETIM CONSOLIDADO ================= -->
+        <div id="st-section-boletim" class="boletim-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+            <h3 style="color:#1e293b;">📊 Boletim Escolar Consolidado</h3>
+            <button onclick="window.print()" class="btn btn-secondary btn-sm">🖨️ Imprimir Boletim</button>
+          </div>
+          <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
+            Confira a lista de componentes curriculares com as notas finais acumuladas de cada etapa e total de faltas.
+          </p>
+
+          <div id="student-academic-summary-table" class="table-responsive"></div>
+          <div id="student-footer-metrics" style="margin-top:20px; background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; font-size:0.95rem;"></div>
+        </div>
+
+        <!-- ================= SEÇÃO 2: DIÁRIOS (ATIVIDADES & PRESENÇAS) ================= -->
+        <div id="st-section-diarios" class="boletim-card hidden">
+          <h3 style="color:#1e293b; margin-bottom:8px;">📖 Diários & Detalhamento de Atividades</h3>
+          <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
+            Selecione a disciplina abaixo para ver todas as notas detalhadas de cada teste/trabalho e o registro diário de faltas e presenças.
+          </p>
+
+          <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;"></div>
+          <div id="student-period-content"></div>
+        </div>
+
+        <!-- ================= SEÇÃO 3: CAIXA DE MENSAGENS ================= -->
+        <div id="st-section-mensagens" class="boletim-card hidden">
+          <h3 style="color:#1e293b; margin-bottom:8px;">💬 Caixa de Mensagens com os Professores</h3>
+          <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
+            Envie dúvidas, recados e arquivos/trabalhos diretamente aos professores das suas disciplinas.
+          </p>
+
+          <div id="student-chat-history" class="chat-box"></div>
+          
+          <form onsubmit="sendStudentMessage(event)">
+            <div class="form-group" style="display: flex; gap: 8px; align-items:center;">
+              <input type="text" id="student-msg-input" placeholder="Escreva sua mensagem ao professor..." style="flex:1;">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo/trabalho">
+                📎 Anexar Arquivo
+                <input type="file" id="student-msg-file" style="display:none;">
+              </label>
+              <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= SEÇÃO 4: HISTÓRICO ACADÊMICO ================= -->
+        <div id="st-section-historico" class="boletim-card hidden">
+          <h3 style="color:#1e293b; margin-bottom:8px;">📜 Histórico Acadêmico do Aluno</h3>
+          <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
+            Registro permanente do histórico escolar do aluno, contendo turmas concluídas e resultados acumulados ao longo do tempo.
+          </p>
+
+          <div id="student-history-content"></div>
+        </div>
+
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
         ⚠️ Nenhum aluno encontrado com este Código Único.
-      </div>
-    </section>
-
-    <!-- ==================== LOGIN / REGISTRO DE PROFESSOR ==================== -->
-    <section id="screen-professor-login" class="hidden">
-      <div class="card login-card">
-        
-        <!-- ABA LOGIN -->
-        <div id="login-form-box">
-          <h2 style="text-align: center; margin-bottom: 8px;">Acesso do Docente / Gestor</h2>
-          <p style="text-align:center; font-size:0.8rem; color:#64748b; margin-bottom:16px;">Login do Organizador Principal: <strong>2026</strong> / <strong>2026</strong></p>
-          <form onsubmit="handleTeacherLogin(event)">
-            <div class="form-group">
-              <label>Usuário</label>
-              <input type="text" id="username" placeholder="2026 ou seu usuário" required>
-            </div>
-            <div class="form-group">
-              <label>Senha</label>
-              <input type="password" id="password" placeholder="Sua senha" required>
-            </div>
-            <div id="login-error" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 12px;" class="hidden">Usuário/senha incorretos ou cadastro pendente de aprovação.</div>
-            <button type="submit" class="btn btn-primary btn-block">Entrar no Sistema</button>
-          </form>
-          <div style="text-align:center; margin-top:16px;">
-            <button onclick="toggleRegisterForm(true)" class="btn btn-secondary btn-sm">📝 Novo Professor? Solicitar Acesso</button>
-          </div>
-        </div>
-
-        <!-- ABA SOLICITAR CADASTRO DE PROFESSOR -->
-        <div id="register-form-box" class="hidden">
-          <h2 style="text-align: center; margin-bottom: 8px;">Solicitar Cadastro de Professor</h2>
-          <p style="font-size:0.8rem; color:#64748b; text-align:center; margin-bottom:16px;">Seu pedido será enviado para aprovação do Organizador (Prof. Thyago Gomes).</p>
-          <form onsubmit="handleRegisterSubmit(event)">
-            <div class="form-group">
-              <label>Seu Nome Completo</label>
-              <input type="text" id="reg-fullname" placeholder="Ex: Prof. João Silva" required>
-            </div>
-            <div class="form-group">
-              <label>Sua Disciplina</label>
-              <input type="text" id="reg-discipline" placeholder="Ex: Matemática, História" required>
-            </div>
-            <div class="form-group">
-              <label>Usuário de Login Desejado</label>
-              <input type="text" id="reg-username" placeholder="Ex: joaosilva" required>
-            </div>
-            <div class="form-group">
-              <label>Senha</label>
-              <input type="password" id="reg-password" placeholder="Crie uma senha" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Enviar Pedido ao Organizador</button>
-          </form>
-          <div style="text-align:center; margin-top:16px;">
-            <button onclick="toggleRegisterForm(false)" class="btn btn-secondary btn-sm">← Voltar para o Login</button>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -534,39 +624,55 @@
       currentClassId: null,
       currentPeriod: "A1",
       currentUser: null,
+      activeProfile: "portal", // 'portal', 'aluno', 'professor'
+      activeStudentTab: "boletim", // 'boletim', 'diarios', 'mensagens', 'historico'
+      lastSearchedCode: "",
       matchedStudentRecords: [],
       activeStudentPeriod: "A1"
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v15");
+      const sStored = localStorage.getItem("diario_settings_v17");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v15");
+      const tStored = localStorage.getItem("diario_teachers_v17");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v15");
+      const cStored = localStorage.getItem("diario_classes_v17");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v15");
+      const mStored = localStorage.getItem("diario_mural_v17");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v15");
+      const uStored = localStorage.getItem("diario_session_v17");
       if (uStored) state.currentUser = JSON.parse(uStored);
+
+      const pStored = localStorage.getItem("diario_active_profile_v17");
+      if (pStored) state.activeProfile = pStored;
+
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v17");
+      if (stTabStored) state.activeStudentTab = stTabStored;
+
+      const codeStored = localStorage.getItem("diario_last_student_code_v17");
+      if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
       applySettingsUI();
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v15", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v15", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v15", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v15", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v17", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v17", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v17", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v17", JSON.stringify(state.mural));
+      localStorage.setItem("diario_active_profile_v17", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v17", state.activeStudentTab || "boletim");
+      localStorage.setItem("diario_last_student_code_v17", state.lastSearchedCode || "");
+      
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v15", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v17", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v15");
+        localStorage.removeItem("diario_session_v17");
       }
     }
 
@@ -600,6 +706,10 @@
       toast.innerText = msg || "✅ Operação realizada com sucesso!";
       toast.classList.remove('hidden');
       setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+    }
+
+    function showPortalHome() {
+      switchProfile('portal');
     }
 
     function getAllSystemStudents() {
@@ -676,15 +786,18 @@
       } else {
         const pKeys = Object.keys(c.periods);
         let sum = 0;
+        let periodSums = {};
         pKeys.forEach(pk => {
           const pGrades = (student.grades && student.grades[pk]) ? student.grades[pk] : {};
           const acts = c.periods[pk] || [];
           let pSum = 0;
           acts.forEach(a => pSum += parseFloat(pGrades[a.id]) || 0);
+          periodSums[pk] = pSum.toFixed(1);
           sum += pSum;
         });
         const avg = pKeys.length > 0 ? (sum / pKeys.length) : 0;
         return {
+          periodSums: periodSums,
           finalGrade: avg.toFixed(1),
           isPassed: avg >= 6.0
         };
@@ -692,25 +805,47 @@
     }
 
     function switchProfile(profile) {
+      state.activeProfile = profile;
+      saveData();
+
+      document.getElementById('nav-btn-portal').classList.remove('active');
       document.getElementById('nav-btn-aluno').classList.remove('active');
       document.getElementById('nav-btn-professor').classList.remove('active');
+
+      document.getElementById('screen-portal').classList.add('hidden');
       document.getElementById('screen-aluno').classList.add('hidden');
-      document.getElementById('screen-professor-login').classList.add('hidden');
       document.getElementById('screen-professor-app').classList.add('hidden');
 
-      if (profile === 'aluno') {
+      if (profile === 'portal') {
+        document.getElementById('nav-btn-portal').classList.add('active');
+        document.getElementById('screen-portal').classList.remove('hidden');
+      } else if (profile === 'aluno') {
         document.getElementById('nav-btn-aluno').classList.add('active');
         document.getElementById('screen-aluno').classList.remove('hidden');
-      } else {
+        if (state.lastSearchedCode) {
+          document.getElementById('student-search-input').value = state.lastSearchedCode;
+          executeStudentSearch(state.lastSearchedCode);
+        }
+      } else if (profile === 'professor') {
         document.getElementById('nav-btn-professor').classList.add('active');
         if (state.currentUser) {
           document.getElementById('screen-professor-app').classList.remove('hidden');
           setupDashboardPermissions();
           renderClassesGrid();
         } else {
-          document.getElementById('screen-professor-login').classList.remove('hidden');
+          document.getElementById('screen-portal').classList.remove('hidden');
+          document.getElementById('nav-btn-portal').classList.add('active');
+          document.getElementById('nav-btn-professor').classList.remove('active');
         }
       }
+    }
+
+    function handlePortalStudentAccess(e) {
+      e.preventDefault();
+      const code = document.getElementById('portal-student-code').value.trim();
+      if (!code) return;
+      state.lastSearchedCode = code;
+      switchProfile('aluno');
     }
 
     function setupDashboardPermissions() {
@@ -741,17 +876,43 @@
       }
     }
 
+    // NAVEGAÇÃO ENTRE AS 4 SEÇÕES DO ALUNO
+    function switchStudentTab(tab) {
+      state.activeStudentTab = tab;
+      saveData();
+
+      const tabs = ['boletim', 'diarios', 'mensagens', 'historico'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`st-tab-${t}`);
+        const sec = document.getElementById(`st-section-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (sec) sec.classList.add('hidden');
+      });
+
+      const activeBtn = document.getElementById(`st-tab-${tab}`);
+      const activeSec = document.getElementById(`st-section-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeSec) activeSec.classList.remove('hidden');
+    }
+
     // PORTAL DO ALUNO - BUSCA
     function handleStudentSearch(e) {
       e.preventDefault();
-      const query = document.getElementById('student-search-input').value.trim().toLowerCase();
-      
+      const query = document.getElementById('student-search-input').value.trim();
+      if (!query) return;
+      state.lastSearchedCode = query;
+      saveData();
+      executeStudentSearch(query);
+    }
+
+    function executeStudentSearch(query) {
+      const queryClean = query.toLowerCase().trim();
       state.matchedStudentRecords = [];
 
       state.classes.forEach(c => {
         (c.students || []).forEach(s => {
           const codeClean = (s.code || "").toLowerCase().trim();
-          if (query && codeClean === query) {
+          if (queryClean && codeClean === queryClean) {
             state.matchedStudentRecords.push({
               class: c,
               student: s,
@@ -762,12 +923,12 @@
         });
       });
 
-      const resultCard = document.getElementById('boletim-result');
+      const portalContent = document.getElementById('student-portal-content');
       const notFoundCard = document.getElementById('student-not-found');
 
       if (state.matchedStudentRecords.length > 0) {
         notFoundCard.classList.add('hidden');
-        resultCard.classList.remove('hidden');
+        portalContent.classList.remove('hidden');
 
         const primary = state.matchedStudentRecords[0].student;
         document.getElementById('bol-student-name').innerText = primary.name;
@@ -783,7 +944,7 @@
         const allPassed = state.matchedStudentRecords.every(r => r.status.isPassed);
         const badge = document.getElementById('bol-status-badge');
         if (allPassed) {
-          badge.innerText = "Aprovado no Semestre"; badge.className = "status-badge status-aprovado";
+          badge.innerText = "Aprovado no Semestre / Ano"; badge.className = "status-badge status-aprovado";
         } else {
           badge.innerText = "Pendências Acadêmicas"; badge.className = "status-badge status-reprovado";
         }
@@ -792,12 +953,16 @@
         renderStudentMural();
         renderStudentPeriodSelector();
         renderStudentChatHistory();
+        renderStudentHistoryTab();
+
+        switchStudentTab(state.activeStudentTab || 'boletim');
       } else {
-        resultCard.classList.add('hidden');
+        portalContent.classList.add('hidden');
         notFoundCard.classList.remove('hidden');
       }
     }
 
+    // 1. BOLETIM CONSOLIDADO (LIMPO E EM LISTA)
     function renderAcademicConsolidatedTable() {
       const summaryBox = document.getElementById('student-academic-summary-table');
       const footerBox = document.getElementById('student-footer-metrics');
@@ -816,27 +981,31 @@
         if (c.mode === 'semestral') {
           rowsHtml += `
             <tr>
-              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">${mainTeacherName}</small></td>
-              <td>${st.sumA1}</td>
-              <td>${st.sumA2}</td>
-              <td>${st.a3Note ?? '-'}</td>
+              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">Prof. ${mainTeacherName}</small></td>
+              <td><span style="font-weight:600;">${st.sumA1}</span></td>
+              <td><span style="font-weight:600;">${st.sumA2}</span></td>
+              <td><span style="font-weight:600;">${st.a3Note ?? '-'}</span></td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${st.finalGrade}</strong></td>
               <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
               <td>
                 <span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">
-                  ${st.isPassed ? 'Aprovado' : (st.isA3Needed ? 'Em A3' : 'Reprovado')}
+                  ${st.isPassed ? 'Aprovado' : (st.isA3Needed ? 'Em A3' : 'Retido')}
                 </span>
               </td>
             </tr>
           `;
         } else {
+          const pSums = st.periodSums || {};
           rowsHtml += `
             <tr>
-              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">${mainTeacherName}</small></td>
-              <td colspan="3">-</td>
+              <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">Prof. ${mainTeacherName}</small></td>
+              <td>${pSums['1º Bimestre'] ?? '-'}</td>
+              <td>${pSums['2º Bimestre'] ?? '-'}</td>
+              <td>${pSums['3º Bimestre'] ?? '-'}</td>
+              <td>${pSums['4º Bimestre'] ?? '-'}</td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
               <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
-              <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Aprovado' : 'Reprovado'}</span></td>
+              <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Aprovado' : 'Retido'}</span></td>
             </tr>
           `;
         }
@@ -844,19 +1013,38 @@
 
       const overallAvg = (sumGrades / state.matchedStudentRecords.length).toFixed(1);
 
+      const isSemestralHeader = state.matchedStudentRecords.some(r => r.class.mode === 'semestral');
+
+      const theadHtml = isSemestralHeader ? `
+        <thead>
+          <tr>
+            <th>Componente Curricular / Docente</th>
+            <th>Etapa A1</th>
+            <th>Etapa A2</th>
+            <th>A3 (Final)</th>
+            <th>Média Final (MF)</th>
+            <th>Total de Faltas & Presença</th>
+            <th>Situação Final</th>
+          </tr>
+        </thead>
+      ` : `
+        <thead>
+          <tr>
+            <th>Componente Curricular / Docente</th>
+            <th>1º Bim</th>
+            <th>2º Bim</th>
+            <th>3º Bim</th>
+            <th>4º Bim</th>
+            <th>Média Final (MF)</th>
+            <th>Total de Faltas & Presença</th>
+            <th>Situação Final</th>
+          </tr>
+        </thead>
+      `;
+
       summaryBox.innerHTML = `
         <table class="data-table">
-          <thead>
-            <tr>
-              <th>Componente Curricular / Docente</th>
-              <th>A1</th>
-              <th>A2</th>
-              <th>A3</th>
-              <th>Média Final (MF)</th>
-              <th>Faltas & Presença</th>
-              <th>Situação</th>
-            </tr>
-          </thead>
+          ${theadHtml}
           <tbody>${rowsHtml}</tbody>
         </table>
       `;
@@ -870,7 +1058,7 @@
     }
 
     function uploadStudentPhoto(e) {
-      const file = e.target.files;
+      const file = e.target.files[0];
       if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
@@ -880,7 +1068,7 @@
         });
         saveData();
         document.getElementById('bol-student-photo-container').innerHTML = `<img src="${evt.target.result}" class="student-avatar student-avatar-lg">`;
-        showToast("Foto atualizada com sucesso!");
+        showToast("Foto do aluno atualizada!");
       };
       reader.readAsDataURL(file);
     }
@@ -910,6 +1098,7 @@
       }
     }
 
+    // 2. DIÁRIOS (DETALHAMENTO DE ATIVIDADES E FREQUÊNCIA)
     function renderStudentPeriodSelector() {
       const container = document.getElementById('student-period-selector');
       container.innerHTML = '';
@@ -917,7 +1106,7 @@
       state.matchedStudentRecords.forEach((rec, idx) => {
         const btn = document.createElement('button');
         btn.className = `period-tab-btn ${idx === 0 ? 'active' : ''}`;
-        btn.innerText = rec.class.discipline;
+        btn.innerText = `${rec.class.discipline} (Prof. ${rec.class.teacherName || 'Responsável'})`;
         btn.onclick = () => {
           Array.from(container.children).forEach(c => c.classList.remove('active'));
           btn.classList.add('active');
@@ -955,7 +1144,7 @@
           </tr>
         `).join('');
 
-        if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade lançada nesta etapa.</td></tr>';
+        if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade individual lançada nesta etapa.</td></tr>';
 
         html += `
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
@@ -972,7 +1161,7 @@
       const lessons = c.lessons || [];
       let lessonsHtml = '';
       lessons.forEach(l => {
-        const status = (l.attendance && l.attendance[s.id]) === 'F' ? '<span style="color:#dc2626; font-weight:700;">FALTA</span>' : '<span style="color:#16a34a; font-weight:700;">PRESENÇA</span>';
+        const status = (l.attendance && l.attendance[s.id]) === 'F' ? '<span style="color:#dc2626; font-weight:700;">❌ FALTA</span>' : '<span style="color:#16a34a; font-weight:700;">✅ PRESENÇA</span>';
         lessonsHtml += `
           <tr>
             <td>${l.date}</td>
@@ -986,9 +1175,9 @@
 
       html += `
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-          <h5 style="color:#2563eb; margin-bottom:8px;">📅 Diário de Aulas & Conteúdo Ministrado (${c.discipline})</h5>
+          <h5 style="color:#2563eb; margin-bottom:8px;">📅 Diário de Aulas & Frequência Detalhada (${c.discipline})</h5>
           <table class="data-table">
-            <thead><tr><th>Data</th><th>Conteúdo Ministrado na Aula</th><th>Sua Presença</th></tr></thead>
+            <thead><tr><th>Data da Aula</th><th>Conteúdo Ministrado na Aula</th><th>Situação</th></tr></thead>
             <tbody>${lessonsHtml}</tbody>
           </table>
         </div>
@@ -997,6 +1186,7 @@
       container.innerHTML = html;
     }
 
+    // 3. CAIXA DE MENSAGENS COM O PROFESSOR
     function renderStudentChatHistory() {
       const container = document.getElementById('student-chat-history');
       container.innerHTML = '';
@@ -1006,14 +1196,14 @@
       });
 
       if (allMsgs.length === 0) {
-        container.innerHTML = '<div style="font-size:0.8rem; color:#94a3b8; text-align:center;">Nenhuma mensagem trocada ainda.</div>';
+        container.innerHTML = '<div style="font-size:0.88rem; color:#94a3b8; text-align:center; padding:20px;">Nenhuma mensagem trocada ainda com os professores. Escreva abaixo para iniciar uma conversa!</div>';
         return;
       }
       allMsgs.forEach(m => {
         const div = document.createElement('div');
         div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
         const fileHtml = m.file ? `<div style="margin-top:4px;"><a href="${m.file.data}" download="${m.file.name}" style="color:inherit; font-weight:600;">📎 ${m.file.name}</a></div>` : '';
-        div.innerHTML = `<div>${m.text}</div>${fileHtml}<div style="font-size:0.65rem; opacity:0.7;">${m.date}</div>`;
+        div.innerHTML = `<div>${m.text}</div>${fileHtml}<div style="font-size:0.65rem; opacity:0.75; margin-top:4px;">${m.date}</div>`;
         container.appendChild(div);
       });
       container.scrollTop = container.scrollHeight;
@@ -1024,7 +1214,7 @@
       const input = document.getElementById('student-msg-input');
       const fileInput = document.getElementById('student-msg-file');
       const text = input.value.trim();
-      const file = fileInput.files;
+      const file = fileInput.files[0];
 
       if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
 
@@ -1040,6 +1230,7 @@
         input.value = '';
         fileInput.value = '';
         renderStudentChatHistory();
+        showToast("Mensagem enviada com sucesso!");
       };
 
       if (file) {
@@ -1053,13 +1244,64 @@
       }
     }
 
+    // 4. HISTÓRICO ACADÊMICO
+    function renderStudentHistoryTab() {
+      const container = document.getElementById('student-history-content');
+      if (state.matchedStudentRecords.length === 0) return;
+
+      const primary = state.matchedStudentRecords[0].student;
+
+      let historyRows = '';
+      state.matchedStudentRecords.forEach(rec => {
+        const c = rec.class;
+        const st = rec.status;
+        const att = rec.attendance;
+
+        historyRows += `
+          <tr>
+            <td><strong>${c.year || 2026}</strong></td>
+            <td><strong>${c.name}</strong></td>
+            <td>${c.discipline}</td>
+            <td>Prof. ${c.teacherName || 'Responsável'}</td>
+            <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
+            <td>${att.frequency} (${att.absences} Faltas)</td>
+            <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Concluído / Aprovado' : 'Retido'}</span></td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML = `
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
+          <h4 style="color:#1e40af; margin-bottom:6px;">📁 Registro Escolar Permanente — ${primary.name}</h4>
+          <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">Código do Registro: <code>${primary.code}</code></p>
+          
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ano Letivo</th>
+                  <th>Turma / Módulo</th>
+                  <th>Disciplina</th>
+                  <th>Professor</th>
+                  <th>Média Final</th>
+                  <th>Frequência Total</th>
+                  <th>Situação Acadêmica</th>
+                </tr>
+              </thead>
+              <tbody>${historyRows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
     // LOGIN E REGISTRO DE PROFESSOR
     function toggleRegisterForm(show) {
       if (show) {
-        document.getElementById('login-form-box').classList.add('hidden');
+        document.getElementById('portal-login-box').classList.add('hidden');
         document.getElementById('register-form-box').classList.remove('hidden');
       } else {
-        document.getElementById('login-form-box').classList.remove('hidden');
+        document.getElementById('portal-login-box').classList.remove('hidden');
         document.getElementById('register-form-box').classList.add('hidden');
       }
     }
@@ -1092,6 +1334,7 @@
           return;
         }
         state.currentUser = found;
+        state.activeProfile = 'professor';
         saveData();
         document.getElementById('login-error').classList.add('hidden');
         switchProfile('professor');
@@ -1102,8 +1345,9 @@
 
     function handleTeacherLogout() {
       state.currentUser = null;
+      state.activeProfile = 'portal';
       saveData();
-      switchProfile('professor');
+      switchProfile('portal');
     }
 
     function switchMainTab(tab) {
@@ -1224,7 +1468,7 @@
               <td><strong>${t.name}</strong> ${t.role === 'admin' ? '⭐ (Organizador)' : ''}</td>
               <td>${t.discipline}</td>
               <td><code>${t.username}</code></td>
-              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
+              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('\${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
             </tr>
           `;
         }
@@ -1296,8 +1540,8 @@
     function handleSaveSettings(e) {
       e.preventDefault();
       const schoolName = document.getElementById('set-school-name').value.trim();
-      const logoFile = document.getElementById('set-school-logo').files;
-      const bgFile = document.getElementById('set-school-bg').files;
+      const logoFile = document.getElementById('set-school-logo').files[0];
+      const bgFile = document.getElementById('set-school-bg').files[0];
 
       state.settings.schoolName = schoolName;
 
@@ -1364,7 +1608,7 @@
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.onchange = (e) => {
-        const file = e.target.files;
+        const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = (evt) => {
@@ -1539,7 +1783,7 @@
                 <button onclick="deleteActivity('${act.id}')" title="Excluir Atividade" style="border:none; background:none; cursor:pointer; color:#dc2626;">🗑️</button>
               </span>
             </div>
-            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">${act.description}</div>` : ''}
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
           </th>`; 
       });
       thHtml += `<th>Soma da Etapa</th></tr>`;
@@ -1913,7 +2157,7 @@
       const input = document.getElementById(`reply-input-${studentId}`);
       const fileInput = document.getElementById(`reply-file-${studentId}`);
       const text = input.value.trim();
-      const file = fileInput.files;
+      const file = fileInput.files[0];
 
       if (!text && !file) return;
 
@@ -1940,9 +2184,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       loadData();
-      if (state.currentUser) {
-        switchProfile('professor');
-      }
+      switchProfile(state.activeProfile || 'portal');
     });
   </script>
 </body>
