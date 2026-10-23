@@ -143,14 +143,14 @@
             </p>
             <form onsubmit="handlePortalStudentAccess(event)">
               <div class="form-group">
-                <label>Código Único do Aluno</label>
-                <input type="text" id="portal-student-code" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required>
+                <label>Código Único ou Nome do Aluno</label>
+                <input type="text" id="portal-student-code" placeholder="Digite seu código (ex: 2026001) ou seu nome" required>
               </div>
               <button type="submit" class="btn btn-primary btn-block">🔍 Acessar Área do Aluno</button>
             </form>
           </div>
           <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
-            Acesso rápido direto pelo seu código individual
+            Acesso rápido direto pelo seu código individual ou nome
           </div>
         </div>
 
@@ -228,11 +228,11 @@
           <button onclick="switchProfile('portal')" class="btn btn-secondary btn-sm">← Sair / Voltar à Inicial</button>
         </div>
         <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">
-          Informe o <strong>Código Único de Aluno</strong> para acessar seu painel completo.
+          Informe o <strong>Código Único ou Nome do Aluno</strong> para acessar o painel completo.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group" style="display:flex; gap:8px;">
-            <input type="text" id="student-search-input" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required style="flex:1;">
+            <input type="text" id="student-search-input" placeholder="Digite seu código (ex: 2026001) ou nome" required style="flex:1;">
             <button type="submit" class="btn btn-primary">🔍 Entrar</button>
           </div>
         </form>
@@ -334,7 +334,7 @@
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
-        ⚠️ Nenhum aluno encontrado com este Código Único.
+        ⚠️ Nenhum aluno encontrado com este Código Único ou Nome.
       </div>
     </section>
 
@@ -634,28 +634,28 @@
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v18");
+      const sStored = localStorage.getItem("diario_settings_v18") || localStorage.getItem("diario_settings_v17") || localStorage.getItem("diario_settings");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v18");
+      const tStored = localStorage.getItem("diario_teachers_v18") || localStorage.getItem("diario_teachers_v17") || localStorage.getItem("diario_teachers");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v18");
+      const cStored = localStorage.getItem("diario_classes_v18") || localStorage.getItem("diario_classes_v17") || localStorage.getItem("diario_classes_v16") || localStorage.getItem("diario_classes");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v18");
+      const mStored = localStorage.getItem("diario_mural_v18") || localStorage.getItem("diario_mural_v17") || localStorage.getItem("diario_mural");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v18");
+      const uStored = localStorage.getItem("diario_session_v18") || localStorage.getItem("diario_session_v17") || localStorage.getItem("diario_session");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v18");
+      const pStored = localStorage.getItem("diario_active_profile_v18") || localStorage.getItem("diario_active_profile_v17");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v18");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v18") || localStorage.getItem("diario_active_student_tab_v17");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v18");
+      const codeStored = localStorage.getItem("diario_last_student_code_v18") || localStorage.getItem("diario_last_student_code_v17");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
@@ -685,8 +685,8 @@
       const titleEl = document.getElementById('page-title');
 
       const name = set.schoolName || "Diário Escolar Digital";
-      nameEl.innerText = name;
-      titleEl.innerText = name;
+      nameEl.textContent = name;
+      titleEl.textContent = name;
 
       if (set.schoolLogo) {
         logoEl.src = set.schoolLogo;
@@ -705,7 +705,7 @@
 
     function showToast(msg) {
       const toast = document.getElementById('toast-message');
-      toast.innerText = msg || "✅ Operação realizada com sucesso!";
+      toast.textContent = msg || "✅ Operação realizada com sucesso!";
       toast.classList.remove('hidden');
       setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
@@ -863,24 +863,24 @@
       const u = state.currentUser;
       if (!u) return;
 
-      document.getElementById('user-display-name').innerText = `Painel de Gestão — ${u.name}`;
+      document.getElementById('user-display-name').textContent = `Painel de Gestão — ${u.name}`;
 
       if (u.role === 'admin') {
-        document.getElementById('user-role-badge').innerText = 'Organizador / Admin (Acesso Total)';
+        document.getElementById('user-role-badge').textContent = 'Organizador / Admin (Acesso Total)';
         document.getElementById('btn-manage-teachers').classList.remove('hidden');
         document.getElementById('btn-customize-theme').classList.remove('hidden');
         
         const pendingCount = state.teachers.filter(t => t.status === 'pending').length;
         if (pendingCount > 0) {
           document.getElementById('admin-pending-alert').classList.remove('hidden');
-          document.getElementById('pending-badge').innerText = pendingCount;
+          document.getElementById('pending-badge').textContent = pendingCount;
           document.getElementById('pending-badge').classList.remove('hidden');
         } else {
           document.getElementById('admin-pending-alert').classList.add('hidden');
           document.getElementById('pending-badge').classList.add('hidden');
         }
       } else {
-        document.getElementById('user-role-badge').innerText = `Prof. (${u.discipline})`;
+        document.getElementById('user-role-badge').textContent = `Prof. (${u.discipline})`;
         document.getElementById('btn-manage-teachers').classList.add('hidden');
         document.getElementById('btn-customize-theme').classList.add('hidden');
         document.getElementById('admin-pending-alert').classList.add('hidden');
@@ -923,7 +923,8 @@
       state.classes.forEach(c => {
         (c.students || []).forEach(s => {
           const codeClean = (s.code || "").toLowerCase().trim();
-          if (queryClean && codeClean === queryClean) {
+          const nameClean = (s.name || "").toLowerCase().trim();
+          if (queryClean && (codeClean === queryClean || codeClean.includes(queryClean) || nameClean.includes(queryClean))) {
             state.matchedStudentRecords.push({
               class: c,
               student: s,
@@ -941,9 +942,9 @@
         notFoundCard.classList.add('hidden');
         portalContent.classList.remove('hidden');
 
-        const primary = state.matchedStudentRecords.student;
-        document.getElementById('bol-student-name').innerText = primary.name;
-        document.getElementById('bol-student-code').innerText = primary.code || '--';
+        const primary = state.matchedStudentRecords[0].student;
+        document.getElementById('bol-student-name').textContent = primary.name;
+        document.getElementById('bol-student-code').textContent = primary.code || '--';
 
         const photoContainer = document.getElementById('bol-student-photo-container');
         if (primary.photo) {
@@ -955,9 +956,9 @@
         const allPassed = state.matchedStudentRecords.every(r => r.status.isPassed);
         const badge = document.getElementById('bol-status-badge');
         if (allPassed) {
-          badge.innerText = "Aprovado no Semestre / Ano"; badge.className = "status-badge status-aprovado";
+          badge.textContent = "Aprovado no Semestre / Ano"; badge.className = "status-badge status-aprovado";
         } else {
-          badge.innerText = "Pendências Acadêmicas"; badge.className = "status-badge status-reprovado";
+          badge.textContent = "Pendências Acadêmicas"; badge.className = "status-badge status-reprovado";
         }
 
         renderAcademicConsolidatedTable();
@@ -1137,7 +1138,7 @@
       state.matchedStudentRecords.forEach((rec, idx) => {
         const btn = document.createElement('button');
         btn.className = `period-tab-btn ${idx === 0 ? 'active' : ''}`;
-        btn.innerText = `${rec.class.discipline} (Prof. ${rec.class.teacherName || 'Responsável'})`;
+        btn.textContent = `${rec.class.discipline} (Prof. ${rec.class.teacherName || 'Responsável'})`;
         btn.onclick = () => {
           Array.from(container.children).forEach(c => c.classList.remove('active'));
           btn.classList.add('active');
@@ -1147,7 +1148,7 @@
       });
 
       if (state.matchedStudentRecords.length > 0) {
-        renderStudentDetailsForClass(state.matchedStudentRecords);
+        renderStudentDetailsForClass(state.matchedStudentRecords[0]);
       }
     }
 
@@ -1161,7 +1162,7 @@
       let html = '';
 
       // NOTAS E DESCRIÇÃO DAS ATIVIDADES
-      Object.keys(c.periods).forEach(pk => {
+      Object.keys(c.periods || {}).forEach(pk => {
         const acts = c.periods[pk] || [];
         const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
 
@@ -1286,7 +1287,7 @@
       const container = document.getElementById('student-history-content');
       if (state.matchedStudentRecords.length === 0) return;
 
-      const primary = state.matchedStudentRecords.student;
+      const primary = state.matchedStudentRecords[0].student;
 
       let historyRows = '';
       state.matchedStudentRecords.forEach(rec => {
@@ -1635,7 +1636,7 @@
           </div>
         `;
       });
-      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenum aviso ativo.</p>';
+      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenhum aviso ativo.</p>';
     }
 
     function openAddMuralModal() {
@@ -1740,8 +1741,8 @@
         ? `Docente Principal: ${c.teacherName || 'Prof. Responsável'} | Auxiliares: ${coTeachersNames}`
         : `Docente Principal: ${c.teacherName || 'Prof. Responsável'}`;
 
-      document.getElementById('detail-class-title').innerText = c.name;
-      document.getElementById('detail-class-subtitle').innerText = `Disciplina: ${c.discipline} | ${internalTeacherText}`;
+      document.getElementById('detail-class-title').textContent = c.name;
+      document.getElementById('detail-class-subtitle').textContent = `Disciplina: ${c.discipline} | ${internalTeacherText}`;
       document.getElementById('class-detail-view').classList.remove('hidden');
       document.getElementById('view-classes-section').classList.add('hidden');
 
@@ -1778,7 +1779,7 @@
       Object.keys(c.periods).forEach(pk => {
         const btn = document.createElement('button');
         btn.className = `period-tab-btn ${pk === state.currentPeriod ? 'active' : ''}`;
-        btn.innerText = pk;
+        btn.textContent = pk;
         btn.onclick = () => { state.currentPeriod = pk; renderTeacherPeriodTabs(c); renderTeacherGradesTable(c); };
         container.appendChild(btn);
       });
@@ -2057,7 +2058,7 @@
         existingStudents.forEach((st, i) => {
           optionsText += `${i + 1}. ${st.name} (Código: ${st.code || 'S/C'})\n`;
         });
-        optionsText += `\nDigite o NÚMERO do aluno para vinculá-lo a esta turma (${c.name}), ou digite '0' para cadastrar um NOVO código:`;
+        optionsText += `\nDigite o NÚMERO da opção acima para vincular o aluno à turma (${c.name}), ou digite '0' para cadastrar um NOVO código:`;
 
         const choice = prompt(optionsText, "0");
         if (choice === null) return;
