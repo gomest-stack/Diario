@@ -546,11 +546,11 @@
         year: 2026,
         periods: {
           "A1": [
-            { id: "act-1", name: "Teste 1", description: "Avaliação escrita de introdução às ciências" },
-            { id: "act-2", name: "Prova A1", description: "Prova geral A1" }
+            { id: "act-1", name: "Teste 1", maxVal: 2.0, description: "Avaliação escrita de introdução às ciências" },
+            { id: "act-2", name: "Prova A1", maxVal: 8.0, description: "Prova geral A1" }
           ],
           "A2": [
-            { id: "act-3", name: "Simulado A2", description: "Simulado teórico e prático" }
+            { id: "act-3", name: "Simulado A2", maxVal: 10.0, description: "Simulado teórico e prático" }
           ],
           "A3 (Prova Final)": []
         },
@@ -558,6 +558,7 @@
           {
             id: "les-1",
             date: "2026-10-01",
+            count: 2,
             content: "Sistema Digestório — órgãos e digestão química",
             attendance: { "al-1": "P" }
           }
@@ -566,9 +567,9 @@
           {
             id: "al-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
             grades: {
-              "A1": { "act-1": 7.0, "act-2": 8.0 },
+              "A1": { "act-1": 2.0, "act-2": 7.8 },
               "A2": { "act-3": 4.0 },
-              "A3 (Prova Final)": { a3Note: 6.0 }
+              "A3 (Prova Final)": { a3Note: 10.0 }
             },
             messages: []
           }
@@ -585,10 +586,10 @@
         year: 2026,
         periods: {
           "A1": [
-            { id: "act-m1", name: "Prova M1", description: "Cálculo e álgebra linear" }
+            { id: "act-m1", name: "Prova M1", maxVal: 10.0, description: "Cálculo e álgebra linear" }
           ],
           "A2": [
-            { id: "act-m2", name: "Trabalho M2", description: "Atividade em dupla" }
+            { id: "act-m2", name: "Trabalho M2", maxVal: 10.0, description: "Atividade em dupla" }
           ],
           "A3 (Prova Final)": []
         },
@@ -596,6 +597,7 @@
           {
             id: "les-2",
             date: "2026-10-02",
+            count: 2,
             content: "Funções e Gráficos",
             attendance: { "al-1-mat": "P" }
           }
@@ -632,28 +634,28 @@
     };
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v17");
+      const sStored = localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v17");
+      const tStored = localStorage.getItem("diario_teachers_v18");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v17");
+      const cStored = localStorage.getItem("diario_classes_v18");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v17");
+      const mStored = localStorage.getItem("diario_mural_v18");
       state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
 
-      const uStored = localStorage.getItem("diario_session_v17");
+      const uStored = localStorage.getItem("diario_session_v18");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v17");
+      const pStored = localStorage.getItem("diario_active_profile_v18");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v17");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v18");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v17");
+      const codeStored = localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
@@ -661,18 +663,18 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v17", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v17", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v17", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v17", JSON.stringify(state.mural));
-      localStorage.setItem("diario_active_profile_v17", state.activeProfile || "portal");
-      localStorage.setItem("diario_active_student_tab_v17", state.activeStudentTab || "boletim");
-      localStorage.setItem("diario_last_student_code_v17", state.lastSearchedCode || "");
+      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
+      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
+      localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "boletim");
+      localStorage.setItem("diario_last_student_code_v18", state.lastSearchedCode || "");
       
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v17", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v18", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v17");
+        localStorage.removeItem("diario_session_v18");
       }
     }
 
@@ -728,21 +730,27 @@
     // CÁLCULO DE FREQUÊNCIA DO ALUNO
     function calcStudentAttendance(student, c) {
       const lessons = c.lessons || [];
-      if (lessons.length === 0) return { totalLessons: 0, absences: 0, frequency: "100.0%" };
+      if (lessons.length === 0) return { totalLessons: 0, absences: 0, frequency: "100.0%", freqNum: 100.0 };
 
-      let total = lessons.length;
+      let total = 0;
       let absences = 0;
 
       lessons.forEach(l => {
+        const cnt = parseInt(l.count) || 1;
+        total += cnt;
         const status = (l.attendance && l.attendance[student.id]) ? l.attendance[student.id] : "P";
-        if (status === "F") absences++;
+        if (status === "F") absences += cnt;
       });
 
-      const freqPct = (((total - absences) / total) * 100).toFixed(1) + "%";
-      return { totalLessons: total, absences, frequency: freqPct };
+      const freqNum = total > 0 ? ((total - absences) / total) * 100 : 100.0;
+      const freqPct = freqNum.toFixed(1) + "%";
+      return { totalLessons: total, absences, frequency: freqPct, freqNum: freqNum };
     }
 
     function calcStudentAcademicStatus(student, c) {
+      const att = calcStudentAttendance(student, c);
+      const hasMinAttendance = att.freqNum >= 75.0;
+
       if (c.mode === 'semestral') {
         const gA1 = student.grades ? student.grades["A1"] || {} : {};
         const gA2 = student.grades ? student.grades["A2"] || {} : {};
@@ -757,22 +765,19 @@
         const avgPartial = (sumA1 + sumA2) / 2;
         let finalGrade = avgPartial;
         let isA3Needed = avgPartial < 6.0;
-        let isPassed = avgPartial >= 6.0;
+        let isGradePassed = avgPartial >= 6.0;
 
         if (isA3Needed) {
           const a3Val = parseFloat(gA3.a3Note);
           if (!isNaN(a3Val)) {
-            if (a3Val >= 6.0) {
-              finalGrade = 6.0;
-              isPassed = true;
-            } else {
-              finalGrade = Math.max(avgPartial, a3Val);
-              isPassed = false;
-            }
+            finalGrade = Math.max(avgPartial, a3Val);
+            isGradePassed = finalGrade >= 6.0;
           } else {
-            isPassed = false;
+            isGradePassed = false;
           }
         }
+
+        const isPassed = isGradePassed && hasMinAttendance;
 
         return {
           sumA1: sumA1.toFixed(1),
@@ -781,6 +786,8 @@
           a3Note: gA3.a3Note ?? null,
           finalGrade: finalGrade.toFixed(1),
           isA3Needed,
+          isGradePassed,
+          hasMinAttendance,
           isPassed
         };
       } else {
@@ -796,10 +803,14 @@
           sum += pSum;
         });
         const avg = pKeys.length > 0 ? (sum / pKeys.length) : 0;
+        const isGradePassed = avg >= 6.0;
+        const isPassed = isGradePassed && hasMinAttendance;
         return {
           periodSums: periodSums,
           finalGrade: avg.toFixed(1),
-          isPassed: avg >= 6.0
+          isGradePassed,
+          hasMinAttendance,
+          isPassed
         };
       }
     }
@@ -930,7 +941,7 @@
         notFoundCard.classList.add('hidden');
         portalContent.classList.remove('hidden');
 
-        const primary = state.matchedStudentRecords[0].student;
+        const primary = state.matchedStudentRecords.student;
         document.getElementById('bol-student-name').innerText = primary.name;
         document.getElementById('bol-student-code').innerText = primary.code || '--';
 
@@ -979,6 +990,16 @@
         const mainTeacherName = c.teacherName || 'Prof. Responsável';
 
         if (c.mode === 'semestral') {
+          let statusText = 'Aprovado';
+          let statusClass = 'status-aprovado';
+          if (!st.hasMinAttendance) {
+            statusText = 'Retido por Falta';
+            statusClass = 'status-reprovado';
+          } else if (!st.isGradePassed) {
+            statusText = (st.isA3Needed && (st.a3Note === null || st.a3Note === undefined)) ? 'Em A3' : 'Retido por Nota';
+            statusClass = 'status-reprovado';
+          }
+
           rowsHtml += `
             <tr>
               <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">Prof. ${mainTeacherName}</small></td>
@@ -986,15 +1007,25 @@
               <td><span style="font-weight:600;">${st.sumA2}</span></td>
               <td><span style="font-weight:600;">${st.a3Note ?? '-'}</span></td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${st.finalGrade}</strong></td>
-              <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
+              <td><span style="font-weight:600; color:${st.hasMinAttendance ? '#334155' : '#dc2626'};">${att.absences} Faltas (${att.frequency})</span></td>
               <td>
-                <span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">
-                  ${st.isPassed ? 'Aprovado' : (st.isA3Needed ? 'Em A3' : 'Retido')}
+                <span class="status-badge ${statusClass}">
+                  ${statusText}
                 </span>
               </td>
             </tr>
           `;
         } else {
+          let statusText = 'Aprovado';
+          let statusClass = 'status-aprovado';
+          if (!st.hasMinAttendance) {
+            statusText = 'Retido por Falta';
+            statusClass = 'status-reprovado';
+          } else if (!st.isGradePassed) {
+            statusText = 'Retido por Nota';
+            statusClass = 'status-reprovado';
+          }
+
           const pSums = st.periodSums || {};
           rowsHtml += `
             <tr>
@@ -1004,8 +1035,8 @@
               <td>${pSums['3º Bimestre'] ?? '-'}</td>
               <td>${pSums['4º Bimestre'] ?? '-'}</td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
-              <td><span style="font-weight:600; color:#334155;">${att.absences} Faltas (${att.frequency})</span></td>
-              <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Aprovado' : 'Retido'}</span></td>
+              <td><span style="font-weight:600; color:${st.hasMinAttendance ? '#334155' : '#dc2626'};">${att.absences} Faltas (${att.frequency})</span></td>
+              <td><span class="status-badge ${statusClass}">${statusText}</span></td>
             </tr>
           `;
         }
@@ -1058,7 +1089,7 @@
     }
 
     function uploadStudentPhoto(e) {
-      const file = e.target.files[0];
+      const file = e.target.files;
       if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
@@ -1116,7 +1147,7 @@
       });
 
       if (state.matchedStudentRecords.length > 0) {
-        renderStudentDetailsForClass(state.matchedStudentRecords[0]);
+        renderStudentDetailsForClass(state.matchedStudentRecords);
       }
     }
 
@@ -1134,15 +1165,18 @@
         const acts = c.periods[pk] || [];
         const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
 
-        let actsHtml = acts.map(act => `
-          <tr>
-            <td>
-              <strong>${act.name}</strong>
-              ${act.description ? `<br><small style="color:#64748b;">${act.description}</small>` : ''}
-            </td>
-            <td><strong>${pGrades[act.id] ?? '-'}</strong></td>
-          </tr>
-        `).join('');
+        let actsHtml = acts.map(act => {
+          const valBadge = act.maxVal ? ` <span style="font-size:0.8rem; color:#2563eb; font-weight:600;">(Vale ${act.maxVal} pts)</span>` : '';
+          return `
+            <tr>
+              <td>
+                <strong>${act.name}</strong>${valBadge}
+                ${act.description ? `<br><small style="color:#64748b;">${act.description}</small>` : ''}
+              </td>
+              <td><strong>${pGrades[act.id] ?? '-'}</strong></td>
+            </tr>
+          `;
+        }).join('');
 
         if (acts.length === 0) actsHtml = '<tr><td colspan="2" style="color:#94a3b8;">Nenhuma atividade individual lançada nesta etapa.</td></tr>';
 
@@ -1161,10 +1195,13 @@
       const lessons = c.lessons || [];
       let lessonsHtml = '';
       lessons.forEach(l => {
-        const status = (l.attendance && l.attendance[s.id]) === 'F' ? '<span style="color:#dc2626; font-weight:700;">❌ FALTA</span>' : '<span style="color:#16a34a; font-weight:700;">✅ PRESENÇA</span>';
+        const lCount = l.count || 1;
+        const status = (l.attendance && l.attendance[s.id]) === 'F' 
+          ? `<span style="color:#dc2626; font-weight:700;">❌ FALTA (${lCount} ${lCount === 1 ? 'falta' : 'faltas'})</span>` 
+          : `<span style="color:#16a34a; font-weight:700;">✅ PRESENÇA (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</span>`;
         lessonsHtml += `
           <tr>
-            <td>${l.date}</td>
+            <td>${l.date} (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</td>
             <td><strong>${l.content}</strong></td>
             <td>${status}</td>
           </tr>
@@ -1214,7 +1251,7 @@
       const input = document.getElementById('student-msg-input');
       const fileInput = document.getElementById('student-msg-file');
       const text = input.value.trim();
-      const file = fileInput.files[0];
+      const file = fileInput.files;
 
       if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
 
@@ -1249,7 +1286,7 @@
       const container = document.getElementById('student-history-content');
       if (state.matchedStudentRecords.length === 0) return;
 
-      const primary = state.matchedStudentRecords[0].student;
+      const primary = state.matchedStudentRecords.student;
 
       let historyRows = '';
       state.matchedStudentRecords.forEach(rec => {
@@ -1468,7 +1505,7 @@
               <td><strong>${t.name}</strong> ${t.role === 'admin' ? '⭐ (Organizador)' : ''}</td>
               <td>${t.discipline}</td>
               <td><code>${t.username}</code></td>
-              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('\${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
+              <td>${t.role !== 'admin' ? `<button onclick="deleteTeacher('${t.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>` : '<em>Organizador Main</em>'}</td>
             </tr>
           `;
         }
@@ -1540,8 +1577,8 @@
     function handleSaveSettings(e) {
       e.preventDefault();
       const schoolName = document.getElementById('set-school-name').value.trim();
-      const logoFile = document.getElementById('set-school-logo').files[0];
-      const bgFile = document.getElementById('set-school-bg').files[0];
+      const logoFile = document.getElementById('set-school-logo').files;
+      const bgFile = document.getElementById('set-school-bg').files;
 
       state.settings.schoolName = schoolName;
 
@@ -1598,7 +1635,7 @@
           </div>
         `;
       });
-      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenhum aviso ativo.</p>';
+      if (state.mural.length === 0) container.innerHTML = '<p style="color:#64748b;">Nenum aviso ativo.</p>';
     }
 
     function openAddMuralModal() {
@@ -1608,7 +1645,7 @@
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.onchange = (e) => {
-        const file = e.target.files[0];
+        const file = e.target.files;
         if (file) {
           const reader = new FileReader();
           reader.onload = (evt) => {
@@ -1774,6 +1811,7 @@
 
       let thHtml = `<tr><th>Aluno</th>`;
       acts.forEach(act => { 
+        const valInfo = act.maxVal ? `<div style="font-size:0.75rem; color:#2563eb; font-weight:600;">Vale ${act.maxVal} pts</div>` : '';
         thHtml += `
           <th style="min-width:140px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1783,7 +1821,8 @@
                 <button onclick="deleteActivity('${act.id}')" title="Excluir Atividade" style="border:none; background:none; cursor:pointer; color:#dc2626;">🗑️</button>
               </span>
             </div>
-            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
+            ${valInfo}
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">${act.description}</div>` : ''}
           </th>`; 
       });
       thHtml += `<th>Soma da Etapa</th></tr>`;
@@ -1809,12 +1848,15 @@
     function openAddActivityModal() {
       const name = prompt(`Nome da nova atividade em ${state.currentPeriod} (ex: Teste Surpresa, Prova, Simulado):`);
       if (!name) return;
+      const maxValStr = prompt(`Valor Máximo / Pontuação da Atividade (ex: 2.0, 10.0):`, "10.0");
+      const maxVal = parseFloat(maxValStr) || 10.0;
       const desc = prompt(`Descrição / Detalhes da atividade (opcional, para o aluno visualizar):`);
 
       const c = state.classes.find(item => item.id === state.currentClassId);
       c.periods[state.currentPeriod].push({
         id: "act-" + Date.now(),
         name: name,
+        maxVal: maxVal,
         description: desc || ""
       });
       saveData();
@@ -1829,9 +1871,12 @@
       if (!act) return;
 
       const newName = prompt("Editar Nome da Atividade:", act.name); if (!newName) return;
+      const newMaxValStr = prompt("Editar Valor Máximo da Atividade:", act.maxVal || 10.0);
+      const newMaxVal = parseFloat(newMaxValStr) || 10.0;
       const newDesc = prompt("Editar Descrição / Detalhes:", act.description || "");
 
       act.name = newName;
+      act.maxVal = newMaxVal;
       act.description = newDesc || "";
 
       saveData();
@@ -1895,7 +1940,7 @@
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
               <div>
-                <strong style="color:#2563eb; font-size:1.05rem;">📅 Aula do dia ${les.date}</strong>
+                <strong style="color:#2563eb; font-size:1.05rem;">📅 Aula do dia ${les.date} (${les.count || 1} ${(les.count || 1) === 1 ? 'aula' : 'aulas'})</strong>
                 <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 <strong>Conteúdo Ministrado:</strong> ${les.content}</div>
               </div>
               <div>
@@ -1921,6 +1966,8 @@
 
       const defaultDate = new Date().toISOString().split('T')[0];
       const date = prompt("Data da Aula (AAAA-MM-DD):", defaultDate); if (!date) return;
+      const countStr = prompt("Quantidade de aulas ministradas neste dia (ex: 1, 2, 3):", "1");
+      const count = parseInt(countStr) || 1;
       const content = prompt("Conteúdo Ministrado na Aula (ex: Sistema Digestório):"); if (!content) return;
 
       if (!c.lessons) c.lessons = [];
@@ -1931,6 +1978,7 @@
       c.lessons.unshift({
         id: "les-" + Date.now(),
         date: date,
+        count: count,
         content: content,
         attendance: initialAtt
       });
@@ -1946,9 +1994,12 @@
       if (!les) return;
 
       const newDate = prompt("Editar Data da Aula:", les.date); if (!newDate) return;
+      const newCountStr = prompt("Editar Quantidade de Aulas do Dia:", les.count || 1);
+      const newCount = parseInt(newCountStr) || 1;
       const newContent = prompt("Editar Conteúdo Ministrado:", les.content); if (!newContent) return;
 
       les.date = newDate;
+      les.count = newCount;
       les.content = newContent;
 
       saveData();
@@ -2157,7 +2208,7 @@
       const input = document.getElementById(`reply-input-${studentId}`);
       const fileInput = document.getElementById(`reply-file-${studentId}`);
       const text = input.value.trim();
-      const file = fileInput.files[0];
+      const file = fileInput.files;
 
       if (!text && !file) return;
 
