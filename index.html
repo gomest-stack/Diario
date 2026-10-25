@@ -22,6 +22,7 @@
     .btn-purple { background-color: #7c3aed; color: #ffffff; }
     .btn-purple:hover { background-color: #6d28d9; }
     .btn-danger { background-color: #dc2626; color: #ffffff; }
+    .btn-danger:hover { background-color: #b91c1c; }
     .btn-block { width: 100%; }
     .btn-sm { padding: 4px 10px; font-size: 0.85rem; }
 
@@ -35,18 +36,17 @@
     .nav-tab-btn { padding: 6px 14px; border: none; background: none; font-weight: 600; font-size: 0.875rem; color: #94a3b8; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
     .nav-tab-btn.active { background-color: #6d28d9; color: #ffffff; box-shadow: 0 1px 4px rgba(109,40,217,0.4); }
 
-    /* TELA DE PORTAL / LOGIN INICIAL */
+    /* CARDS E FORMULÁRIOS */
+    .card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); backdrop-filter: blur(4px); }
     .portal-welcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 30px; }
     .portal-card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
     .portal-card-icon { font-size: 2.5rem; margin-bottom: 12px; }
 
-    /* CARDS E FORMULÁRIOS */
-    .card { background-color: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); backdrop-filter: blur(4px); }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #334155; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #ffffff; }
 
-    /* NAVEGAÇÃO INTERNA DO ALUNO (4 ABAS) */
+    /* NAVEGAÇÃO DO ALUNO */
     .student-main-nav { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
     .student-nav-btn { padding: 10px 18px; font-weight: 600; font-size: 0.95rem; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     .student-nav-btn:hover { background-color: #f1f5f9; border-color: #94a3b8; }
@@ -56,16 +56,14 @@
     .student-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #6d28d9; background-color: #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: #475569; }
     .student-avatar-lg { width: 80px; height: 80px; font-size: 2rem; }
 
-    /* ALERTAS ADMIN */
+    /* ALERTAS E MURAI */
     .admin-alert-card { background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
-
-    /* MURAL DE AVISOS */
     .mural-card { background: #f3e8ff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
     .mural-item { background: #ffffff; border: 1px solid #e9d5ff; padding: 12px; border-radius: 6px; margin-top: 10px; }
     .mural-title { font-weight: 700; color: #5b21b6; font-size: 0.95rem; }
     .mural-date { font-size: 0.75rem; color: #7c3aed; margin-top: 4px; }
 
-    /* PORTAL DO ALUNO */
+    /* BOLETIM E PORTAL */
     .student-search-box { max-width: 500px; margin: 20px auto; text-align: center; }
     .boletim-card { max-width: 1000px; margin: 10px auto 30px auto; background-color: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     .boletim-header { border-bottom: 2px solid #6d28d9; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
@@ -94,7 +92,7 @@
     .login-card { max-width: 420px; margin: 40px auto; }
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
     .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; position: relative; }
-    .class-card:hover { border-color: #2563eb; transform: translateY(-2px); }
+    .class-card:hover { border-color: #6d28d9; transform: translateY(-2px); }
 
     .period-tab-btn { padding: 6px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
     .period-tab-btn.active { background: #6d28d9; color: #fff; border-color: #6d28d9; }
@@ -109,83 +107,31 @@
       .no-print { display: none !important; }
     }
   
-    /* SISTEMA DE MODAIS VISUAIS (V8) */
+    /* SISTEMA DE MODAIS VISUAIS (V9) */
     .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(4px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 99999;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center; z-index: 99999;
+      padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
     }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-card {
-      background: #ffffff;
-      border-radius: 12px;
-      max-width: 600px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 28px;
+      background: #ffffff; border-radius: 12px; max-width: 650px; width: 100%;
+      max-height: 90vh; overflow-y: auto; padding: 28px;
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.04);
-      border: 1px solid #cbd5e1;
-      transform: translateY(10px);
-      transition: transform 0.2s ease;
+      border: 1px solid #cbd5e1; transform: translateY(10px); transition: transform 0.2s ease;
     }
-    .modal-card-lg {
-      max-width: 750px;
-    }
-    .modal-overlay.active .modal-card {
-      transform: translateY(0);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #f1f5f9;
-      padding-bottom: 12px;
-      margin-bottom: 20px;
-    }
-    .modal-header h3 {
-      color: #6d28d9;
-      font-size: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .modal-close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #94a3b8;
-      cursor: pointer;
-      padding: 0 4px;
-      line-height: 1;
-    }
-    .modal-close-btn:hover {
-      color: #dc2626;
-    }
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 24px;
-      border-top: 1px solid #e2e8f0;
-      padding-top: 16px;
-    }
+    .modal-card-lg { max-width: 850px; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px; }
+    .modal-header h3 { color: #6d28d9; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+    .modal-close-btn { background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; padding: 0 4px; line-height: 1; }
+    .modal-close-btn:hover { color: #dc2626; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 16px; }
 
+    /* IMAGENS DE QUESTÕES DE PROVAS */
+    .exam-question-img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; margin: 8px 0; display: block; }
+    .exam-opt-img { max-width: 120px; max-height: 100px; object-fit: contain; border-radius: 4px; border: 1px solid #cbd5e1; margin-top: 4px; display: block; }
   </style>
 </head>
 <body>
@@ -210,19 +156,18 @@
     <!-- ==================== TELA INICIAL UNIFICADA / PORTAL ==================== -->
     <section id="screen-portal">
       <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Diário Escolar Digital</h1>
+        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Sistema de Ensino</h1>
         <p style="color: #64748b; font-size: 1rem; margin-top: 6px;">Selecione o seu tipo de acesso para continuar:</p>
       </div>
 
       <div class="portal-welcome-grid">
-        
         <!-- CARD ACESSO ALUNO -->
         <div class="portal-card">
           <div>
             <div class="portal-card-icon">👨‍🎓</div>
             <h2 style="margin-bottom: 8px;">Área do Aluno</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Consulte seu boletim escolar, notas, diário de presença, fale com seus professores e acesse seu histórico acadêmico.
+              Consulte seu boletim escolar, notas, diário de presença por etapa, fale com seus professores e acesse a Sala de Aula Virtual.
             </p>
             <form onsubmit="handlePortalStudentAccess(event)">
               <div class="form-group">
@@ -233,7 +178,7 @@
             </form>
           </div>
           <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
-            Acesso rápido direto pelo seu código individual
+            Acesso rápido direto pelo seu código individual de até 10 dígitos
           </div>
         </div>
 
@@ -243,7 +188,7 @@
             <div class="portal-card-icon">👨‍🏫</div>
             <h2 style="margin-bottom: 8px;">Acesso do Docente / Gestor</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Lançamento de notas, atividades, diário de presença, gestão de turmas e avisos.
+              Lançamento de notas, faltas por etapa, cadastro de provas com tempo e imagens, fechamento oficial e banco geral de alunos.
             </p>
             
             <div id="portal-login-box">
@@ -264,7 +209,7 @@
               </div>
             </div>
 
-            <!-- ABA SOLICITAR CADASTRO DE PROFESSOR -->
+            <!-- SOLICITAR CADASTRO -->
             <div id="register-form-box" class="hidden">
               <h3 style="text-align: center; margin-bottom: 8px;">Solicitar Cadastro</h3>
               <p style="font-size:0.8rem; color:#64748b; text-align:center; margin-bottom:16px;">Seu pedido será enviado ao Organizador (Prof. Thyago Gomes).</p>
@@ -303,8 +248,7 @@
 
     <!-- ==================== PORTAL DO ALUNO ==================== -->
     <section id="screen-aluno" class="hidden">
-      
-      <!-- CAIXA DE BUSCA DE CÓDIGO (SE NÃO BUSCOU AINDA OU QUISER TROCAR) -->
+      <!-- CAIXA DE BUSCA DE CÓDIGO -->
       <div class="student-search-box card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <h2>Portal do Aluno</h2>
@@ -321,17 +265,16 @@
         </form>
       </div>
 
-      <!-- PAINEL PRINCIPAL DO ALUNO (COM 4 SEÇÕES SEPARADAS) -->
+      <!-- PAINEL PRINCIPAL DO ALUNO (5 SEÇÕES) -->
       <div id="student-portal-content" class="hidden">
-        
-        <!-- CABEÇALHO DO ALUNO COM FOTO E DADOS -->
+        <!-- CABEÇALHO DO ALUNO -->
         <div class="boletim-card" style="margin-bottom: 16px; padding: 20px;">
           <div class="boletim-header" style="border-bottom:none; margin-bottom:0; padding-bottom:0;">
             <div style="display:flex; align-items:center; gap:16px;">
               <div id="bol-student-photo-container"></div>
               <div>
                 <h2 id="bol-student-name">Nome do Aluno</h2>
-                <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#2563eb;">--</strong></p>
+                <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#6d28d9;">--</strong></p>
                 <div class="no-print" style="margin-top:6px;">
                   <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
                     📷 Alterar Minha Foto
@@ -344,13 +287,13 @@
           </div>
         </div>
 
-        <!-- MURAL DE AVISOS DO PROFESSOR -->
+        <!-- MURAL DE AVISOS DA ESCOLA -->
         <div id="student-mural-box" class="mural-card hidden">
-          <h4 style="color:#1e3a8a;">📢 Mural de Avisos da Escola</h4>
+          <h4 style="color:#5b21b6;">📢 Mural de Avisos da Escola</h4>
           <div id="student-mural-items"></div>
         </div>
 
-        <!-- MENU DE NAVEGAÇÃO DO ALUNO (4 SEÇÕES SEPARADAS) -->
+        <!-- MENU DE NAVEGAÇÃO DO ALUNO (5 ABAS) -->
         <div class="student-main-nav">
           <button id="st-tab-sala" class="student-nav-btn active" onclick="switchStudentTab('sala')">🏫 1. Sala de Aula Virtual</button>
           <button id="st-tab-boletim" class="student-nav-btn" onclick="switchStudentTab('boletim')">📊 2. Boletim</button>
@@ -359,60 +302,55 @@
           <button id="st-tab-historico" class="student-nav-btn" onclick="switchStudentTab('historico')">📜 5. Histórico</button>
         </div>
 
-        <!-- ================= SEÇÃO 1: BOLETIM CONSOLIDADO ================= -->
-        <!-- ================= SEÇÃO 1: SALA DE AULA VIRTUAL (PROVAS & ATIVIDADES) ================= -->
+        <!-- SEÇÃO 1: SALA DE AULA VIRTUAL -->
         <div id="st-section-sala" class="boletim-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
             <div>
               <h3 style="color:#1e293b;">🏫 Sala de Aula Virtual & Central de Avaliações</h3>
               <p style="color:#64748b; font-size:0.88rem; margin-top:4px;">
-                Acesse aqui todas as suas <strong>provas online, simulados e atividades discursivas</strong> cadastradas pelos professores.
+                Acesse todas as suas <strong>provas online, simulados e questões com tempo ou imagens</strong>.
               </p>
             </div>
             <button onclick="if(state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);" class="btn btn-secondary btn-sm">🔄 Atualizar Sala</button>
           </div>
-
           <div id="student-classroom-exams-list"></div>
         </div>
 
+        <!-- SEÇÃO 2: BOLETIM CONSOLIDADO -->
         <div id="st-section-boletim" class="boletim-card hidden">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
             <h3 style="color:#1e293b;">📊 Boletim Escolar Consolidado</h3>
             <button onclick="window.print()" class="btn btn-secondary btn-sm">🖨️ Imprimir Boletim</button>
           </div>
           <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-            Confira a lista de componentes curriculares com as notas finais acumuladas de cada etapa e total de faltas.
+            Notas consolidadas oficialmente no fechamento das etapas, com detalhamento do total de faltas divididas por etapa.
           </p>
-
           <div id="student-academic-summary-table" class="table-responsive"></div>
           <div id="student-footer-metrics" style="margin-top:20px; background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:6px; font-size:0.95rem;"></div>
         </div>
 
-        <!-- ================= SEÇÃO 2: DIÁRIOS (ATIVIDADES & PRESENÇAS) ================= -->
+        <!-- SEÇÃO 3: DIÁRIOS & FREQUÊNCIA POR ETAPA -->
         <div id="st-section-diarios" class="boletim-card hidden">
-          <h3 style="color:#1e293b; margin-bottom:8px;">📖 Diários & Detalhamento de Atividades</h3>
+          <h3 style="color:#1e293b; margin-bottom:8px;">📖 Diários & Registro de Aulas / Faltas por Etapa</h3>
           <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-            Selecione a disciplina abaixo para ver todas as notas detalhadas de cada teste/trabalho e o registro diário de faltas e presenças.
+            Selecione a disciplina abaixo para ver todas as atividades e as faltas registradas em cada etapa (A1, A2, etc.).
           </p>
-
           <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;"></div>
           <div id="student-period-content"></div>
         </div>
 
-        <!-- ================= SEÇÃO 3: CAIXA DE MENSAGENS ================= -->
+        <!-- SEÇÃO 4: CAIXA DE MENSAGENS -->
         <div id="st-section-mensagens" class="boletim-card hidden">
           <h3 style="color:#1e293b; margin-bottom:8px;">💬 Caixa de Mensagens com os Professores</h3>
           <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-            Envie dúvidas, recados e arquivos/trabalhos diretamente aos professores das suas disciplinas.
+            Envie dúvidas e trabalhos diretamente aos professores das suas disciplinas.
           </p>
-
           <div id="student-chat-history" class="chat-box"></div>
-          
           <form onsubmit="sendStudentMessage(event)">
             <div class="form-group" style="display: flex; gap: 8px; align-items:center;">
               <input type="text" id="student-msg-input" placeholder="Escreva sua mensagem ao professor..." style="flex:1;">
               <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo/trabalho">
-                📎 Anexar Arquivo
+                📎 Anexar
                 <input type="file" id="student-msg-file" style="display:none;">
               </label>
               <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
@@ -420,16 +358,11 @@
           </form>
         </div>
 
-        <!-- ================= SEÇÃO 4: HISTÓRICO ACADÊMICO ================= -->
+        <!-- SEÇÃO 5: HISTÓRICO ACADÊMICO -->
         <div id="st-section-historico" class="boletim-card hidden">
           <h3 style="color:#1e293b; margin-bottom:8px;">📜 Histórico Acadêmico do Aluno</h3>
-          <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-            Registro permanente do histórico escolar do aluno, contendo turmas concluídas e resultados acumulados ao longo do tempo.
-          </p>
-
           <div id="student-history-content"></div>
         </div>
-
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
@@ -437,30 +370,26 @@
       </div>
     </section>
 
-    <!-- ==================== PAINEL DO PROFESSOR / ORGANIZADOR ==================== -->
+    <!-- ==================== PAINEL DO PROFESSOR / GESTOR ==================== -->
     <section id="screen-professor-app" class="hidden">
-      
       <!-- NOTIFICAÇÃO DE APROVAÇÕES PENDENTES -->
       <div id="admin-pending-alert" class="admin-alert-card hidden">
         <h4 style="color:#b45309;">🔔 Você possui solicitações de cadastro de novos professores!</h4>
-        <p style="font-size:0.85rem; color:#78350f; margin-bottom:10px;">Existem novos professores aguardando sua autorização para acessar o sistema.</p>
-        <button onclick="switchMainTab('teachers')" class="btn btn-primary btn-sm">Revisar e Aprovar Professores</button>
+        <button onclick="switchMainTab('teachers')" class="btn btn-primary btn-sm" style="margin-top:6px;">Revisar Professores</button>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap:wrap; gap:10px;">
         <div>
           <h2 id="user-display-name">Painel de Gestão</h2>
-          <span id="user-role-badge" style="font-size:0.8rem; background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:12px; font-weight:600;">Organizador</span>
+          <span id="user-role-badge" style="font-size:0.8rem; background:#f3e8ff; color:#5b21b6; padding:2px 8px; border-radius:12px; font-weight:600;">Organizador</span>
         </div>
         <div>
           <button onclick="openProfileModal()" class="btn btn-secondary" style="margin-right:4px;">✏️ Meus Dados</button>
-          
-          <button id="btn-customize-theme" onclick="switchMainTab('settings')" class="btn btn-secondary hidden" style="margin-right:4px;">⚙️ Personalizar Plataforma</button>
-
+          <button id="btn-global-students" onclick="switchMainTab('global-students')" class="btn btn-secondary hidden" style="margin-right:4px;">👨‍🎓 Banco Geral de Alunos</button>
+          <button id="btn-customize-theme" onclick="switchMainTab('settings')" class="btn btn-secondary hidden" style="margin-right:4px;">⚙️ Personalizar</button>
           <button id="btn-manage-teachers" onclick="switchMainTab('teachers')" class="btn btn-secondary hidden" style="margin-right:4px;">
-            👨‍🏫 Gerenciar Professores <span id="pending-badge" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;" class="hidden">0</span>
+            👨‍🏫 Professores <span id="pending-badge" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;" class="hidden">0</span>
           </button>
-          
           <button onclick="switchMainTab('mural')" class="btn btn-secondary" style="margin-right:4px;">📢 Mural</button>
           <button onclick="switchMainTab('classes')" class="btn btn-secondary" style="margin-right:4px;">🏫 Turmas</button>
           <button onclick="openClassModal()" class="btn btn-primary">+ Nova Turma</button>
@@ -473,29 +402,44 @@
         <div id="classes-grid" class="classes-grid"></div>
       </div>
 
-      <!-- PAINEL DE PERSONALIZAÇÃO E IDENTIDADE VISUAL -->
+      <!-- BANCO / CADASTRO GERAL DE ALUNOS (GESTOR) -->
+      <div id="view-global-students-section" class="hidden card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3>👨‍🎓 Banco / Cadastro Geral de Alunos</h3>
+            <p style="color:#64748b; font-size:0.88rem;">Cadastre e gerencie os alunos da instituição. Ao criar turmas, basta digitar o código do aluno para vinculá-lo instantaneamente!</p>
+          </div>
+          <button onclick="openAddGlobalStudentModal()" class="btn btn-primary btn-sm">+ Cadastrar Novo Aluno no Banco</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr><th>Foto</th><th>Código Único</th><th>Nome Completo</th><th>Turmas Vinculadas</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="global-students-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAINEL DE PERSONALIZAÇÃO -->
       <div id="view-settings-section" class="hidden card">
         <h3>⚙️ Personalização da Plataforma e Identidade Visual</h3>
-        <p style="color:#64748b; font-size:0.88rem; margin-bottom:20px;">Altere o nome da escola, envie a logo e personalize o fundo do site.</p>
-
         <form onsubmit="handleSaveSettings(event)">
           <div class="form-group">
-            <label>Nome da Escola / Faculdade / Instituição</label>
-            <input type="text" id="set-school-name" placeholder="Ex: Faculdade Dom Pedro II" required>
+            <label>Nome da Instituição</label>
+            <input type="text" id="set-school-name" placeholder="Ex: Sistema de Ensino Dom Pedro" required>
           </div>
-
           <div class="form-group">
             <label>Logo da Instituição</label>
             <input type="file" id="set-school-logo" accept="image/*">
             <div id="preview-logo-box" style="margin-top:8px;"></div>
           </div>
-
           <div class="form-group">
-            <label>Imagem de Fundo do Site (Background)</label>
+            <label>Imagem de Fundo do Site</label>
             <input type="file" id="set-school-bg" accept="image/*">
             <div id="preview-bg-box" style="margin-top:8px;"></div>
           </div>
-
           <button type="submit" class="btn btn-success">💾 Salvar Personalizações</button>
           <button type="button" onclick="resetSettingsDefaults()" class="btn btn-secondary" style="margin-left:8px;">Restaurar Padrão</button>
         </form>
@@ -507,39 +451,33 @@
           <h3>Aprovação e Controle de Professores</h3>
           <button onclick="openAddTeacherModal()" class="btn btn-primary btn-sm">+ Cadastrar Professor Direto</button>
         </div>
-
         <h4 style="margin-top:10px; color:#b45309;">⏳ Pedidos de Acesso Pendentes</h4>
         <div class="table-responsive" style="margin-bottom:20px;">
           <table class="data-table">
-            <thead>
-              <tr><th>Nome do Solicitante</th><th>Disciplina</th><th>Usuário</th><th>Ação</th></tr>
-            </thead>
+            <thead><tr><th>Nome</th><th>Disciplina</th><th>Usuário</th><th>Ação</th></tr></thead>
             <tbody id="pending-teachers-tbody"></tbody>
           </table>
         </div>
-
-        <h4>✅ Professores Ativos no Sistema</h4>
+        <h4>✅ Professores Ativos</h4>
         <div class="table-responsive">
           <table class="data-table">
-            <thead>
-              <tr><th>Nome</th><th>Disciplina</th><th>Usuário</th><th>Ações</th></tr>
-            </thead>
+            <thead><tr><th>Nome</th><th>Disciplina</th><th>Usuário</th><th>Ações</th></tr></thead>
             <tbody id="active-teachers-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- MURAL DE AVISOS E ATIVIDADES -->
+      <!-- MURAL -->
       <div id="view-mural-section" class="hidden card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3>Mural de Recados & Arquivos de Atividades</h3>
-          <button onclick="openAddMuralModal()" class="btn btn-primary btn-sm">+ Publicar Novo Recado / Anexo</button>
+          <button onclick="openAddMuralModal()" class="btn btn-primary btn-sm">+ Publicar Recado / Anexo</button>
         </div>
         <div id="mural-admin-list"></div>
       </div>
 
       <!-- DETALHES DA TURMA -->
-      <div id="class-detail-view" class="hidden" style="margin-top: 30px;">
+      <div id="class-detail-view" class="hidden" style="margin-top: 20px;">
         <button onclick="closeClassDetail()" class="btn btn-secondary btn-sm" style="margin-bottom: 16px;">← Voltar para Turmas</button>
         <div class="card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
@@ -549,27 +487,25 @@
             </div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <button onclick="openEditClassModal()" class="btn btn-secondary btn-sm">✏️ Editar Turma</button>
-              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Gerenciar Professores</button>
+              <button onclick="openManageCoTeachersModal()" class="btn btn-secondary btn-sm">👨‍🏫 Professores Auxiliares</button>
               <button onclick="deleteCurrentClass()" class="btn btn-danger btn-sm">🗑️ Excluir Turma</button>
             </div>
           </div>
 
           <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; flex-wrap:wrap;">
-            <button onclick="switchClassTab('alunos')" class="btn btn-secondary btn-sm">👥 Alunos & Fotos</button>
+            <button onclick="switchClassTab('alunos')" class="btn btn-secondary btn-sm">👥 Alunos da Turma</button>
             <button onclick="switchClassTab('notas')" class="btn btn-secondary btn-sm">📝 Lançar Notas & Atividades</button>
-            <button onclick="switchClassTab('frequencia')" class="btn btn-secondary btn-sm">📅 Frequência & Diário de Classe</button>
+            <button onclick="switchClassTab('frequencia')" class="btn btn-secondary btn-sm">📅 Frequência & Faltas por Etapa</button>
             <button onclick="switchClassTab('provas')" class="btn btn-secondary btn-sm">📝 Provas & Simulados Online</button>
             <button onclick="switchClassTab('mensagens')" class="btn btn-secondary btn-sm">💬 Mensagens dos Alunos</button>
           </div>
 
-          <!-- ABA ALUNOS -->
+          <!-- ABA ALUNOS DA TURMA -->
           <div id="tab-content-alunos">
-            <button onclick="openStudentModal()" class="btn btn-primary btn-sm" style="margin-bottom: 12px;">+ Cadastrar / Vincular Aluno nesta Turma</button>
+            <button onclick="openStudentModal()" class="btn btn-primary btn-sm" style="margin-bottom: 12px;">+ Vincular Aluno por Código</button>
             <div class="table-responsive">
               <table class="data-table">
-                <thead>
-                  <tr><th>Foto</th><th>Código Único</th><th>Nome do Aluno</th><th>Ações</th></tr>
-                </thead>
+                <thead><tr><th>Foto</th><th>Código Único</th><th>Nome do Aluno</th><th>Ações</th></tr></thead>
                 <tbody id="students-table-body"></tbody>
               </table>
             </div>
@@ -582,7 +518,7 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
               <div id="teacher-period-selector" style="display:flex; gap:6px;"></div>
               <div>
-                <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-primary btn-sm" style="margin-right:6px;">+ Criar Atividade / Avaliação</button>
+                <button id="btn-add-act" onclick="openAddActivityModal()" class="btn btn-primary btn-sm" style="margin-right:6px;">+ Criar Atividade</button>
                 <button onclick="saveGradesExplicitly()" class="btn btn-success btn-sm">💾 SALVAR NOTAS</button>
               </div>
             </div>
@@ -593,26 +529,21 @@
                 <tbody id="teacher-grades-tbody"></tbody>
               </table>
             </div>
-            
-            <div style="margin-top:12px; text-align:right;">
-              <button onclick="saveGradesExplicitly()" class="btn btn-success">💾 SALVAR E PUBLICAR NOTAS PARA OS ALUNOS</button>
-            </div>
           </div>
 
-          <!-- ABA FREQUÊNCIA E DIÁRIO DE CLASSE -->
+          <!-- ABA FREQUÊNCIA E FALTAS POR ETAPA -->
           <div id="tab-content-frequencia" class="hidden">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-              <h4>Registro de Aulas & Faltas</h4>
-              <button onclick="openAddLessonModal()" class="btn btn-primary btn-sm">+ Registrar Nova Aula / Presença</button>
+              <h4>Registro de Aulas & Faltas Divididas por Etapa</h4>
+              <button onclick="openAddLessonModal()" class="btn btn-primary btn-sm">+ Registrar Nova Aula / Frequência</button>
             </div>
-            
             <div id="teacher-attendance-records"></div>
           </div>
 
           <!-- ABA PROVAS ONLINE -->
           <div id="tab-content-provas" class="hidden">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
-              <h4>📝 Gestão de Provas & Simulados Online</h4>
+              <h4>📝 Gestão de Provas Online (Tempo Limite & Imagens)</h4>
               <button onclick="openAddExamModal()" class="btn btn-primary btn-sm">+ Criar Nova Prova Online</button>
             </div>
             <div id="teacher-exams-list"></div>
@@ -620,7 +551,7 @@
 
           <!-- ABA MENSAGENS -->
           <div id="tab-content-mensagens" class="hidden">
-            <h4>Mensagens dos Alunos</h4>
+            <h4>Mensagens dos Alunos nesta Turma</h4>
             <div id="teacher-messages-list" style="margin-top: 12px;"></div>
           </div>
 
@@ -633,12 +564,12 @@
   <div id="toast-message" class="toast-success hidden">✅ Operação realizada com sucesso!</div>
 
   <script>
-    // ESTADO E BANCO DE DADOS LOCAL
-    const INITIAL_SETTINGS = {
-      schoolName: "Sistema de Ensino",
-      schoolLogo: null,
-      bgImage: null
-    };
+    // BANCO DE DADOS INICIAL E LOCALSTORAGE (VERSÃO V9)
+    const INITIAL_SETTINGS = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
+
+    const INITIAL_GLOBAL_STUDENTS = [
+      { id: "gst-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null }
+    ];
 
     const INITIAL_TEACHERS = [
       { id: "prof-thyago", name: "Prof. Thyago Gomes", username: "2026", password: "2026", role: "admin", discipline: "Ciências", status: "approved" },
@@ -656,112 +587,62 @@
         discipline: "Ciências",
         year: 2026,
         closedPeriods: { "A1": false, "A2": false, "A3 (Prova Final)": false },
+        closedSnapshots: {},
         exams: [
           {
             id: "exam-1",
             title: "Simulado de Biologia Humana & Nutrição",
-            description: "Avaliação online com questões objetivas e discursivas sobre o Sistema Digestório",
+            description: "Avaliação online com limite de tempo e imagens",
             period: "A1",
             maxGrade: 10.0,
+            timeLimitMinutes: 45,
             questions: [
-              { id: "q1", type: "multiple", text: "Onde ocorre a maior parte da absorção de nutrientes no corpo humano?", options: ["Estômago", "Intestino Delgado", "Fígado", "Esôfago"], correctOpt: 1, points: 5.0 },
-              { id: "q2", type: "discursive", text: "Explique sucintamente com suas palavras como a digestão química dos carboidratos se inicia na boca e qual enzima participa desse processo.", points: 5.0 }
+              { id: "q1", type: "multiple", text: "Onde ocorre a maior parte da absorção de nutrientes no corpo humano?", options: ["Estômago", "Intestino Delgado", "Fígado", "Esôfago"], correctOpt: 1, points: 5.0, questionImage: null, optionImages: [null, null, null, null] },
+              { id: "q2", type: "discursive", text: "Explique o papel das enzimas no processo digestivo.", points: 5.0, questionImage: null }
             ]
           }
         ],
         examSubmissions: [],
         periods: {
           "A1": [
-            { id: "act-1", name: "Teste 1", description: "Avaliação escrita de introdução às ciências" },
-            { id: "act-2", name: "Prova A1", description: "Prova geral A1" }
+            { id: "act-1", name: "Teste 1", maxVal: 2.0, description: "Introdução às ciências" },
+            { id: "act-2", name: "Prova A1", maxVal: 8.0, description: "Prova geral A1" }
           ],
           "A2": [
-            { id: "act-3", name: "Simulado A2", description: "Simulado teórico e prático" }
+            { id: "act-3", name: "Simulado A2", maxVal: 10.0, description: "Simulado teórico" }
           ],
           "A3 (Prova Final)": []
         },
         lessons: [
-          {
-            id: "les-1",
-            date: "2026-10-01",
-            content: "Sistema Digestório — órgãos e digestão química",
-            attendance: { "al-1": "P" }
-          }
+          { id: "les-1", date: "2026-10-01", count: 2, period: "A1", content: "Sistema Digestório — órgãos e digestão química", attendance: { "al-1": "P" } }
         ],
         students: [
           {
             id: "al-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
-            grades: {
-              "A1": { "act-1": 7.0, "act-2": 8.0 },
-              "A2": { "act-3": 4.0 },
-              "A3 (Prova Final)": { a3Note: 6.0 }
-            },
-            messages: []
-          }
-        ]
-      },
-      {
-        id: "turma-2",
-        teacherId: "prof-joao",
-        teacherName: "Prof. João Silva",
-        coTeacherIds: [],
-        name: "Ensino Superior - Módulo 1",
-        mode: "semestral",
-        discipline: "Matemática",
-        year: 2026,
-        periods: {
-          "A1": [
-            { id: "act-m1", name: "Prova M1", description: "Cálculo e álgebra linear" }
-          ],
-          "A2": [
-            { id: "act-m2", name: "Trabalho M2", description: "Atividade em dupla" }
-          ],
-          "A3 (Prova Final)": []
-        },
-        lessons: [
-          {
-            id: "les-2",
-            date: "2026-10-02",
-            content: "Funções e Gráficos",
-            attendance: { "al-1-mat": "P" }
-          }
-        ],
-        students: [
-          {
-            id: "al-1-mat", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
-            grades: {
-              "A1": { "act-m1": 8.5 },
-              "A2": { "act-m2": 7.5 },
-              "A3 (Prova Final)": {}
-            },
+            grades: { "A1": { "act-1": 2.0, "act-2": 7.8 }, "A2": { "act-3": 4.0 }, "A3 (Prova Final)": { a3Note: 10.0 } },
             messages: []
           }
         ]
       }
     ];
 
-    const INITIAL_MURAL = [];
-
     let state = {
       settings: {},
+      globalStudents: [],
       teachers: [],
       classes: [],
       mural: [],
       currentClassId: null,
       currentPeriod: "A1",
       currentUser: null,
-      activeProfile: "portal", // 'portal', 'aluno', 'professor'
-      activeStudentTab: "boletim", // 'boletim', 'diarios', 'mensagens', 'historico'
+      activeProfile: "portal",
+      activeStudentTab: "sala",
       lastSearchedCode: "",
       matchedStudentRecords: [],
-      activeStudentPeriod: "A1"
+      examTimerInterval: null
     };
 
-    
-    // ==========================================
-    // SISTEMA DE MODAIS VISUAIS NATIVOS (V8)
-    // ==========================================
-
+    // SISTEMA DE MODAIS VISUAIS (V9)
     function showCustomModal(title, contentHtml, onSave, saveBtnText = "💾 Salvar", large = false) {
       const existing = document.getElementById('app-custom-modal');
       if (existing) existing.remove();
@@ -776,9 +657,7 @@
             <h3>${title}</h3>
             <button class="modal-close-btn" onclick="closeCustomModal()">&times;</button>
           </div>
-          <div class="modal-body">
-            ${contentHtml}
-          </div>
+          <div class="modal-body">${contentHtml}</div>
           <div class="modal-footer">
             <button onclick="closeCustomModal()" class="btn btn-secondary">Cancelar</button>
             <button id="modal-save-btn" class="btn btn-primary">${saveBtnText}</button>
@@ -790,10 +669,7 @@
 
       document.getElementById('modal-save-btn').onclick = () => {
         if (onSave) {
-          const success = onSave();
-          if (success !== false) {
-            closeCustomModal();
-          }
+          if (onSave() !== false) closeCustomModal();
         } else {
           closeCustomModal();
         }
@@ -806,47 +682,39 @@
     }
 
     function showConfirmModal(title, message, onConfirm, confirmBtnText = "Sim, Confirmar") {
-      showCustomModal(
-        title,
-        `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`,
-        onConfirm,
-        confirmBtnText
-      );
+      showCustomModal(title, `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`, onConfirm, confirmBtnText);
     }
 
     function showAlertModal(title, message) {
-      showCustomModal(
-        title,
-        `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`,
-        null,
-        "Entendido"
-      );
+      showCustomModal(title, `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`, null, "Entendido");
     }
 
-
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v18") || localStorage.getItem("diario_settings_v17") || localStorage.getItem("diario_settings");
+      const sStored = localStorage.getItem("diario_settings_v19") || localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const tStored = localStorage.getItem("diario_teachers_v18") || localStorage.getItem("diario_teachers_v17") || localStorage.getItem("diario_teachers");
+      const gsStored = localStorage.getItem("diario_global_students_v19");
+      state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
+
+      const tStored = localStorage.getItem("diario_teachers_v19") || localStorage.getItem("diario_teachers_v18");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v18") || localStorage.getItem("diario_classes_v17") || localStorage.getItem("diario_classes_v16") || localStorage.getItem("diario_classes");
+      const cStored = localStorage.getItem("diario_classes_v19") || localStorage.getItem("diario_classes_v18");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v18") || localStorage.getItem("diario_mural_v17") || localStorage.getItem("diario_mural");
-      state.mural = mStored ? JSON.parse(mStored) : INITIAL_MURAL;
+      const mStored = localStorage.getItem("diario_mural_v19") || localStorage.getItem("diario_mural_v18");
+      state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const uStored = localStorage.getItem("diario_session_v18") || localStorage.getItem("diario_session_v17") || localStorage.getItem("diario_session");
+      const uStored = localStorage.getItem("diario_session_v19") || localStorage.getItem("diario_session_v18");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v18") || localStorage.getItem("diario_active_profile_v17");
+      const pStored = localStorage.getItem("diario_active_profile_v19") || localStorage.getItem("diario_active_profile_v18");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v18") || localStorage.getItem("diario_active_student_tab_v17");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v19") || localStorage.getItem("diario_active_student_tab_v18");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v18") || localStorage.getItem("diario_last_student_code_v17");
+      const codeStored = localStorage.getItem("diario_last_student_code_v19") || localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
@@ -854,18 +722,19 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
-      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
-      localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
-      localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "boletim");
-      localStorage.setItem("diario_last_student_code_v18", state.lastSearchedCode || "");
+      localStorage.setItem("diario_settings_v19", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v19", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v19", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v19", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v19", JSON.stringify(state.mural));
+      localStorage.setItem("diario_active_profile_v19", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v19", state.activeStudentTab || "sala");
+      localStorage.setItem("diario_last_student_code_v19", state.lastSearchedCode || "");
       
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v18", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v19", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v18");
+        localStorage.removeItem("diario_session_v19");
       }
     }
 
@@ -901,58 +770,58 @@
       setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
 
-    function showPortalHome() {
-      switchProfile('portal');
-    }
+    function showPortalHome() { switchProfile('portal'); }
 
-    function getAllSystemStudents() {
-      const map = new Map();
-      state.classes.forEach(c => {
-        (c.students || []).forEach(s => {
-          const key = (s.code || s.name).trim().toLowerCase();
-          if (key && !map.has(key)) {
-            map.set(key, { name: s.name, code: s.code, photo: s.photo });
-          }
-        });
-      });
-      return Array.from(map.values());
-    }
-
-    // CÁLCULO DE FREQUÊNCIA DO ALUNO
+    // FREQUÊNCIA COM FALTAS DIVIDIDAS POR ETAPA
     function calcStudentAttendance(student, c) {
       const lessons = c.lessons || [];
-      if (lessons.length === 0) return { totalLessons: 0, absences: 0, frequency: "100.0%", freqNum: 100.0 };
+      let totalLessons = 0;
+      let totalAbsences = 0;
+      const periodAbsences = {};
 
-      let total = 0;
-      let absences = 0;
+      Object.keys(c.periods || {}).forEach(pk => periodAbsences[pk] = 0);
 
       lessons.forEach(l => {
         const cnt = parseInt(l.count) || 1;
-        total += cnt;
+        const pKey = l.period || "A1";
+        if (periodAbsences[pKey] === undefined) periodAbsences[pKey] = 0;
+
+        totalLessons += cnt;
         const status = (l.attendance && l.attendance[student.id]) ? l.attendance[student.id] : "P";
-        if (status === "F") absences += cnt;
+        if (status === "F") {
+          totalAbsences += cnt;
+          periodAbsences[pKey] += cnt;
+        }
       });
 
-      const freqNum = total > 0 ? ((total - absences) / total) * 100 : 100.0;
-      const freqPct = freqNum.toFixed(1) + "%";
-      return { totalLessons: total, absences, frequency: freqPct, freqNum: freqNum };
+      const freqNum = totalLessons > 0 ? ((totalLessons - totalAbsences) / totalLessons) * 100 : 100.0;
+      return { totalLessons, absences: totalAbsences, periodAbsences, frequency: freqNum.toFixed(1) + "%", freqNum };
     }
 
     function calcStudentAcademicStatus(student, c) {
       const att = calcStudentAttendance(student, c);
       const hasMinAttendance = att.freqNum >= 75.0;
       const closed = c.closedPeriods || {};
+      const snapshots = c.closedSnapshots || {};
 
       if (c.mode === 'semestral') {
         const gA1 = student.grades ? student.grades["A1"] || {} : {};
         const gA2 = student.grades ? student.grades["A2"] || {} : {};
         const gA3 = student.grades ? student.grades["A3 (Prova Final)"] || {} : {};
 
-        const actsA1 = c.periods["A1"] || [];
-        const actsA2 = c.periods["A2"] || [];
+        let sumA1 = 0;
+        if (closed["A1"] && snapshots["A1"] && snapshots["A1"].studentGrades && snapshots["A1"].studentGrades[student.id] !== undefined) {
+          sumA1 = parseFloat(snapshots["A1"].studentGrades[student.id]) || 0;
+        } else {
+          (c.periods["A1"] || []).forEach(a => sumA1 += parseFloat(gA1[a.id]) || 0);
+        }
 
-        let sumA1 = 0; actsA1.forEach(a => sumA1 += parseFloat(gA1[a.id]) || 0);
-        let sumA2 = 0; actsA2.forEach(a => sumA2 += parseFloat(gA2[a.id]) || 0);
+        let sumA2 = 0;
+        if (closed["A2"] && snapshots["A2"] && snapshots["A2"].studentGrades && snapshots["A2"].studentGrades[student.id] !== undefined) {
+          sumA2 = parseFloat(snapshots["A2"].studentGrades[student.id]) || 0;
+        } else {
+          (c.periods["A2"] || []).forEach(a => sumA2 += parseFloat(gA2[a.id]) || 0);
+        }
 
         const avgPartial = (sumA1 + sumA2) / 2;
         let finalGrade = avgPartial;
@@ -977,34 +846,28 @@
           avgPartial: avgPartial.toFixed(1),
           a3Note: gA3.a3Note ?? null,
           finalGrade: finalGrade.toFixed(1),
-          isA3Needed,
-          isGradePassed,
-          hasMinAttendance,
-          isPassed,
-          closedPeriods: closed
+          isA3Needed, isGradePassed, hasMinAttendance, isPassed,
+          closedPeriods: closed, closedSnapshots: snapshots
         };
       } else {
         const pKeys = Object.keys(c.periods);
         let sum = 0;
         let periodSums = {};
         pKeys.forEach(pk => {
-          const pGrades = (student.grades && student.grades[pk]) ? student.grades[pk] : {};
-          const acts = c.periods[pk] || [];
           let pSum = 0;
-          acts.forEach(a => pSum += parseFloat(pGrades[a.id]) || 0);
+          if (closed[pk] && snapshots[pk] && snapshots[pk].studentGrades && snapshots[pk].studentGrades[student.id] !== undefined) {
+            pSum = parseFloat(snapshots[pk].studentGrades[student.id]) || 0;
+          } else {
+            const pGrades = (student.grades && student.grades[pk]) ? student.grades[pk] : {};
+            (c.periods[pk] || []).forEach(a => pSum += parseFloat(pGrades[a.id]) || 0);
+          }
           periodSums[pk] = pSum.toFixed(1);
           sum += pSum;
         });
         const avg = pKeys.length > 0 ? (sum / pKeys.length) : 0;
         const isGradePassed = avg >= 6.0;
         const isPassed = isGradePassed && hasMinAttendance;
-        return {
-          periodSums: periodSums,
-          finalGrade: avg.toFixed(1),
-          isGradePassed,
-          hasMinAttendance,
-          isPassed
-        };
+        return { periodSums, finalGrade: avg.toFixed(1), isGradePassed, hasMinAttendance, isPassed, closedPeriods: closed };
       }
     }
 
@@ -1039,7 +902,6 @@
         } else {
           document.getElementById('screen-portal').classList.remove('hidden');
           document.getElementById('nav-btn-portal').classList.add('active');
-          document.getElementById('nav-btn-professor').classList.remove('active');
         }
       }
     }
@@ -1062,6 +924,7 @@
         document.getElementById('user-role-badge').textContent = 'Organizador / Admin (Acesso Total)';
         document.getElementById('btn-manage-teachers').classList.remove('hidden');
         document.getElementById('btn-customize-theme').classList.remove('hidden');
+        document.getElementById('btn-global-students').classList.remove('hidden');
         
         const pendingCount = state.teachers.filter(t => t.status === 'pending').length;
         if (pendingCount > 0) {
@@ -1076,11 +939,11 @@
         document.getElementById('user-role-badge').textContent = `Prof. (${u.discipline})`;
         document.getElementById('btn-manage-teachers').classList.add('hidden');
         document.getElementById('btn-customize-theme').classList.add('hidden');
+        document.getElementById('btn-global-students').classList.add('hidden');
         document.getElementById('admin-pending-alert').classList.add('hidden');
       }
     }
 
-    // NAVEGAÇÃO ENTRE AS 4 SEÇÕES DO ALUNO
     function switchStudentTab(tab) {
       state.activeStudentTab = tab;
       saveData();
@@ -1099,7 +962,6 @@
       if (activeSec) activeSec.classList.remove('hidden');
     }
 
-    // PORTAL DO ALUNO - BUSCA
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim();
@@ -1168,7 +1030,7 @@
       }
     }
 
-    // 1. BOLETIM CONSOLIDADO (LIMPO E EM LISTA)
+    // BOLETIM CONSOLIDADO
     function renderAcademicConsolidatedTable() {
       const summaryBox = document.getElementById('student-academic-summary-table');
       const footerBox = document.getElementById('student-footer-metrics');
@@ -1188,8 +1050,7 @@
           let statusText = 'Aprovado';
           let statusClass = 'status-aprovado';
           if (!st.hasMinAttendance) {
-            statusText = 'Retido por Falta';
-            statusClass = 'status-reprovado';
+            statusText = 'Retido por Falta'; statusClass = 'status-reprovado';
           } else if (!st.isGradePassed) {
             statusText = (st.isA3Needed && (st.a3Note === null || st.a3Note === undefined)) ? 'Em A3' : 'Retido por Nota';
             statusClass = 'status-reprovado';
@@ -1199,12 +1060,15 @@
           const isA2Closed = !!(st.closedPeriods && st.closedPeriods["A2"]);
 
           const a1Display = isA1Closed 
-            ? `<span style="font-weight:700; color:#15803d;" title="Etapa A1 Fechada">🔒 ${st.sumA1}</span>` 
-            : `<span style="font-weight:600; color:#7c3aed; background:#f3e8ff; padding:2px 6px; border-radius:4px;" title="Lançamento parcial nos diários (Etapa Aberta)">⏳ ${st.sumA1} (Diário)</span>`;
+            ? `<span style="font-weight:700; color:#15803d;" title="Etapa A1 Fechada Oficialmente">🔒 ${st.sumA1}</span>` 
+            : `<span style="font-weight:600; color:#7c3aed; background:#f3e8ff; padding:2px 6px; border-radius:4px;" title="Diário em andamento">⏳ ${st.sumA1} (Diário)</span>`;
 
           const a2Display = isA2Closed 
-            ? `<span style="font-weight:700; color:#15803d;" title="Etapa A2 Fechada">🔒 ${st.sumA2}</span>` 
-            : `<span style="font-weight:600; color:#7c3aed; background:#f3e8ff; padding:2px 6px; border-radius:4px;" title="Lançamento parcial nos diários (Etapa Aberta)">⏳ ${st.sumA2} (Diário)</span>`;
+            ? `<span style="font-weight:700; color:#15803d;" title="Etapa A2 Fechada Oficialmente">🔒 ${st.sumA2}</span>` 
+            : `<span style="font-weight:600; color:#7c3aed; background:#f3e8ff; padding:2px 6px; border-radius:4px;" title="Diário em andamento">⏳ ${st.sumA2} (Diário)</span>`;
+
+          const pAbs = att.periodAbsences || {};
+          const absencesStr = `A1: ${pAbs["A1"] || 0} | A2: ${pAbs["A2"] || 0}`;
 
           rowsHtml += `
             <tr>
@@ -1213,25 +1077,18 @@
               <td>${a2Display}</td>
               <td><span style="font-weight:600;">${st.a3Note ?? '-'}</span></td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}" style="font-size:1.05rem;">${st.finalGrade}</strong></td>
-              <td><span style="font-weight:600; color:${st.hasMinAttendance ? '#334155' : '#dc2626'};">${att.absences} Faltas (${att.frequency})</span></td>
               <td>
-                <span class="status-badge ${statusClass}">
-                  ${statusText}
+                <span style="font-weight:600; color:${st.hasMinAttendance ? '#334155' : '#dc2626'};">
+                  ${att.absences} Faltas no Total (${att.frequency})
                 </span>
+                <br><small style="color:#64748b;">[${absencesStr}]</small>
               </td>
+              <td><span class="status-badge ${statusClass}">${statusText}</span></td>
             </tr>
           `;
         } else {
-          let statusText = 'Aprovado';
-          let statusClass = 'status-aprovado';
-          if (!st.hasMinAttendance) {
-            statusText = 'Retido por Falta';
-            statusClass = 'status-reprovado';
-          } else if (!st.isGradePassed) {
-            statusText = 'Retido por Nota';
-            statusClass = 'status-reprovado';
-          }
-
+          let statusText = st.isPassed ? 'Aprovado' : 'Retido';
+          let statusClass = st.isPassed ? 'status-aprovado' : 'status-reprovado';
           const pSums = st.periodSums || {};
           rowsHtml += `
             <tr>
@@ -1241,7 +1098,7 @@
               <td>${pSums['3º Bimestre'] ?? '-'}</td>
               <td>${pSums['4º Bimestre'] ?? '-'}</td>
               <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
-              <td><span style="font-weight:600; color:${st.hasMinAttendance ? '#334155' : '#dc2626'};">${att.absences} Faltas (${att.frequency})</span></td>
+              <td><span style="font-weight:600;">${att.absences} Faltas (${att.frequency})</span></td>
               <td><span class="status-badge ${statusClass}">${statusText}</span></td>
             </tr>
           `;
@@ -1250,38 +1107,19 @@
 
       const overallAvg = (sumGrades / state.matchedStudentRecords.length).toFixed(1);
 
-      const isSemestralHeader = state.matchedStudentRecords.some(r => r.class.mode === 'semestral');
-
-      const theadHtml = isSemestralHeader ? `
-        <thead>
-          <tr>
-            <th>Componente Curricular / Docente</th>
-            <th>Etapa A1</th>
-            <th>Etapa A2</th>
-            <th>A3 (Final)</th>
-            <th>Média Final (MF)</th>
-            <th>Total de Faltas & Presença</th>
-            <th>Situação Final</th>
-          </tr>
-        </thead>
-      ` : `
-        <thead>
-          <tr>
-            <th>Componente Curricular / Docente</th>
-            <th>1º Bim</th>
-            <th>2º Bim</th>
-            <th>3º Bim</th>
-            <th>4º Bim</th>
-            <th>Média Final (MF)</th>
-            <th>Total de Faltas & Presença</th>
-            <th>Situação Final</th>
-          </tr>
-        </thead>
-      `;
-
       summaryBox.innerHTML = `
         <table class="data-table">
-          ${theadHtml}
+          <thead>
+            <tr>
+              <th>Componente Curricular / Docente</th>
+              <th>Etapa A1</th>
+              <th>Etapa A2</th>
+              <th>A3 (Final)</th>
+              <th>Média Final (MF)</th>
+              <th>Faltas por Etapa & Total</th>
+              <th>Situação Final</th>
+            </tr>
+          </thead>
           <tbody>${rowsHtml}</tbody>
         </table>
       `;
@@ -1292,7 +1130,7 @@
           <div><strong>Coeficiente de Rendimento (CR Geral):</strong> <span class="grade-blue" style="font-size:1.1rem; font-weight:700;">${overallAvg}</span></div>
         </div>
         <div style="font-size:0.8rem; color:#64748b; margin-top:12px; border-top:1px solid #e2e8f0; padding-top:8px;">
-          ℹ️ <strong>Informação:</strong> As notas marcadas com <code>⏳ (Diário)</code> são lançamentos parciais registrados nos diários. O valor consolida oficialmente no Boletim quando o professor fecha a etapa.
+          🔒 <strong>Nota sobre o Fechamento:</strong> As notas exibidas com o selo <code>🔒</code> estão oficialmente consolidadas no boletim. Lançamentos diários posteriores não alteram o boletim a menos que a etapa seja reaberta pelo professor.
         </div>
       `;
     }
@@ -1305,6 +1143,8 @@
       reader.onload = function(evt) {
         state.matchedStudentRecords.forEach(rec => {
           rec.student.photo = evt.target.result;
+          const gst = state.globalStudents.find(g => (g.code || "").toLowerCase() === (rec.student.code || "").toLowerCase());
+          if (gst) gst.photo = evt.target.result;
         });
         saveData();
         document.getElementById('bol-student-photo-container').innerHTML = `<img src="${evt.target.result}" class="student-avatar student-avatar-lg">`;
@@ -1338,7 +1178,6 @@
       }
     }
 
-    // 2. DIÁRIOS (DETALHAMENTO DE ATIVIDADES E FREQUÊNCIA)
     function renderStudentPeriodSelector() {
       const container = document.getElementById('student-period-selector');
       container.innerHTML = '';
@@ -1369,13 +1208,12 @@
 
       let html = '';
 
-      // NOTAS E DESCRIÇÃO DAS ATIVIDADES
       Object.keys(c.periods).forEach(pk => {
         const acts = c.periods[pk] || [];
         const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
 
         let actsHtml = acts.map(act => {
-          const valBadge = act.maxVal ? ` <span style="font-size:0.8rem; color:#2563eb; font-weight:600;">(Vale ${act.maxVal} pts)</span>` : '';
+          const valBadge = act.maxVal ? ` <span style="font-size:0.8rem; color:#6d28d9; font-weight:600;">(Vale ${act.maxVal} pts)</span>` : '';
           return `
             <tr>
               <td>
@@ -1391,7 +1229,7 @@
 
         html += `
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-            <h5 style="color:#2563eb; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
+            <h5 style="color:#6d28d9; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
             <table class="data-table">
               <thead><tr><th>Avaliação / Atividade & Descrição</th><th>Sua Nota</th></tr></thead>
               <tbody>${actsHtml}</tbody>
@@ -1400,155 +1238,39 @@
         `;
       });
 
-      // REGISTRO DE AULAS E CONTEÚDO MINISTRADO
       const lessons = c.lessons || [];
       let lessonsHtml = '';
       lessons.forEach(l => {
         const lCount = l.count || 1;
+        const lPeriod = l.period || "A1";
         const status = (l.attendance && l.attendance[s.id]) === 'F' 
           ? `<span style="color:#dc2626; font-weight:700;">❌ FALTA (${lCount} ${lCount === 1 ? 'falta' : 'faltas'})</span>` 
-          : `<span style="color:#16a34a; font-weight:700;">✅ PRESENÇA (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</span>`;
+          : `<span style="color:#15803d; font-weight:700;">✅ PRESENÇA (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</span>`;
         lessonsHtml += `
           <tr>
-            <td>${l.date} (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</td>
+            <td>Etapa: <strong>${lPeriod}</strong> | ${l.date} (${lCount} h)</td>
             <td><strong>${l.content}</strong></td>
             <td>${status}</td>
           </tr>
         `;
       });
 
-      if (lessons.length === 0) lessonsHtml = '<tr><td colspan="3" style="color:#94a3b8;">Nenhum conteúdo ministrado registrado até o momento.</td></tr>';
+      if (lessons.length === 0) lessonsHtml = '<tr><td colspan="3" style="color:#94a3b8;">Nenhum registro de aulas ou faltas lançado.</td></tr>';
 
       html += `
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-          <h5 style="color:#6d28d9; margin-bottom:8px;">📅 Diário de Aulas & Frequência Detalhada (${c.discipline})</h5>
+          <h5 style="color:#6d28d9; margin-bottom:8px;">📅 Diário de Aulas & Frequência por Etapa (${c.discipline})</h5>
           <table class="data-table">
-            <thead><tr><th>Data da Aula</th><th>Conteúdo Ministrado na Aula</th><th>Situação</th></tr></thead>
+            <thead><tr><th>Etapa & Data da Aula</th><th>Conteúdo Ministrado</th><th>Situação</th></tr></thead>
             <tbody>${lessonsHtml}</tbody>
           </table>
-        </div>
-
-        <div style="background:#f3e8ff; border:1px solid #d8b4fe; border-radius:6px; padding:12px; margin-bottom:12px;">
-          <h5 style="color:#5b21b6; margin-bottom:8px;">📝 Provas & Avaliações Online (${c.discipline})</h5>
-          <div id="student-exams-container"></div>
         </div>
       `;
 
       container.innerHTML = html;
-      renderStudentExamsForDetails(c, s);
     }
 
-    // 3. CAIXA DE MENSAGENS COM O PROFESSOR
-    function renderStudentChatHistory() {
-      const container = document.getElementById('student-chat-history');
-      container.innerHTML = '';
-      let allMsgs = [];
-      state.matchedStudentRecords.forEach(rec => {
-        (rec.student.messages || []).forEach(m => allMsgs.push(m));
-      });
-
-      if (allMsgs.length === 0) {
-        container.innerHTML = '<div style="font-size:0.88rem; color:#94a3b8; text-align:center; padding:20px;">Nenhuma mensagem trocada ainda com os professores. Escreva abaixo para iniciar uma conversa!</div>';
-        return;
-      }
-      allMsgs.forEach(m => {
-        const div = document.createElement('div');
-        div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
-        const fileHtml = m.file ? `<div style="margin-top:4px;"><a href="${m.file.data}" download="${m.file.name}" style="color:inherit; font-weight:600;">📎 ${m.file.name}</a></div>` : '';
-        div.innerHTML = `<div>${m.text}</div>${fileHtml}<div style="font-size:0.65rem; opacity:0.75; margin-top:4px;">${m.date}</div>`;
-        container.appendChild(div);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function sendStudentMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('student-msg-input');
-      const fileInput = document.getElementById('student-msg-file');
-      const text = input.value.trim();
-      const file = fileInput.files[0];
-
-      if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
-
-      const pushMsg = (fileObj) => {
-        state.matchedStudentRecords.forEach(rec => {
-          if (!rec.student.messages) rec.student.messages = [];
-          rec.student.messages.push({
-            id: "m-" + Date.now(), sender: "aluno", text: text || "Envio de arquivo anexado", file: fileObj,
-            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
-          });
-        });
-        saveData();
-        input.value = '';
-        fileInput.value = '';
-        renderStudentChatHistory();
-        showToast("Mensagem enviada com sucesso!");
-      };
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          pushMsg({ name: file.name, data: evt.target.result });
-        };
-        reader.readAsDataURL(file);
-      } else {
-        pushMsg(null);
-      }
-    }
-
-    // 4. HISTÓRICO ACADÊMICO
-    function renderStudentHistoryTab() {
-      const container = document.getElementById('student-history-content');
-      if (state.matchedStudentRecords.length === 0) return;
-
-      const primary = state.matchedStudentRecords[0].student;
-
-      let historyRows = '';
-      state.matchedStudentRecords.forEach(rec => {
-        const c = rec.class;
-        const st = rec.status;
-        const att = rec.attendance;
-
-        historyRows += `
-          <tr>
-            <td><strong>${c.year || 2026}</strong></td>
-            <td><strong>${c.name}</strong></td>
-            <td>${c.discipline}</td>
-            <td>Prof. ${c.teacherName || 'Responsável'}</td>
-            <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
-            <td>${att.frequency} (${att.absences} Faltas)</td>
-            <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Concluído / Aprovado' : 'Retido'}</span></td>
-          </tr>
-        `;
-      });
-
-      container.innerHTML = `
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:#1e40af; margin-bottom:6px;">📁 Registro Escolar Permanente — ${primary.name}</h4>
-          <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">Código do Registro: <code>${primary.code}</code></p>
-          
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Ano Letivo</th>
-                  <th>Turma / Módulo</th>
-                  <th>Disciplina</th>
-                  <th>Professor</th>
-                  <th>Média Final</th>
-                  <th>Frequência Total</th>
-                  <th>Situação Acadêmica</th>
-                </tr>
-              </thead>
-              <tbody>${historyRows}</tbody>
-            </table>
-          </div>
-        </div>
-      `;
-    }
-
-    // LOGIN E REGISTRO DE PROFESSOR
-    
+    // SALA DE AULA VIRTUAL (PROVAS ONLINE COM TEMPO LIMITE E IMAGENS)
     function renderStudentClassroomTab() {
       const container = document.getElementById('student-classroom-exams-list');
       if (!container) return;
@@ -1573,7 +1295,7 @@
             <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
             <h4 style="color:#1e293b;">Nenhuma prova ou atividade online disponível no momento</h4>
             <p style="color:#64748b; font-size:0.9rem; margin-top:4px;">
-              Assim que seus professores cadastrarem provas, simulados ou trabalhos discursivos, eles aparecerão aqui para você responder.
+              Provas, simulados ou atividades enviadas pelos professores aparecerão aqui.
             </p>
           </div>
         `;
@@ -1589,10 +1311,9 @@
         const sub = (c.examSubmissions || []).find(sub => sub.examId === ex.id && sub.studentId === s.id);
         const isSubmitted = !!sub;
 
-        const hasDiscursive = (ex.questions || []).some(q => q.type === 'discursive');
-        const questionTypesBadge = hasDiscursive 
-          ? `<span style="font-size:0.75rem; background:#f3e8ff; color:#6d28d9; padding:2px 8px; border-radius:12px; font-weight:600;">📝 Múltipla Escolha & Discursivas</span>`
-          : `<span style="font-size:0.75rem; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px; font-weight:600;">⚡ Múltipla Escolha (Correção Automática)</span>`;
+        const timerBadge = ex.timeLimitMinutes > 0 
+          ? `<span style="font-size:0.75rem; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:12px; font-weight:600;">⏱️ Tempo Limite: ${ex.timeLimitMinutes} min</span>`
+          : `<span style="font-size:0.75rem; background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-weight:600;">⏱️ Sem limite de tempo</span>`;
 
         let actionBtnHtml = '';
         if (!isSubmitted) {
@@ -1623,25 +1344,215 @@
               <div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
                   <strong style="color:#6d28d9; font-size:1.1rem;">📝 ${ex.title}</strong>
-                  ${questionTypesBadge}
+                  ${timerBadge}
                 </div>
                 <div style="font-size:0.88rem; color:#475569;">
                   Disciplina: <strong>${c.discipline}</strong> | Prof. ${c.teacherName || 'Responsável'} | Etapa: <strong>${ex.period}</strong>
                 </div>
                 <div style="font-size:0.85rem; color:#64748b; margin-top:2px;">
-                  Pontuação Máxima: <strong>${ex.maxGrade} pts</strong> | Total de Questões: <strong>${ex.questions.length}</strong>
+                  Pontuação Máxima: <strong>${ex.maxGrade} pts</strong> | Total de Questões: <strong>${(ex.questions || []).length}</strong>
                 </div>
                 ${ex.description ? `<div style="font-size:0.88rem; color:#334155; margin-top:6px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1;">${ex.description}</div>` : ''}
               </div>
-              <div style="align-self:center;">
-                ${actionBtnHtml}
-              </div>
+              <div style="align-self:center;">${actionBtnHtml}</div>
             </div>
           </div>
         `;
       });
 
       container.innerHTML = html;
+    }
+
+    // ABRIR E RESPONDER PROVA COM SUPORTE A TEMPO LIMITE, DISCURSIVAS E IMAGENS
+    function openStudentTakeExamModal(classId, examId) {
+      const c = state.classes.find(item => item.id === classId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!ex) return;
+
+      const rec = state.matchedStudentRecords.find(r => r.class.id === classId);
+      if (!rec) return;
+      const s = rec.student;
+
+      let timerHeaderHtml = '';
+      if (ex.timeLimitMinutes > 0) {
+        timerHeaderHtml = `
+          <div id="exam-timer-bar" style="background:#fef2f2; border:1px solid #fecaca; padding:10px 16px; border-radius:8px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#9f1239;">⏱️ Contagem Regressiva de Tempo:</strong>
+            <span id="exam-timer-display" style="font-size:1.2rem; font-weight:700; color:#dc2626;">--:--</span>
+          </div>
+        `;
+      }
+
+      let questionsHtml = '';
+      (ex.questions || []).forEach((q, idx) => {
+        const qImgHtml = q.questionImage ? `<img src="${q.questionImage}" class="exam-question-img">` : '';
+
+        if (q.type === 'discursive') {
+          questionsHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <strong>Questão ${idx + 1} (${q.points} pts — Discursiva):</strong>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              ${qImgHtml}
+              <div style="margin-top:8px;">
+                <label style="font-size:0.85rem; font-weight:600; color:#475569;">Digite sua Resposta por Escrito:</label>
+                <textarea id="exam_disc_q_${q.id}" rows="4" placeholder="Escreva sua resposta com suas palavras..." style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem; margin-top:4px;"></textarea>
+              </div>
+            </div>
+          `;
+        } else {
+          const opts = q.options || ["Opção A", "Opção B", "Opção C", "Opção D"];
+          const optImgs = q.optionImages || [null, null, null, null];
+
+          let optionsListHtml = opts.map((opt, oIdx) => {
+            const optImg = optImgs[oIdx] ? `<img src="${optImgs[oIdx]}" class="exam-opt-img">` : '';
+            return `
+              <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; font-size:0.9rem; background:#fff; border:1px solid #e2e8f0; padding:8px 12px; border-radius:6px;">
+                <input type="radio" name="exam_q_${q.id}" value="${oIdx}" style="margin-top:4px;">
+                <div>
+                  <span><strong>${['A','B','C','D'][oIdx]}):</strong> ${opt}</span>
+                  ${optImg}
+                </div>
+              </label>
+            `;
+          }).join('');
+
+          questionsHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <strong>Questão ${idx + 1} (${q.points} pts — Múltipla Escolha):</strong>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              ${qImgHtml}
+              <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+                ${optionsListHtml}
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      const examOverlay = document.createElement('div');
+      examOverlay.id = 'exam-modal-overlay';
+      examOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.8); backdrop-filter:blur(4px); display:flex; justify-content:center; align-items:center; z-index:99999; padding:20px;';
+
+      examOverlay.innerHTML = `
+        <div style="background:#fff; border-radius:12px; max-width:700px; width:100%; max-height:92vh; overflow-y:auto; padding:28px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2);">
+          <div style="border-bottom:2px solid #6d28d9; padding-bottom:12px; margin-bottom:16px;">
+            <h3 style="color:#6d28d9;">📝 ${ex.title}</h3>
+            <p style="color:#64748b; font-size:0.88rem; margin-top:2px;">${ex.description || 'Responda com atenção e clique em Enviar Respostas ao terminar.'}</p>
+          </div>
+          ${timerHeaderHtml}
+          ${questionsHtml}
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid #e2e8f0; padding-top:16px;">
+            <button onclick="cancelStudentExamTake()" class="btn btn-secondary">Cancelar / Sair</button>
+            <button onclick="submitStudentExamAnswers('${classId}', '${examId}', '${s.id}', false)" class="btn btn-primary">📤 Enviar Respostas Finalizadas</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(examOverlay);
+
+      if (ex.timeLimitMinutes > 0) {
+        let remainingSeconds = ex.timeLimitMinutes * 60;
+        const displayEl = document.getElementById('exam-timer-display');
+
+        if (state.examTimerInterval) clearInterval(state.examTimerInterval);
+
+        state.examTimerInterval = setInterval(() => {
+          remainingSeconds--;
+          if (remainingSeconds <= 0) {
+            clearInterval(state.examTimerInterval);
+            state.examTimerInterval = null;
+            showAlertModal("⏱️ Tempo Esgotado!", "O tempo limite da prova acabou. Suas respostas foram salvas e enviadas automaticamente!");
+            submitStudentExamAnswers(classId, examId, s.id, true);
+          } else {
+            const mins = Math.floor(remainingSeconds / 60);
+            const secs = remainingSeconds % 60;
+            if (displayEl) displayEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+          }
+        }, 1000);
+      }
+    }
+
+    function cancelStudentExamTake() {
+      if (state.examTimerInterval) { clearInterval(state.examTimerInterval); state.examTimerInterval = null; }
+      const el = document.getElementById('exam-modal-overlay');
+      if (el) el.remove();
+    }
+
+    function submitStudentExamAnswers(classId, examId, studentId, autoTimeOut = false) {
+      if (state.examTimerInterval) { clearInterval(state.examTimerInterval); state.examTimerInterval = null; }
+
+      const c = state.classes.find(item => item.id === classId);
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!c || !ex) return;
+
+      let autoScore = 0;
+      const multipleAnswers = {};
+      const discursiveAnswers = {};
+      let hasDiscursive = false;
+
+      (ex.questions || []).forEach(q => {
+        if (q.type === 'discursive') {
+          hasDiscursive = true;
+          const txtEl = document.getElementById(`exam_disc_q_${q.id}`);
+          discursiveAnswers[q.id] = txtEl ? txtEl.value.trim() : '';
+        } else {
+          const selected = document.querySelector(`input[name="exam_q_${q.id}"]:checked`);
+          if (selected) {
+            const val = parseInt(selected.value);
+            multipleAnswers[q.id] = val;
+            if (val === q.correctOpt) autoScore += parseFloat(q.points) || 0;
+          }
+        }
+      });
+
+      if (!c.examSubmissions) c.examSubmissions = [];
+      c.examSubmissions = c.examSubmissions.filter(s => !(s.examId === examId && s.studentId === studentId));
+
+      c.examSubmissions.push({
+        id: "sub-" + Date.now(),
+        examId: examId,
+        studentId: studentId,
+        multipleAnswers: multipleAnswers,
+        discursiveAnswers: discursiveAnswers,
+        discursiveScores: {},
+        discursiveFeedbacks: {},
+        autoScore: autoScore,
+        finalScore: hasDiscursive ? null : autoScore,
+        status: hasDiscursive ? 'pending_manual' : 'graded',
+        submittedAt: new Date().toISOString()
+      });
+
+      const st = c.students.find(s => s.id === studentId);
+      if (st && !hasDiscursive) {
+        const period = ex.period || "A1";
+        if (!c.periods[period]) c.periods[period] = [];
+
+        let act = c.periods[period].find(a => a.name === `Prova: ${ex.title}`);
+        if (!act) {
+          act = { id: "act-exam-" + Date.now(), name: `Prova: ${ex.title}`, maxVal: ex.maxGrade, description: "Avaliação Online" };
+          c.periods[period].push(act);
+        }
+
+        if (!st.grades) st.grades = {};
+        if (!st.grades[period]) st.grades[period] = {};
+        st.grades[period][act.id] = autoScore;
+      }
+
+      saveData();
+
+      const overlay = document.getElementById('exam-modal-overlay');
+      if (overlay) overlay.remove();
+
+      if (!autoTimeOut) {
+        if (hasDiscursive) {
+          showToast(`✅ Prova entregue! Questões objetivas: ${autoScore.toFixed(1)} pts. Aguardando correção discursiva do professor.`);
+        } else {
+          showToast(`✅ Prova enviada! Sua nota final foi: ${autoScore.toFixed(1)} / ${ex.maxGrade}`);
+        }
+      }
+
+      if (state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);
     }
 
     function openStudentViewSubmissionModal(classId, examId) {
@@ -1656,7 +1567,7 @@
       if (!sub) return;
 
       let qHtml = '';
-      ex.questions.forEach((q, idx) => {
+      (ex.questions || []).forEach((q, idx) => {
         if (q.type === 'discursive') {
           const answerText = (sub.discursiveAnswers && sub.discursiveAnswers[q.id]) ? sub.discursiveAnswers[q.id] : '<em>Sem resposta por escrito.</em>';
           const givenScore = (sub.discursiveScores && sub.discursiveScores[q.id] !== undefined) ? sub.discursiveScores[q.id] : null;
@@ -1683,7 +1594,7 @@
         } else {
           const selectedOpt = (sub.multipleAnswers && sub.multipleAnswers[q.id] !== undefined) ? sub.multipleAnswers[q.id] : null;
           const isCorrect = selectedOpt === q.correctOpt;
-          const pointsAwarded = isCorrect ? q.points : 0;
+          const pointsAwarded = isCorrect ? parseFloat(q.points) : 0;
 
           qHtml += `
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
@@ -1723,7 +1634,107 @@
       document.body.appendChild(modalOverlay);
     }
 
+    // MENSAGENS DIRECIONADAS ALUNO <-> PROFESSOR
+    function renderStudentChatHistory() {
+      const container = document.getElementById('student-chat-history');
+      container.innerHTML = '';
+      let allMsgs = [];
+      state.matchedStudentRecords.forEach(rec => {
+        (rec.student.messages || []).forEach(m => allMsgs.push(m));
+      });
 
+      if (allMsgs.length === 0) {
+        container.innerHTML = '<div style="font-size:0.88rem; color:#94a3b8; text-align:center; padding:20px;">Nenhuma mensagem trocada ainda com os professores. Escreva abaixo para iniciar uma conversa!</div>';
+        return;
+      }
+      allMsgs.forEach(m => {
+        const div = document.createElement('div');
+        div.className = `chat-msg ${m.sender === 'aluno' ? 'chat-msg-aluno' : 'chat-msg-prof'}`;
+        const fileHtml = m.file ? `<div style="margin-top:4px;"><a href="${m.file.data}" download="${m.file.name}" style="color:inherit; font-weight:600;">📎 ${m.file.name}</a></div>` : '';
+        div.innerHTML = `<div>${m.text}</div>${fileHtml}<div style="font-size:0.65rem; opacity:0.75; margin-top:4px;">${m.date}</div>`;
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendStudentMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('student-msg-input');
+      const fileInput = document.getElementById('student-msg-file');
+      const text = input.value.trim();
+      const file = fileInput.files[0];
+
+      if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
+
+      const pushMsg = (fileObj) => {
+        state.matchedStudentRecords.forEach(rec => {
+          if (!rec.student.messages) rec.student.messages = [];
+          rec.student.messages.push({
+            id: "m-" + Date.now(),
+            sender: "aluno",
+            text: text || "Envio de arquivo anexado",
+            file: fileObj,
+            classId: rec.class.id,
+            teacherId: rec.class.teacherId,
+            discipline: rec.class.discipline,
+            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
+        });
+        saveData();
+        input.value = '';
+        fileInput.value = '';
+        renderStudentChatHistory();
+        showToast("Mensagem enviada com sucesso ao professor!");
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => { pushMsg({ name: file.name, data: evt.target.result }); };
+        reader.readAsDataURL(file);
+      } else {
+        pushMsg(null);
+      }
+    }
+
+    function renderStudentHistoryTab() {
+      const container = document.getElementById('student-history-content');
+      if (state.matchedStudentRecords.length === 0) return;
+      const primary = state.matchedStudentRecords[0].student;
+
+      let historyRows = '';
+      state.matchedStudentRecords.forEach(rec => {
+        const c = rec.class;
+        const st = rec.status;
+        const att = rec.attendance;
+
+        historyRows += `
+          <tr>
+            <td><strong>${c.year || 2026}</strong></td>
+            <td><strong>${c.name}</strong></td>
+            <td>${c.discipline}</td>
+            <td>Prof. ${c.teacherName || 'Responsável'}</td>
+            <td><strong class="${st.isPassed ? 'grade-blue' : 'grade-red'}">${st.finalGrade}</strong></td>
+            <td>${att.frequency} (${att.absences} Faltas)</td>
+            <td><span class="status-badge ${st.isPassed ? 'status-aprovado' : 'status-reprovado'}">${st.isPassed ? 'Concluído / Aprovado' : 'Retido'}</span></td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML = `
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px;">
+          <h4 style="color:#5b21b6; margin-bottom:6px;">📁 Registro Escolar Permanente — ${primary.name}</h4>
+          <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">Código do Registro: <code>${primary.code}</code></p>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>Ano</th><th>Turma</th><th>Disciplina</th><th>Professor</th><th>Média Final</th><th>Frequência</th><th>Situação</th></tr></thead>
+              <tbody>${historyRows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // LOGIN E CADASTROS
     function toggleRegisterForm(show) {
       if (show) {
         document.getElementById('portal-login-box').classList.add('hidden');
@@ -1741,11 +1752,9 @@
       const user = document.getElementById('reg-username').value.trim();
       const pass = document.getElementById('reg-password').value.trim();
 
-      state.teachers.push({
-        id: "prof-" + Date.now(), name: name, discipline: disc, username: user, password: pass, role: "teacher", status: "pending"
-      });
+      state.teachers.push({ id: "prof-" + Date.now(), name, discipline: disc, username: user, password: pass, role: "teacher", status: "pending" });
       saveData();
-      alert("Sua solicitação foi enviada! O Organizador (Prof. Thyago Gomes) irá aprovar o seu acesso.");
+      showAlertModal("Solicitação Enviada", "Sua solicitação foi enviada! O Organizador (Prof. Thyago Gomes) irá aprovar o seu acesso.");
       toggleRegisterForm(false);
     }
 
@@ -1758,7 +1767,7 @@
 
       if (found) {
         if (found.status === 'pending') {
-          alert("Seu cadastro está em análise aguardando aprovação do Organizador.");
+          showAlertModal("Acesso Pendente", "Seu cadastro está em análise aguardando aprovação do Organizador.");
           return;
         }
         state.currentUser = found;
@@ -1783,6 +1792,7 @@
       document.getElementById('view-teachers-section').classList.add('hidden');
       document.getElementById('view-mural-section').classList.add('hidden');
       document.getElementById('view-settings-section').classList.add('hidden');
+      document.getElementById('view-global-students-section').classList.add('hidden');
       document.getElementById('class-detail-view').classList.add('hidden');
 
       if (tab === 'classes') {
@@ -1797,6 +1807,9 @@
       } else if (tab === 'settings') {
         document.getElementById('view-settings-section').classList.remove('hidden');
         renderSettingsForm();
+      } else if (tab === 'global-students') {
+        document.getElementById('view-global-students-section').classList.remove('hidden');
+        renderGlobalStudentsTable();
       }
     }
 
@@ -1816,7 +1829,7 @@
           <div onclick="openClassDetail('${c.id}')">
             <h3>${c.name}</h3>
             <p>Disciplina: <strong>${c.discipline}</strong> | Prof. Principal: <strong>${c.teacherName || 'Prof. Responsável'}</strong></p>
-            <div style="font-size:0.85rem; color:#2563eb; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
+            <div style="font-size:0.85rem; color:#6d28d9; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
           </div>
         `;
         grid.appendChild(card);
@@ -1827,15 +1840,127 @@
       }
     }
 
-    // EDIÇÃO E EXCLUSÃO DE TURMA
+    // BANCO GERAL DE ALUNOS (GESTOR)
+    function renderGlobalStudentsTable() {
+      const tbody = document.getElementById('global-students-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (state.globalStudents.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#94a3b8; text-align:center;">Nenhum aluno cadastrado no banco geral. Clique em "+ Cadastrar Novo Aluno no Banco" acima.</td></tr>';
+        return;
+      }
+
+      state.globalStudents.forEach(gst => {
+        const linkedClasses = state.classes.filter(c => (c.students || []).some(s => (s.code || "").toLowerCase() === (gst.code || "").toLowerCase()));
+        const classNamesStr = linkedClasses.map(c => c.name).join(', ') || '<em>Nenhuma turma</em>';
+
+        const photoHtml = gst.photo ? `<img src="${gst.photo}" class="student-avatar">` : `<div class="student-avatar">👤</div>`;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${photoHtml}</td>
+            <td><code>${gst.code}</code></td>
+            <td><strong>${gst.name}</strong></td>
+            <td>${classNamesStr}</td>
+            <td>
+              <button onclick="openEditGlobalStudentModal('${gst.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Editar</button>
+              <button onclick="deleteGlobalStudent('${gst.id}')" class="btn btn-danger btn-sm">🗑️ Apagar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openAddGlobalStudentModal() {
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome Completo do Aluno</label>
+          <input type="text" id="m-gst-name" placeholder="Ex: Maria Eduarda Santos" required>
+        </div>
+        <div class="form-group">
+          <label>Código Único (Até 10 dígitos)</label>
+          <input type="text" id="m-gst-code" placeholder="Ex: 2026002" maxlength="10" required>
+        </div>
+      `;
+
+      showCustomModal("👨‍🎓 Cadastrar Novo Aluno no Banco Geral", contentHtml, () => {
+        const name = document.getElementById('m-gst-name').value.trim();
+        let code = document.getElementById('m-gst-code').value.trim();
+
+        if (!name || !code) { showAlertModal("Atenção", "Preencha nome e código único do aluno."); return false; }
+
+        if (code.length > 10) { showAlertModal("Atenção", "O código único deve ter no máximo 10 dígitos!"); return false; }
+
+        const exists = state.globalStudents.some(g => (g.code || "").toLowerCase() === code.toLowerCase());
+        if (exists) { showAlertModal("Atenção", `Já existe um aluno cadastrado no banco geral com o código "${code}".`); return false; }
+
+        state.globalStudents.push({ id: "gst-" + Date.now(), name, code, photo: null });
+        saveData();
+        renderGlobalStudentsTable();
+        showToast(`Aluno ${name} (Código: ${code}) cadastrado no banco geral!`);
+      }, "💾 Cadastrar Aluno");
+    }
+
+    function openEditGlobalStudentModal(gstId) {
+      const gst = state.globalStudents.find(g => g.id === gstId);
+      if (!gst) return;
+
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome Completo do Aluno</label>
+          <input type="text" id="m-edit-gst-name" value="${gst.name}" required>
+        </div>
+        <div class="form-group">
+          <label>Código Único (Até 10 dígitos)</label>
+          <input type="text" id="m-edit-gst-code" value="${gst.code}" maxlength="10" required>
+        </div>
+      `;
+
+      showCustomModal("✏️ Editar Aluno no Banco Geral", contentHtml, () => {
+        const newName = document.getElementById('m-edit-gst-name').value.trim();
+        const newCode = document.getElementById('m-edit-gst-code').value.trim();
+
+        if (!newName || !newCode) { showAlertModal("Atenção", "Preencha nome e código único."); return false; }
+
+        const oldCode = gst.code;
+        gst.name = newName;
+        gst.code = newCode;
+
+        state.classes.forEach(c => {
+          (c.students || []).forEach(s => {
+            if ((s.code || "").toLowerCase() === oldCode.toLowerCase()) {
+              s.name = newName;
+              s.code = newCode;
+            }
+          });
+        });
+
+        saveData();
+        renderGlobalStudentsTable();
+        showToast("Aluno atualizado com sucesso no banco geral!");
+      }, "💾 Salvar Alterações");
+    }
+
+    function deleteGlobalStudent(gstId) {
+      const gst = state.globalStudents.find(g => g.id === gstId);
+      if (!gst) return;
+
+      showConfirmModal("🗑️ Excluir Aluno do Banco Geral", `Deseja apagar o aluno "<strong>${gst.name}</strong>" (Código: ${gst.code}) do Banco Geral?`, () => {
+        state.globalStudents = state.globalStudents.filter(g => g.id !== gstId);
+        saveData();
+        renderGlobalStudentsTable();
+        showToast("Aluno removido do banco geral!");
+      }, "Sim, Apagar");
+    }
+
+    // TURMA - EDIÇÃO E EXCLUSÃO
     function openEditClassModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
 
       const approvedTeachers = state.teachers.filter(t => t.status === 'approved');
-      let teacherOptions = approvedTeachers.map(t => 
-        `<option value="${t.id}" ${t.id === c.teacherId ? 'selected' : ''}>${t.name} (${t.discipline})</option>`
-      ).join('');
+      let teacherOptions = approvedTeachers.map(t => `<option value="${t.id}" ${t.id === c.teacherId ? 'selected' : ''}>${t.name} (${t.discipline})</option>`).join('');
 
       const contentHtml = `
         <div class="form-group">
@@ -1862,10 +1987,7 @@
 
         c.name = newName;
         if (newDisc) c.discipline = newDisc;
-        if (teacherObj) {
-          c.teacherId = teacherObj.id;
-          c.teacherName = teacherObj.name;
-        }
+        if (teacherObj) { c.teacherId = teacherObj.id; c.teacherName = teacherObj.name; }
 
         saveData();
         openClassDetail(c.id);
@@ -1877,17 +1999,12 @@
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
 
-      showConfirmModal(
-        "🗑️ Excluir Turma",
-        `⚠️ Tem certeza que deseja excluir a turma "<strong>${c.name}</strong>"? Todos os lançamentos, notas e diários desta turma serão apagados permanentemente!`,
-        () => {
-          state.classes = state.classes.filter(item => item.id !== state.currentClassId);
-          saveData();
-          closeClassDetail();
-          showToast("Turma excluída com sucesso!");
-        },
-        "Sim, Excluir Turma"
-      );
+      showConfirmModal("🗑️ Excluir Turma", `⚠️ Tem certeza que deseja excluir a turma "<strong>${c.name}</strong>"? Todos os lançamentos e diários serão apagados!`, () => {
+        state.classes = state.classes.filter(item => item.id !== state.currentClassId);
+        saveData();
+        closeClassDetail();
+        showToast("Turma excluída com sucesso!");
+      }, "Sim, Excluir Turma");
     }
 
     function renderTeachersManagement() {
@@ -1942,22 +2059,10 @@
 
     function openAddTeacherModal() {
       const contentHtml = `
-        <div class="form-group">
-          <label>Nome Completo do Professor</label>
-          <input type="text" id="m-teach-name" placeholder="Ex: Prof. Carlos Silva" required>
-        </div>
-        <div class="form-group">
-          <label>Disciplina Principal</label>
-          <input type="text" id="m-teach-disc" placeholder="Ex: Matemática, Física" required>
-        </div>
-        <div class="form-group">
-          <label>Usuário de Acesso</label>
-          <input type="text" id="m-teach-user" placeholder="Ex: carlossilva" required>
-        </div>
-        <div class="form-group">
-          <label>Senha</label>
-          <input type="password" id="m-teach-pass" placeholder="Senha de acesso" required>
-        </div>
+        <div class="form-group"><label>Nome Completo do Professor</label><input type="text" id="m-teach-name" placeholder="Ex: Prof. Carlos Silva" required></div>
+        <div class="form-group"><label>Disciplina Principal</label><input type="text" id="m-teach-disc" placeholder="Ex: Matemática, Física" required></div>
+        <div class="form-group"><label>Usuário de Acesso</label><input type="text" id="m-teach-user" placeholder="Ex: carlossilva" required></div>
+        <div class="form-group"><label>Senha</label><input type="password" id="m-teach-pass" placeholder="Senha de acesso" required></div>
       `;
 
       showCustomModal("👨‍🏫 Cadastrar Novo Professor", contentHtml, () => {
@@ -1966,21 +2071,9 @@
         const user = document.getElementById('m-teach-user').value.trim();
         const pass = document.getElementById('m-teach-pass').value.trim();
 
-        if (!name || !user || !pass) {
-          showAlertModal("Atenção", "Preencha nome, usuário e senha para cadastrar o professor.");
-          return false;
-        }
+        if (!name || !user || !pass) { showAlertModal("Atenção", "Preencha nome, usuário e senha."); return false; }
 
-        state.teachers.push({
-          id: "prof-" + Date.now(),
-          name: name,
-          discipline: disc || "Geral",
-          username: user,
-          password: pass,
-          role: "teacher",
-          status: "approved"
-        });
-
+        state.teachers.push({ id: "prof-" + Date.now(), name, discipline: disc || "Geral", username: user, password: pass, role: "teacher", status: "approved" });
         saveData();
         renderTeachersManagement();
         showToast("Professor cadastrado com sucesso!");
@@ -1990,18 +2083,12 @@
     function deleteTeacher(id) {
       const t = state.teachers.find(item => item.id === id);
       if (!t) return;
-
-      showConfirmModal(
-        "🗑️ Remover Professor",
-        `Deseja realmente remover o cadastro do professor "<strong>${t.name}</strong>"?`,
-        () => {
-          state.teachers = state.teachers.filter(item => item.id !== id);
-          saveData();
-          renderTeachersManagement();
-          showToast("Professor removido!");
-        },
-        "Sim, Remover"
-      );
+      showConfirmModal("🗑️ Remover Professor", `Deseja realmente remover o professor "<strong>${t.name}</strong>"?`, () => {
+        state.teachers = state.teachers.filter(item => item.id !== id);
+        saveData();
+        renderTeachersManagement();
+        showToast("Professor removido!");
+      }, "Sim, Remover");
     }
 
     function openProfileModal() {
@@ -2009,18 +2096,9 @@
       const u = state.currentUser;
 
       const contentHtml = `
-        <div class="form-group">
-          <label>Seu Nome Completo</label>
-          <input type="text" id="m-prof-name" value="${u.name}" required>
-        </div>
-        <div class="form-group">
-          <label>Sua Disciplina Principal</label>
-          <input type="text" id="m-prof-disc" value="${u.discipline || ''}">
-        </div>
-        <div class="form-group">
-          <label>Nova Senha</label>
-          <input type="password" id="m-prof-pass" value="${u.password}">
-        </div>
+        <div class="form-group"><label>Seu Nome Completo</label><input type="text" id="m-prof-name" value="${u.name}" required></div>
+        <div class="form-group"><label>Sua Disciplina Principal</label><input type="text" id="m-prof-disc" value="${u.discipline || ''}"></div>
+        <div class="form-group"><label>Nova Senha</label><input type="password" id="m-prof-pass" value="${u.password}"></div>
       `;
 
       showCustomModal("✏️ Meus Dados", contentHtml, () => {
@@ -2041,11 +2119,9 @@
 
     function renderSettingsForm() {
       const set = state.settings || {};
-      document.getElementById('set-school-name').value = set.schoolName || "Diário Escolar Digital";
-      
+      document.getElementById('set-school-name').value = set.schoolName || "Sistema de Ensino";
       const logoBox = document.getElementById('preview-logo-box');
       logoBox.innerHTML = set.schoolLogo ? `<img src="${set.schoolLogo}" style="max-height:60px;">` : '<em>Nenhuma logo personalizada configurada.</em>';
-
       const bgBox = document.getElementById('preview-bg-box');
       bgBox.innerHTML = set.bgImage ? `<em>Imagem de fundo configurada.</em>` : '<em>Nenhum plano de fundo personalizado configurado.</em>';
     }
@@ -2063,24 +2139,17 @@
           const readerBg = new FileReader();
           readerBg.onload = (evt) => {
             state.settings.bgImage = evt.target.result;
-            saveData();
-            applySettingsUI();
-            showToast("🎨 Personalizações salvas!");
+            saveData(); applySettingsUI(); showToast("🎨 Personalizações salvas!");
           };
           readerBg.readAsDataURL(bgFile);
         } else {
-          saveData();
-          applySettingsUI();
-          showToast("🎨 Personalizações salvas!");
+          saveData(); applySettingsUI(); showToast("🎨 Personalizações salvas!");
         }
       };
 
       if (logoFile) {
         const readerLogo = new FileReader();
-        readerLogo.onload = (evt) => {
-          state.settings.schoolLogo = evt.target.result;
-          processBg();
-        };
+        readerLogo.onload = (evt) => { state.settings.schoolLogo = evt.target.result; processBg(); };
         readerLogo.readAsDataURL(logoFile);
       } else {
         processBg();
@@ -2088,18 +2157,10 @@
     }
 
     function resetSettingsDefaults() {
-      showConfirmModal(
-        "🔄 Restaurar Padrões",
-        "Restaurar as configurações originais de tema e nome da escola?",
-        () => {
-          state.settings = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
-          saveData();
-          applySettingsUI();
-          renderSettingsForm();
-          showToast("Configurações restauradas!");
-        },
-        "Sim, Restaurar"
-      );
+      showConfirmModal("🔄 Restaurar Padrões", "Restaurar as configurações originais de tema?", () => {
+        state.settings = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
+        saveData(); applySettingsUI(); renderSettingsForm(); showToast("Configurações restauradas!");
+      }, "Sim, Restaurar");
     }
 
     function renderMuralAdminList() {
@@ -2121,36 +2182,22 @@
 
     function openAddMuralModal() {
       const contentHtml = `
-        <div class="form-group">
-          <label>Título do Recado / Atividade</label>
-          <input type="text" id="m-mural-title" placeholder="Ex: Atividade Avaliativa de História" required>
-        </div>
-        <div class="form-group">
-          <label>Mensagem ou Instruções</label>
-          <textarea id="m-mural-msg" rows="4" placeholder="Escreva aqui a mensagem ou orientações..." required></textarea>
-        </div>
-        <div class="form-group">
-          <label>Anexar Arquivo/Documento (opcional)</label>
-          <input type="file" id="m-mural-file">
-        </div>
+        <div class="form-group"><label>Título do Recado</label><input type="text" id="m-mural-title" placeholder="Ex: Atividade de História" required></div>
+        <div class="form-group"><label>Mensagem ou Instruções</label><textarea id="m-mural-msg" rows="4" placeholder="Escreva aqui..." required></textarea></div>
+        <div class="form-group"><label>Anexar Arquivo (opcional)</label><input type="file" id="m-mural-file"></div>
       `;
 
       showCustomModal("📢 Publicar Aviso no Mural", contentHtml, () => {
         const title = document.getElementById('m-mural-title').value.trim();
         const msg = document.getElementById('m-mural-msg').value.trim();
         const fileInput = document.getElementById('m-mural-file');
-        const file = fileInput.files;
+        const file = fileInput.files[0];
 
-        if (!title || !msg) {
-          showAlertModal("Atenção", "Preencha o título e a mensagem para publicar.");
-          return false;
-        }
+        if (!title || !msg) { showAlertModal("Atenção", "Preencha o título e a mensagem."); return false; }
 
         if (file) {
           const reader = new FileReader();
-          reader.onload = (evt) => {
-            pushMural(title, msg, { name: file.name, data: evt.target.result });
-          };
+          reader.onload = (evt) => { pushMural(title, msg, { name: file.name, data: evt.target.result }); };
           reader.readAsDataURL(file);
         } else {
           pushMural(title, msg, null);
@@ -2164,24 +2211,18 @@
         author: state.currentUser ? state.currentUser.name : "Professor",
         createdAt: Date.now(), expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
       });
-      saveData();
-      renderMuralAdminList();
-      showToast("Aviso publicado no mural!");
+      saveData(); renderMuralAdminList(); showToast("Aviso publicado no mural!");
     }
 
-    function deleteMural(id) {
-      state.mural = state.mural.filter(m => m.id !== id);
-      saveData();
-      renderMuralAdminList();
-    }
+    function deleteMural(id) { state.mural = state.mural.filter(m => m.id !== id); saveData(); renderMuralAdminList(); }
 
     function openManageCoTeachersModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
 
       if (!c.coTeacherIds) c.coTeacherIds = [];
-
       const availableTeachers = state.teachers.filter(t => t.status === 'approved' && t.id !== c.teacherId);
+
       if (availableTeachers.length === 0) {
         showAlertModal("Informação", "Não existem outros professores cadastrados para adicionar como auxiliares.");
         return;
@@ -2192,32 +2233,18 @@
         return `
           <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:8px; cursor:pointer;">
             <input type="checkbox" class="co-teacher-checkbox" value="${t.id}" ${isChecked ? 'checked' : ''}>
-            <div>
-              <strong>${t.name}</strong> <span style="font-size:0.8rem; color:#64748b;">(${t.discipline})</span>
-            </div>
+            <div><strong>${t.name}</strong> <span style="font-size:0.8rem; color:#64748b;">(${t.discipline})</span></div>
           </label>
         `;
       }).join('');
 
-      const contentHtml = `
-        <p style="font-size:0.9rem; color:#475569; margin-bottom:12px;">
-          Selecione os professores que terão permissão auxiliar para lançar notas e presenças nesta turma:
-        </p>
-        <div>${listHtml}</div>
-      `;
-
-      showCustomModal("👨‍🏫 Gerenciar Co-Docentes", contentHtml, () => {
+      showCustomModal("👨‍🏫 Gerenciar Co-Docentes", `<p style="margin-bottom:12px; font-size:0.9rem;">Selecione os professores auxiliares da turma:</p><div>${listHtml}</div>`, () => {
         const checkboxes = document.querySelectorAll('.co-teacher-checkbox');
         const newCoIds = [];
-        checkboxes.forEach(cb => {
-          if (cb.checked) newCoIds.push(cb.value);
-        });
-
+        checkboxes.forEach(cb => { if (cb.checked) newCoIds.push(cb.value); });
         c.coTeacherIds = newCoIds;
-        saveData();
-        openClassDetail(c.id);
-        showToast("Professores auxiliares atualizados!");
-      }, "💾 Salvar Co-Docentes");
+        saveData(); openClassDetail(c.id); showToast("Professores auxiliares atualizados!");
+      }, "💾 Salvar");
     }
 
     function openClassDetail(classId) {
@@ -2284,7 +2311,123 @@
       });
     }
 
-    // TABELA DE NOTAS & CRIAÇÃO/EDIÇÃO/EXCLUSÃO DE ATIVIDADES
+    // FECHAMENTO OFICIAL COM CONGELAMENTO DE NOTAS E FALTAS (SNAPSHOT)
+    function toggleClosePeriod(pk) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+      if (!c.closedPeriods) c.closedPeriods = {};
+      if (!c.closedSnapshots) c.closedSnapshots = {};
+
+      const isClosing = !c.closedPeriods[pk];
+      c.closedPeriods[pk] = isClosing;
+
+      if (isClosing) {
+        const studentGrades = {};
+        const studentAbsences = {};
+
+        c.students.forEach(s => {
+          const acts = c.periods[pk] || [];
+          const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
+          let sum = 0;
+          acts.forEach(a => sum += parseFloat(pGrades[a.id]) || 0);
+          studentGrades[s.id] = sum.toFixed(1);
+
+          const att = calcStudentAttendance(s, c);
+          studentAbsences[s.id] = (att.periodAbsences && att.periodAbsences[pk]) || 0;
+        });
+
+        c.closedSnapshots[pk] = {
+          studentGrades, studentAbsences, closedAt: new Date().toISOString()
+        };
+
+        showToast(`🔒 Etapa ${pk} FECHADA e Congelada no Boletim Final!`);
+      } else {
+        showToast(`🔓 Etapa ${pk} REABERTA para alterações no Diário.`);
+      }
+
+      saveData();
+      renderTeacherGradesTable(c);
+    }
+
+    function renderA3RecoveryAlert(c) {
+      if (c.mode !== 'semestral') return '';
+      const a3Students = [];
+      (c.students || []).forEach(s => {
+        const st = calcStudentAcademicStatus(s, c);
+        if (parseFloat(st.avgPartial) < 6.0) {
+          a3Students.push({ student: s, status: st });
+        }
+      });
+      if (a3Students.length === 0) return '';
+
+      let rows = a3Students.map(item => {
+        const s = item.student;
+        const st = item.status;
+        const a3Val = st.a3Note ?? null;
+        let statusLabel = '';
+        if (a3Val !== null && a3Val !== undefined) {
+          statusLabel = parseFloat(a3Val) >= 6.0 
+            ? `<span style="color:#15803d; font-weight:700;">✅ Nota A3: ${a3Val} (Aprovado!)</span>` 
+            : `<span style="color:#dc2626; font-weight:700;">❌ Nota A3: ${a3Val} (Retido)</span>`;
+        } else {
+          statusLabel = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando A3 (Precisa de 6.0)</span>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${s.name}</strong> (${s.code || 'S/C'})</td>
+            <td><span class="grade-red">${st.avgPartial}</span></td>
+            <td>${statusLabel}</td>
+            <td><button onclick="promptA3Note('${s.id}')" class="btn btn-secondary btn-sm">✏️ Lançar Nota A3</button></td>
+          </tr>
+        `;
+      }).join('');
+
+      return `
+        <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:16px;">
+          <h4 style="color:#9f1239; margin-bottom:6px;">🚨 Alunos Convocados para a A3 (Prova Final / Recuperação)</h4>
+          <p style="font-size:0.85rem; color:#881337; margin-bottom:10px;">
+            Alunos com média parcial (A1 + A2) abaixo de 6,0:
+          </p>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>Aluno</th><th>Média Parcial (A1+A2)/2</th><th>Status da A3</th><th>Ação Rápida</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function promptA3Note(studentId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const s = c.students.find(item => item.id === studentId);
+      if (!s) return;
+
+      const currentA3 = (s.grades && s.grades["A3 (Prova Final)"]) ? s.grades["A3 (Prova Final)"].a3Note : '';
+
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nota da A3 para ${s.name}</label>
+          <input type="number" step="0.5" id="m-a3-val" value="${currentA3 ?? 6.0}" required>
+        </div>
+      `;
+
+      showCustomModal("✏️ Lançar Nota da A3", contentHtml, () => {
+        const valStr = document.getElementById('m-a3-val').value;
+        const val = parseFloat(valStr);
+        if (isNaN(val)) { showAlertModal("Atenção", "Digite um valor numérico válido."); return false; }
+
+        if (!s.grades) s.grades = {};
+        if (!s.grades["A3 (Prova Final)"]) s.grades["A3 (Prova Final)"] = {};
+        s.grades["A3 (Prova Final)"].a3Note = val;
+
+        saveData();
+        renderTeacherGradesTable(c);
+        showToast(`Nota A3 (${val}) salva para ${s.name}!`);
+      }, "💾 Salvar Nota A3");
+    }
+
     function renderTeacherGradesTable(c) {
       const thead = document.getElementById('teacher-grades-thead');
       const tbody = document.getElementById('teacher-grades-tbody');
@@ -2301,20 +2444,18 @@
             <div>
               <strong>Status da Etapa ${state.currentPeriod}:</strong> 
               ${isCurrentClosed 
-                ? '<span style="color:#15803d; font-weight:700;">🔒 FECHADA e Publicada no Boletim Final</span>' 
+                ? '<span style="color:#15803d; font-weight:700;">🔒 FECHADA e Congelada no Boletim Final</span>' 
                 : '<span style="color:#7c3aed; font-weight:700;">🟢 ABERTA (Lançamento nos Diários da Turma)</span>'}
             </div>
             <button onclick="toggleClosePeriod('${state.currentPeriod}')" class="btn ${isCurrentClosed ? 'btn-secondary' : 'btn-primary'} btn-sm">
-              ${isCurrentClosed ? '🔓 Reabrir Etapa para Edição' : '🔒 Fechar Etapa e Publicar no Boletim'}
+              ${isCurrentClosed ? '🔓 Reabrir / Atualizar Fechamento' : '🔒 Fechar Etapa e Congelar no Boletim'}
             </button>
           </div>
         `;
       }
 
       const a3AlertEl = document.getElementById('teacher-a3-alert-container');
-      if (a3AlertEl) {
-        a3AlertEl.innerHTML = renderA3RecoveryAlert(c);
-      }
+      if (a3AlertEl) a3AlertEl.innerHTML = renderA3RecoveryAlert(c);
 
       if (state.currentPeriod === "A3 (Prova Final)") {
         if (btnAddAct) btnAddAct.classList.add('hidden');
@@ -2347,7 +2488,7 @@
               </span>
             </div>
             ${valInfo}
-            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">${act.description}</div>` : ''}
           </th>`; 
       });
       thHtml += `<th>Soma da Etapa</th></tr>`;
@@ -2372,18 +2513,9 @@
 
     function openAddActivityModal() {
       const contentHtml = `
-        <div class="form-group">
-          <label>Nome da Atividade / Avaliação (${state.currentPeriod})</label>
-          <input type="text" id="m-act-name" placeholder="Ex: Teste 1, Trabalho em Grupo, Prova A1" required>
-        </div>
-        <div class="form-group">
-          <label>Valor Máximo / Pontuação (ex: 2.0, 10.0)</label>
-          <input type="number" step="0.5" id="m-act-max" value="10.0" required>
-        </div>
-        <div class="form-group">
-          <label>Descrição / Detalhes (opcional para o aluno)</label>
-          <textarea id="m-act-desc" rows="2" placeholder="Instruções ou resumo sobre a atividade..."></textarea>
-        </div>
+        <div class="form-group"><label>Nome da Atividade (${state.currentPeriod})</label><input type="text" id="m-act-name" placeholder="Ex: Teste 1, Prova A1" required></div>
+        <div class="form-group"><label>Valor Máximo em Pontos</label><input type="number" step="0.5" id="m-act-max" value="10.0" required></div>
+        <div class="form-group"><label>Descrição / Detalhes</label><textarea id="m-act-desc" rows="2" placeholder="Instruções para o aluno..."></textarea></div>
       `;
 
       showCustomModal(`➕ Criar Atividade em ${state.currentPeriod}`, contentHtml, () => {
@@ -2393,16 +2525,8 @@
         const desc = document.getElementById('m-act-desc').value.trim();
 
         const c = state.classes.find(item => item.id === state.currentClassId);
-        c.periods[state.currentPeriod].push({
-          id: "act-" + Date.now(),
-          name: name,
-          maxVal: maxVal,
-          description: desc || ""
-        });
-
-        saveData();
-        renderTeacherGradesTable(c);
-        showToast("Atividade criada com sucesso!");
+        c.periods[state.currentPeriod].push({ id: "act-" + Date.now(), name, maxVal, description: desc || "" });
+        saveData(); renderTeacherGradesTable(c); showToast("Atividade criada com sucesso!");
       }, "💾 Criar Atividade");
     }
 
@@ -2413,49 +2537,28 @@
       if (!act) return;
 
       const contentHtml = `
-        <div class="form-group">
-          <label>Nome da Atividade</label>
-          <input type="text" id="m-edit-act-name" value="${act.name}" required>
-        </div>
-        <div class="form-group">
-          <label>Valor Máximo / Pontuação</label>
-          <input type="number" step="0.5" id="m-edit-act-max" value="${act.maxVal || 10.0}" required>
-        </div>
-        <div class="form-group">
-          <label>Descrição / Detalhes</label>
-          <textarea id="m-edit-act-desc" rows="2">${act.description || ''}</textarea>
-        </div>
+        <div class="form-group"><label>Nome da Atividade</label><input type="text" id="m-edit-act-name" value="${act.name}" required></div>
+        <div class="form-group"><label>Valor Máximo</label><input type="number" step="0.5" id="m-edit-act-max" value="${act.maxVal || 10.0}" required></div>
+        <div class="form-group"><label>Descrição</label><textarea id="m-edit-act-desc" rows="2">${act.description || ''}</textarea></div>
       `;
 
       showCustomModal("✏️ Editar Atividade", contentHtml, () => {
         const newName = document.getElementById('m-edit-act-name').value.trim();
-        if (!newName) { showAlertModal("Atenção", "O nome da atividade não pode ficar vazio."); return false; }
+        if (!newName) { showAlertModal("Atenção", "Digite o nome da atividade."); return false; }
         const newMaxVal = parseFloat(document.getElementById('m-edit-act-max').value) || 10.0;
         const newDesc = document.getElementById('m-edit-act-desc').value.trim();
 
-        act.name = newName;
-        act.maxVal = newMaxVal;
-        act.description = newDesc || "";
-
-        saveData();
-        renderTeacherGradesTable(c);
-        showToast("Atividade atualizada!");
+        act.name = newName; act.maxVal = newMaxVal; act.description = newDesc || "";
+        saveData(); renderTeacherGradesTable(c); showToast("Atividade atualizada!");
       }, "💾 Salvar Alterações");
     }
 
     function deleteActivity(actId) {
-      showConfirmModal(
-        "🗑️ Excluir Atividade",
-        "Deseja realmente excluir esta atividade? As notas lançadas para ela serão apagadas.",
-        () => {
-          const c = state.classes.find(item => item.id === state.currentClassId);
-          c.periods[state.currentPeriod] = c.periods[state.currentPeriod].filter(a => a.id !== actId);
-          saveData();
-          renderTeacherGradesTable(c);
-          showToast("Atividade excluída!");
-        },
-        "Sim, Excluir"
-      );
+      showConfirmModal("🗑️ Excluir Atividade", "Deseja realmente excluir esta atividade?", () => {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.periods[state.currentPeriod] = c.periods[state.currentPeriod].filter(a => a.id !== actId);
+        saveData(); renderTeacherGradesTable(c); showToast("Atividade excluída!");
+      }, "Sim, Excluir");
     }
 
     function updateGradeVal(studentId, field, val) {
@@ -2463,28 +2566,24 @@
       const s = c.students.find(item => item.id === studentId);
       if (!s.grades) s.grades = {};
       if (!s.grades[state.currentPeriod]) s.grades[state.currentPeriod] = {};
-
       s.grades[state.currentPeriod][field] = val !== "" ? parseFloat(val) : null;
       saveData();
     }
 
-    function saveGradesExplicitly() {
-      saveData();
-      showToast("💾 Notas salvas e publicadas com sucesso!");
-    }
+    function saveGradesExplicitly() { saveData(); showToast("💾 Notas salvas e publicadas!"); }
 
-    // REGISTRO DE AULAS, FREQUÊNCIA E CONTEÚDO MINISTRADO
+    // REGISTRO DE AULAS E FALTAS POR ETAPA
     function renderTeacherAttendanceTable(c) {
       const container = document.getElementById('teacher-attendance-records');
       if (!c.lessons) c.lessons = [];
 
       if (c.lessons.length === 0) {
-        container.innerHTML = '<p style="color:#64748b;">Nenhuma aula registrada ainda nesta turma. Clique em "+ Registrar Nova Aula" acima.</p>';
+        container.innerHTML = '<p style="color:#64748b;">Nenhuma aula ou frequência registrada ainda.</p>';
         return;
       }
 
       let html = '';
-      c.lessons.forEach((les, idx) => {
+      c.lessons.forEach(les => {
         let studentsRows = c.students.map(s => {
           const status = (les.attendance && les.attendance[s.id]) ? les.attendance[s.id] : "P";
           return `
@@ -2504,18 +2603,17 @@
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
               <div>
-                <strong style="color:#2563eb; font-size:1.05rem;">📅 Aula do dia ${les.date} (${les.count || 1} ${(les.count || 1) === 1 ? 'aula' : 'aulas'})</strong>
-                <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 <strong>Conteúdo Ministrado:</strong> ${les.content}</div>
+                <strong style="color:#6d28d9; font-size:1.05rem;">📅 Aula da Etapa ${les.period || 'A1'} — ${les.date} (${les.count || 1} h)</strong>
+                <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 Conteúdo: <strong>${les.content}</strong></div>
               </div>
               <div>
-                <button onclick="editLesson('${les.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Editar Aula</button>
-                <button onclick="deleteLesson('${les.id}')" class="btn btn-danger btn-sm">🗑️ Apagar Aula</button>
+                <button onclick="editLesson('${les.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Editar</button>
+                <button onclick="deleteLesson('${les.id}')" class="btn btn-danger btn-sm">🗑️ Apagar</button>
               </div>
             </div>
-
             <table class="data-table">
-              <thead><tr><th>Nome do Aluno</th><th>Frequência</th></tr></thead>
-              <tbody>${studentsRows.length > 0 ? studentsRows : '<tr><td colspan="2" style="color:#94a3b8;">Nenhum aluno matriculado na turma.</td></tr>'}</tbody>
+              <thead><tr><th>Aluno</th><th>Frequência</th></tr></thead>
+              <tbody>${studentsRows.length > 0 ? studentsRows : '<tr><td colspan="2" style="color:#94a3b8;">Nenhum aluno cadastrado.</td></tr>'}</tbody>
             </table>
           </div>
         `;
@@ -2525,51 +2623,34 @@
     }
 
     function openAddLessonModal() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+
       const defaultDate = new Date().toISOString().split('T')[0];
+      const pOptions = Object.keys(c.periods || {}).map(pk => `<option value="${pk}" ${pk === state.currentPeriod ? 'selected' : ''}>${pk}</option>`).join('');
 
       const contentHtml = `
-        <div class="form-group">
-          <label>Data da Aula</label>
-          <input type="date" id="m-les-date" value="${defaultDate}" required>
-        </div>
-        <div class="form-group">
-          <label>Quantidade de Aulas (ex: 1, 2, 3)</label>
-          <input type="number" id="m-les-count" value="1" min="1" required>
-        </div>
-        <div class="form-group">
-          <label>Conteúdo Ministrado na Aula</label>
-          <textarea id="m-les-content" rows="3" placeholder="Ex: Sistema Digestório — órgãos e digestão química..." required></textarea>
-        </div>
+        <div class="form-group"><label>Etapa da Aula</label><select id="m-les-period">${pOptions}</select></div>
+        <div class="form-group"><label>Data da Aula</label><input type="date" id="m-les-date" value="${defaultDate}" required></div>
+        <div class="form-group"><label>Quantidade de Horas/Aulas (ex: 1, 2)</label><input type="number" id="m-les-count" value="1" required></div>
+        <div class="form-group"><label>Conteúdo Ministrado</label><textarea id="m-les-content" rows="2" placeholder="Conteúdo trabalhado..." required></textarea></div>
       `;
 
-      showCustomModal("📅 Registrar Nova Aula", contentHtml, () => {
+      showCustomModal("📅 Registrar Nova Aula / Frequência", contentHtml, () => {
+        const period = document.getElementById('m-les-period').value;
         const date = document.getElementById('m-les-date').value;
         const count = parseInt(document.getElementById('m-les-count').value) || 1;
         const content = document.getElementById('m-les-content').value.trim();
 
-        if (!date || !content) {
-          showAlertModal("Atenção", "Preencha a data e o conteúdo da aula.");
-          return false;
-        }
+        if (!date || !content) { showAlertModal("Atenção", "Preencha a data e o conteúdo ministrado."); return false; }
 
-        const c = state.classes.find(item => item.id === state.currentClassId);
         if (!c.lessons) c.lessons = [];
-
         const initialAtt = {};
         c.students.forEach(s => initialAtt[s.id] = "P");
 
-        c.lessons.unshift({
-          id: "les-" + Date.now(),
-          date: date,
-          count: count,
-          content: content,
-          attendance: initialAtt
-        });
-
-        saveData();
-        renderTeacherAttendanceTable(c);
-        showToast("Aula registrada com sucesso!");
-      }, "💾 Salvar Aula");
+        c.lessons.unshift({ id: "les-" + Date.now(), period, date, count, content, attendance: initialAtt });
+        saveData(); renderTeacherAttendanceTable(c); showToast("Aula e lista de presenças registradas!");
+      }, "💾 Salvar Registro de Aula");
     }
 
     function editLesson(lesId) {
@@ -2577,54 +2658,31 @@
       const les = c.lessons.find(l => l.id === lesId);
       if (!les) return;
 
+      const pOptions = Object.keys(c.periods || {}).map(pk => `<option value="${pk}" ${pk === (les.period || 'A1') ? 'selected' : ''}>${pk}</option>`).join('');
+
       const contentHtml = `
-        <div class="form-group">
-          <label>Data da Aula</label>
-          <input type="date" id="m-edit-les-date" value="${les.date}" required>
-        </div>
-        <div class="form-group">
-          <label>Quantidade de Aulas</label>
-          <input type="number" id="m-edit-les-count" value="${les.count || 1}" min="1" required>
-        </div>
-        <div class="form-group">
-          <label>Conteúdo Ministrado</label>
-          <textarea id="m-edit-les-content" rows="3" required>${les.content}</textarea>
-        </div>
+        <div class="form-group"><label>Etapa da Aula</label><select id="m-edit-les-period">${pOptions}</select></div>
+        <div class="form-group"><label>Data da Aula</label><input type="date" id="m-edit-les-date" value="${les.date}" required></div>
+        <div class="form-group"><label>Quantidade de Horas</label><input type="number" id="m-edit-les-count" value="${les.count || 1}" required></div>
+        <div class="form-group"><label>Conteúdo Ministrado</label><textarea id="m-edit-les-content" rows="2" required>${les.content}</textarea></div>
       `;
 
       showCustomModal("✏️ Editar Registro de Aula", contentHtml, () => {
-        const date = document.getElementById('m-edit-les-date').value;
-        const count = parseInt(document.getElementById('m-edit-les-count').value) || 1;
-        const content = document.getElementById('m-edit-les-content').value.trim();
+        les.period = document.getElementById('m-edit-les-period').value;
+        les.date = document.getElementById('m-edit-les-date').value;
+        les.count = parseInt(document.getElementById('m-edit-les-count').value) || 1;
+        les.content = document.getElementById('m-edit-les-content').value.trim();
 
-        if (!date || !content) {
-          showAlertModal("Atenção", "A data e o conteúdo não podem ficar vazios.");
-          return false;
-        }
-
-        les.date = date;
-        les.count = count;
-        les.content = content;
-
-        saveData();
-        renderTeacherAttendanceTable(c);
-        showToast("Aula atualizada com sucesso!");
+        saveData(); renderTeacherAttendanceTable(c); showToast("Aula atualizada!");
       }, "💾 Salvar Alterações");
     }
 
     function deleteLesson(lesId) {
-      showConfirmModal(
-        "🗑️ Apagar Registro de Aula",
-        "Deseja realmente apagar o registro desta aula e o histórico de frequência do dia?",
-        () => {
-          const c = state.classes.find(item => item.id === state.currentClassId);
-          c.lessons = c.lessons.filter(l => l.id !== lesId);
-          saveData();
-          renderTeacherAttendanceTable(c);
-          showToast("Aula removida!");
-        },
-        "Sim, Apagar"
-      );
+      showConfirmModal("🗑️ Apagar Aula", "Deseja remover este registro de aula?", () => {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.lessons = c.lessons.filter(l => l.id !== lesId);
+        saveData(); renderTeacherAttendanceTable(c); showToast("Aula removida!");
+      }, "Sim, Apagar");
     }
 
     function updateAttendanceVal(lesId, studentId, status) {
@@ -2635,23 +2693,19 @@
       saveData();
     }
 
+    // VÍNCULO DE ALUNOS NA TURMA POR CÓDIGO DO BANCO GERAL
     function renderStudentsTable() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const tbody = document.getElementById('students-table-body');
       tbody.innerHTML = '';
       c.students.forEach(s => {
-        const imgHtml = s.photo 
-          ? `<img src="${s.photo}" class="student-avatar">` 
-          : `<div class="student-avatar">👤</div>`;
-
+        const imgHtml = s.photo ? `<img src="${s.photo}" class="student-avatar">` : `<div class="student-avatar">👤</div>`;
         tbody.innerHTML += `
           <tr>
             <td>${imgHtml}</td>
             <td><code>${s.code || '-'}</code></td>
             <td><strong>${s.name}</strong></td>
-            <td>
-              <button onclick="deleteStudent('${s.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir</button>
-            </td>
+            <td><button onclick="deleteStudent('${s.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Desvincular</button></td>
           </tr>
         `;
       });
@@ -2659,74 +2713,57 @@
 
     function openStudentModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
-      const existingStudents = getAllSystemStudents();
 
-      let existingOptionsHtml = '';
-      if (existingStudents.length > 0) {
-        existingOptionsHtml = `
-          <div class="form-group" style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:16px;">
-            <label>Selecione um Aluno já cadastrado no sistema:</label>
-            <select id="m-st-existing-select" onchange="toggleStudentModalNewFields(this.value)">
-              <option value="">-- Cadastrar NOVO Código / Aluno --</option>
-              ${existingStudents.map(st => `<option value="${st.code}">${st.name} (Código: ${st.code || 'S/C'})</option>`).join('')}
-            </select>
-          </div>
-        `;
-      }
+      let optionsHtml = state.globalStudents.map(gst => 
+        `<option value="${gst.code}">${gst.name} (Código: ${gst.code})</option>`
+      ).join('');
 
       const contentHtml = `
-        ${existingOptionsHtml}
-        <div id="m-st-new-fields">
-          <div class="form-group">
-            <label>Código Único do Aluno (Até 10 dígitos)</label>
-            <input type="text" id="m-st-code" maxlength="10" placeholder="Ex: 2026001" required>
-          </div>
-          <div class="form-group">
-            <label>Nome Completo do Aluno</label>
-            <input type="text" id="m-st-name" placeholder="Ex: Thyago Gomes Barreto" required>
-          </div>
+        <div class="form-group">
+          <label>Selecione um Aluno do Banco Geral</label>
+          <select id="m-select-global-student">
+            <option value="">-- Selecionar do Banco Geral --</option>
+            ${optionsHtml}
+          </select>
+        </div>
+        <p style="text-align:center; font-weight:600; color:#64748b; margin:10px 0;">OU</p>
+        <div class="form-group">
+          <label>Digite o Código Único do Aluno (Até 10 dígitos)</label>
+          <input type="text" id="m-input-student-code" placeholder="Ex: 2026001" maxlength="10">
         </div>
       `;
 
-      showCustomModal(`👥 Cadastrar / Vincular Aluno na Turma (${c.name})`, contentHtml, () => {
-        const selectEl = document.getElementById('m-st-existing-select');
-        const selectedCode = selectEl ? selectEl.value : "";
+      showCustomModal(`👥 Vincular Aluno na Turma (${c.name})`, contentHtml, () => {
+        const selectedCode = document.getElementById('m-select-global-student').value;
+        const typedCode = document.getElementById('m-input-student-code').value.trim();
 
-        let name, code, photo;
+        const codeToLink = typedCode || selectedCode;
 
-        if (selectedCode) {
-          const found = existingStudents.find(st => st.code === selectedCode);
-          if (found) {
-            name = found.name;
-            code = found.code;
-            photo = found.photo;
-          }
-        } else {
-          code = document.getElementById('m-st-code').value.trim();
-          name = document.getElementById('m-st-name').value.trim();
+        if (!codeToLink) { showAlertModal("Atenção", "Informe o código único ou selecione um aluno do banco."); return false; }
 
-          if (!code || !name) {
-            showAlertModal("Atenção", "Digite o código e o nome completo do aluno.");
-            return false;
-          }
+        const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === codeToLink.toLowerCase());
+        if (alreadyInClass) { showAlertModal("Atenção", `Este aluno (Código: ${codeToLink}) já está vinculado a esta turma!`); return false; }
 
-          if (code.length > 10) {
-            showAlertModal("Atenção", "O código do aluno deve ter no máximo 10 dígitos!");
-            return false;
-          }
-        }
+        let gst = state.globalStudents.find(g => (g.code || "").toLowerCase() === codeToLink.toLowerCase());
 
-        const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === code.toLowerCase());
-        if (alreadyInClass) {
-          showAlertModal("Aviso", `O aluno "${name}" (Código: ${code}) já está cadastrado nesta turma!`);
-          return false;
+        let studentName = gst ? gst.name : null;
+        let studentPhoto = gst ? gst.photo : null;
+
+        if (!gst) {
+          const nameInput = prompt(`O código "${codeToLink}" não foi encontrado no Banco Geral.
+
+Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
+          if (!nameInput) return false;
+          studentName = nameInput.trim();
+          gst = { id: "gst-" + Date.now(), name: studentName, code: codeToLink, photo: null };
+          state.globalStudents.push(gst);
         }
 
         c.students.push({
           id: "al-" + Date.now(),
-          name: name,
-          code: code,
-          photo: photo || null,
+          name: studentName,
+          code: codeToLink,
+          photo: studentPhoto,
           grades: {},
           messages: []
         });
@@ -2734,114 +2771,418 @@
         saveData();
         renderStudentsTable();
         renderTeacherGradesTable(c);
-        showToast(`Aluno ${name} (Código: ${code}) adicionado à turma!`);
-      }, "➕ Vincular Aluno");
-    }
-
-    function toggleStudentModalNewFields(val) {
-      const fields = document.getElementById('m-st-new-fields');
-      if (fields) {
-        if (val) {
-          fields.style.display = 'none';
-        } else {
-          fields.style.display = 'block';
-        }
-      }
+        showToast(`Aluno ${studentName} (Código: ${codeToLink}) vinculado à turma!`);
+      }, "🔗 Vincular Aluno");
     }
 
     function deleteStudent(studentId) {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      const s = c.students.find(item => item.id === studentId);
-      if (!s) return;
-
-      showConfirmModal(
-        "🗑️ Remover Aluno",
-        `Deseja realmente remover o aluno "<strong>${s.name}</strong>" desta turma?`,
-        () => {
-          c.students = c.students.filter(item => item.id !== studentId);
-          saveData();
-          renderStudentsTable();
-          renderTeacherGradesTable(c);
-          showToast("Aluno removido da turma!");
-        },
-        "Sim, Remover"
-      );
+      showConfirmModal("🗑️ Desvincular Aluno", "Deseja desvincular este aluno desta turma?", () => {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.students = c.students.filter(s => s.id !== studentId);
+        saveData(); renderStudentsTable(); renderTeacherGradesTable(c); showToast("Aluno desvinculado!");
+      }, "Sim, Desvincular");
     }
 
     function openClassModal() {
-      const defaultTeacherId = state.currentUser ? state.currentUser.id : "prof-thyago";
       const approvedTeachers = state.teachers.filter(t => t.status === 'approved');
-
-      let teacherOptions = approvedTeachers.map(t => 
-        `<option value="${t.id}" ${t.id === defaultTeacherId ? 'selected' : ''}>${t.name} (${t.discipline})</option>`
-      ).join('');
+      let teacherOptions = approvedTeachers.map(t => `<option value="${t.id}">${t.name} (${t.discipline})</option>`).join('');
 
       const contentHtml = `
+        <div class="form-group"><label>Nome da Turma</label><input type="text" id="m-new-class-name" placeholder="Ex: Ensino Superior - Módulo 2" required></div>
+        <div class="form-group"><label>Disciplina</label><input type="text" id="m-new-class-disc" placeholder="Ex: Anatomia, Matemática" required></div>
+        <div class="form-group"><label>Professor Principal</label><select id="m-new-class-teacher">${teacherOptions}</select></div>
         <div class="form-group">
-          <label>Nome da Turma</label>
-          <input type="text" id="m-class-name" placeholder="Ex: Ensino Superior - Módulo 1 ou 3º Ano B" required>
-        </div>
-        <div class="form-group">
-          <label>Disciplina</label>
-          <input type="text" id="m-class-disc" value="${state.currentUser ? state.currentUser.discipline : 'Ciências'}" required>
-        </div>
-        <div class="form-group">
-          <label>Professor Principal</label>
-          <select id="m-class-teacher">${teacherOptions}</select>
-        </div>
-        <div class="form-group">
-          <label>Modalidade da Turma</label>
-          <select id="m-class-mode">
-            <option value="semestral">Ensino Superior / Semestral (Etapas A1, A2, A3)</option>
-            <option value="bimestral">Ensino Básico (1º, 2º, 3º, 4º Bimestres)</option>
+          <label>Modalidade de Avaliação</label>
+          <select id="m-new-class-mode">
+            <option value="semestral">Semestral (A1, A2, A3 - Prova Final)</option>
+            <option value="bimestral">Bimestral (1º, 2º, 3º, 4º Bimestre)</option>
           </select>
         </div>
       `;
 
       showCustomModal("➕ Nova Turma", contentHtml, () => {
-        const name = document.getElementById('m-class-name').value.trim();
-        if (!name) { showAlertModal("Atenção", "Por favor, digite o nome da turma."); return false; }
-        const disc = document.getElementById('m-class-disc').value.trim() || "Geral";
-        const teacherId = document.getElementById('m-class-teacher').value;
-        const mode = document.getElementById('m-class-mode').value;
+        const name = document.getElementById('m-new-class-name').value.trim();
+        const disc = document.getElementById('m-new-class-disc').value.trim();
+        const teacherId = document.getElementById('m-new-class-teacher').value;
+        const mode = document.getElementById('m-new-class-mode').value;
+
+        if (!name || !disc) { showAlertModal("Atenção", "Preencha nome e disciplina da turma."); return false; }
 
         const teacherObj = approvedTeachers.find(t => t.id === teacherId);
 
         const isSemestral = mode === 'semestral';
-        const periodsObj = isSemestral 
-          ? { "A1": [], "A2": [], "A3 (Prova Final)": [] }
-          : { "1º Bimestre": [], "2º Bimestre": [], "3º Bimestre": [], "4º Bimestre": [] };
+        const periodsObj = isSemestral ? { "A1": [], "A2": [], "A3 (Prova Final)": [] } : { "1º Bimestre": [], "2º Bimestre": [], "3º Bimestre": [], "4º Bimestre": [] };
 
         state.classes.push({
           id: "turma-" + Date.now(),
-          teacherId: teacherObj ? teacherObj.id : defaultTeacherId,
+          teacherId: teacherObj ? teacherObj.id : "prof-thyago",
           teacherName: teacherObj ? teacherObj.name : "Prof. Responsável",
           coTeacherIds: [],
-          name: name,
-          discipline: disc,
-          mode: mode,
-          year: 2026,
-          closedPeriods: isSemestral ? { "A1": false, "A2": false, "A3 (Prova Final)": false } : {},
-          exams: [],
-          examSubmissions: [],
-          periods: periodsObj,
-          lessons: [],
-          students: []
+          name, discipline: disc, mode, year: 2026,
+          closedPeriods: { "A1": false, "A2": false, "A3 (Prova Final)": false },
+          closedSnapshots: {},
+          exams: [], examSubmissions: [], periods: periodsObj, lessons: [], students: []
         });
 
-        saveData();
-        renderClassesGrid();
-        showToast("Nova turma criada com sucesso!");
+        saveData(); renderClassesGrid(); showToast("Nova turma criada com sucesso!");
       }, "💾 Criar Turma");
     }
 
+    // PROVAS ONLINE - CRIAÇÃO E CORREÇÃO MANUAL COM IMAGENS E TEMPO
+    function openAddExamModal() {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+
+      const pOptions = Object.keys(c.periods || {}).map(pk => `<option value="${pk}">${pk}</option>`).join('');
+
+      const contentHtml = `
+        <div class="form-group"><label>Título da Prova / Avaliação Online</label><input type="text" id="m-ex-title" placeholder="Ex: Prova Parcial com Figuras e Tempo" required></div>
+        <div class="form-group"><label>Descrição / Orientações</label><textarea id="m-ex-desc" rows="2" placeholder="Instruções gerais para a prova..."></textarea></div>
+        <div class="form-group"><label>Etapa da Prova</label><select id="m-ex-period">${pOptions}</select></div>
+        <div style="display:flex; gap:12px;">
+          <div class="form-group" style="flex:1;"><label>Pontuação Total</label><input type="number" step="0.5" id="m-ex-max" value="10.0" required></div>
+          <div class="form-group" style="flex:1;"><label>Tempo Limite (Minutos, 0 = sem limite)</label><input type="number" id="m-ex-time" value="60" required></div>
+        </div>
+        
+        <hr style="margin:16px 0; border:none; border-top:1px solid #cbd5e1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h4>Questões da Prova</h4>
+          <button type="button" onclick="addQuestionToExamBuilder()" class="btn btn-purple btn-sm">+ Adicionar Questão</button>
+        </div>
+        <div id="exam-questions-builder-container"></div>
+      `;
+
+      showCustomModal("📝 Criar Prova / Avaliação Online", contentHtml, () => {
+        const title = document.getElementById('m-ex-title').value.trim();
+        if (!title) { showAlertModal("Atenção", "Digite o título da prova."); return false; }
+
+        const desc = document.getElementById('m-ex-desc').value.trim();
+        const period = document.getElementById('m-ex-period').value;
+        const maxGrade = parseFloat(document.getElementById('m-ex-max').value) || 10.0;
+        const timeLimitMinutes = parseInt(document.getElementById('m-ex-time').value) || 0;
+
+        const qCards = document.querySelectorAll('.q-builder-card');
+        if (qCards.length === 0) { showAlertModal("Atenção", "Adicione pelo menos 1 questão na prova."); return false; }
+
+        const questions = [];
+        qCards.forEach((card, idx) => {
+          const type = card.querySelector('.q-type-select').value;
+          const text = card.querySelector('.q-text-input').value.trim() || `Questão ${idx + 1}`;
+          const points = parseFloat(card.querySelector('.q-points-input').value) || 1.0;
+          const qImgData = card.dataset.questionImg || null;
+
+          if (type === 'discursive') {
+            questions.push({ id: "q-" + Date.now() + "-" + idx, type: "discursive", text, points, questionImage: qImgData });
+          } else {
+            const opts = [
+              card.querySelector('.q-opt-a').value.trim() || "Opção A",
+              card.querySelector('.q-opt-b').value.trim() || "Opção B",
+              card.querySelector('.q-opt-c').value.trim() || "Opção C",
+              card.querySelector('.q-opt-d').value.trim() || "Opção D"
+            ];
+            const correctOpt = parseInt(card.querySelector('.q-correct-select').value) || 0;
+            const optionImages = [
+              card.dataset.optImg0 || null,
+              card.dataset.optImg1 || null,
+              card.dataset.optImg2 || null,
+              card.dataset.optImg3 || null
+            ];
+
+            questions.push({ id: "q-" + Date.now() + "-" + idx, type: "multiple", text, options: opts, correctOpt, points, questionImage: qImgData, optionImages });
+          }
+        });
+
+        if (!c.exams) c.exams = [];
+        c.exams.push({ id: "exam-" + Date.now(), title, description: desc, period, maxGrade, timeLimitMinutes, questions });
+
+        saveData(); renderTeacherExamsList(c); showToast("📝 Prova criada e publicada na Sala de Aula!");
+      }, "💾 Publicar Prova Online", true);
+
+      addQuestionToExamBuilder();
+    }
+
+    function addQuestionToExamBuilder() {
+      const container = document.getElementById('exam-questions-builder-container');
+      if (!container) return;
+
+      const qIndex = container.children.length + 1;
+      const card = document.createElement('div');
+      card.className = 'q-builder-card';
+      card.style.cssText = 'background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:16px; margin-bottom:14px; position:relative;';
+
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <strong style="color:#6d28d9;">Questão ${qIndex}</strong>
+          <button type="button" onclick="this.closest('.q-builder-card').remove()" class="btn btn-danger btn-sm">🗑️ Remover Questão</button>
+        </div>
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+          <div style="flex:1;">
+            <label style="font-size:0.8rem; font-weight:600;">Tipo de Questão</label>
+            <select class="q-type-select" onchange="toggleQTypeFields(this)" style="padding:6px; font-size:0.85rem;">
+              <option value="multiple">Múltipla Escolha (Objetiva)</option>
+              <option value="discursive">Discursiva (Texto Livre)</option>
+            </select>
+          </div>
+          <div style="width:120px;">
+            <label style="font-size:0.8rem; font-weight:600;">Pontuação</label>
+            <input type="number" step="0.5" class="q-points-input" value="2.5" style="padding:6px; font-size:0.85rem;">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:0.8rem; font-weight:600;">Enunciado da Pergunta</label>
+          <textarea class="q-text-input" rows="2" placeholder="Digite a pergunta ou orientação..." required style="font-size:0.9rem;"></textarea>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
+            📷 Anexar Imagem na Pergunta
+            <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'q')" style="display:none;">
+          </label>
+          <div class="q-img-preview" style="margin-top:4px;"></div>
+        </div>
+
+        <div class="q-multiple-fields">
+          <label style="font-size:0.8rem; font-weight:600; color:#475569; display:block; margin-bottom:6px;">Alternativas & Gabarito:</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+              <input type="text" class="q-opt-a" placeholder="Alternativa A" value="Opção A" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem A <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt0')" style="display:none;"></label>
+            </div>
+            <div>
+              <input type="text" class="q-opt-b" placeholder="Alternativa B" value="Opção B" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem B <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt1')" style="display:none;"></label>
+            </div>
+            <div>
+              <input type="text" class="q-opt-c" placeholder="Alternativa C" value="Opção C" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem C <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt2')" style="display:none;"></label>
+            </div>
+            <div>
+              <input type="text" class="q-opt-d" placeholder="Alternativa D" value="Opção D" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem D <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt3')" style="display:none;"></label>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <label style="font-size:0.8rem; font-weight:600; color:#15803d;">Alternativa Correta (Gabarito):</label>
+            <select class="q-correct-select" style="padding:6px; font-size:0.85rem;">
+              <option value="0">Opção A é a correta</option>
+              <option value="1">Opção B é a correta</option>
+              <option value="2">Opção C é a correta</option>
+              <option value="3">Opção D é a correta</option>
+            </select>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+    }
+
+    function toggleQTypeFields(selectEl) {
+      const card = selectEl.closest('.q-builder-card');
+      const mFields = card.querySelector('.q-multiple-fields');
+      if (selectEl.value === 'discursive') {
+        mFields.classList.add('hidden');
+      } else {
+        mFields.classList.remove('hidden');
+      }
+    }
+
+    function uploadQBuilderImage(e, btnEl, target) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const card = btnEl.closest('.q-builder-card');
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        if (target === 'q') {
+          card.dataset.questionImg = evt.target.result;
+          card.querySelector('.q-img-preview').innerHTML = `<img src="${evt.target.result}" style="max-height:80px; border-radius:4px; border:1px solid #cbd5e1;">`;
+        } else if (target.startsWith('opt')) {
+          const idx = target.replace('opt', '');
+          card.dataset[`optImg${idx}`] = evt.target.result;
+          btnEl.textContent = "✅ Imagem Carregada";
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderTeacherExamsList(c) {
+      const container = document.getElementById('teacher-exams-list');
+      if (!container) return;
+      if (!c.exams) c.exams = [];
+
+      if (c.exams.length === 0) {
+        container.innerHTML = '<p style="color:#64748b;">Nenhuma prova online criada para esta turma. Clique em "+ Criar Nova Prova Online" acima.</p>';
+        return;
+      }
+
+      let html = '';
+      c.exams.forEach(ex => {
+        const subs = (c.examSubmissions || []).filter(s => s.examId === ex.id);
+
+        let subsRows = (c.students || []).map(st => {
+          const sub = subs.find(s => s.studentId === st.id);
+          let subStatus = `<span style="color:#94a3b8;">⏳ Pendente</span>`;
+          let actionBtn = '';
+
+          if (sub) {
+            if (sub.status === 'pending_manual') {
+              subStatus = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando Correção Discursiva (Objetivas: ${sub.autoScore.toFixed(1)})</span>`;
+              actionBtn = `<button onclick="openTeacherGradeDiscursiveModal('${ex.id}', '${st.id}')" class="btn btn-purple btn-sm">✏️ Corrigir Discursiva</button>`;
+            } else {
+              subStatus = `<span style="color:#15803d; font-weight:700;">✅ Corrigida (Nota Final: ${(sub.finalScore ?? sub.autoScore).toFixed(1)} / ${ex.maxGrade})</span>`;
+              actionBtn = `<button onclick="transferExamGradeToJournal('${ex.id}', '${st.id}')" class="btn btn-secondary btn-sm" title="Lançar nota no Diário">📥 Lançar no Diário</button>`;
+            }
+          }
+
+          return `
+            <tr>
+              <td><strong>${st.name}</strong> (${st.code || 'S/C'})</td>
+              <td>${subStatus}</td>
+              <td>${actionBtn}</td>
+            </tr>
+          `;
+        }).join('');
+
+        html += `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
+              <div>
+                <strong style="color:#6d28d9; font-size:1.05rem;">📝 ${ex.title} (Etapa ${ex.period})</strong>
+                <div style="font-size:0.85rem; color:#64748b; margin-top:2px;">
+                  Vale ${ex.maxGrade} pts | ${ex.timeLimitMinutes > 0 ? ex.timeLimitMinutes + ' min' : 'Sem tempo limite'} | ${(ex.questions || []).length} questões
+                </div>
+              </div>
+              <div><button onclick="deleteExam('${ex.id}')" class="btn btn-danger btn-sm">🗑️ Excluir Prova</button></div>
+            </div>
+            <h5 style="color:#1e293b; margin-bottom:8px;">📊 Respostas dos Alunos:</h5>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>Aluno</th><th>Status da Prova</th><th>Ação</th></tr></thead>
+                <tbody>${subsRows}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openTeacherGradeDiscursiveModal(examId, studentId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const ex = (c.exams || []).find(e => e.id === examId);
+      const sub = (c.examSubmissions || []).find(s => s.examId === examId && s.studentId === studentId);
+      const st = c.students.find(s => s.id === studentId);
+      if (!c || !ex || !sub || !st) return;
+
+      const discQuestions = (ex.questions || []).filter(q => q.type === 'discursive');
+
+      let qFieldsHtml = discQuestions.map((q, idx) => {
+        const studentText = (sub.discursiveAnswers && sub.discursiveAnswers[q.id]) ? sub.discursiveAnswers[q.id] : '<em>Sem resposta digitada.</em>';
+        const currentScore = (sub.discursiveScores && sub.discursiveScores[q.id] !== undefined) ? sub.discursiveScores[q.id] : q.points;
+        const currentFeedback = (sub.discursiveFeedbacks && sub.discursiveFeedbacks[q.id]) ? sub.discursiveFeedbacks[q.id] : '';
+
+        return `
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; padding:14px; margin-bottom:14px;">
+            <strong>Questão Discursiva ${idx + 1} (Vale ${q.points} pts):</strong>
+            <p style="margin:4px 0 8px 0; color:#1e293b;">${q.text}</p>
+            <div style="background:#fff; border:1px solid #e2e8f0; padding:10px; border-radius:6px; margin-bottom:10px;">
+              <small style="color:#64748b; font-weight:600; display:block;">Resposta Escrita do Aluno:</small>
+              <div style="white-space:pre-wrap; font-size:0.9rem; color:#334155; margin-top:4px;">${studentText}</div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div style="width:140px;">
+                <label style="font-size:0.8rem; font-weight:600;">Atribuir Nota:</label>
+                <input type="number" step="0.5" class="m-disc-score-input" data-qid="${q.id}" max="${q.points}" value="${currentScore}" required>
+              </div>
+              <div style="flex:1;">
+                <label style="font-size:0.8rem; font-weight:600;">Feedback para o Aluno (opcional):</label>
+                <input type="text" class="m-disc-feedback-input" data-qid="${q.id}" value="${currentFeedback}" placeholder="Ex: Excelente resposta!">
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const contentHtml = `
+        <div style="margin-bottom:12px;">
+          <h4>Aluno: <strong>${st.name}</strong></h4>
+          <p style="font-size:0.85rem; color:#64748b;">Pontuação das Questões Objetivas: <strong>${sub.autoScore.toFixed(1)} pts</strong></p>
+        </div>
+        ${qFieldsHtml}
+      `;
+
+      showCustomModal("✏️ Corrigir Questões Discursivas", contentHtml, () => {
+        let totalDiscScore = 0;
+        if (!sub.discursiveScores) sub.discursiveScores = {};
+        if (!sub.discursiveFeedbacks) sub.discursiveFeedbacks = {};
+
+        const scoreInputs = document.querySelectorAll('.m-disc-score-input');
+        scoreInputs.forEach(input => {
+          const qid = input.dataset.qid;
+          const score = parseFloat(input.value) || 0;
+          sub.discursiveScores[qid] = score;
+          totalDiscScore += score;
+        });
+
+        const feedbackInputs = document.querySelectorAll('.m-disc-feedback-input');
+        feedbackInputs.forEach(input => {
+          const qid = input.dataset.qid;
+          sub.discursiveFeedbacks[qid] = input.value.trim();
+        });
+
+        sub.finalScore = sub.autoScore + totalDiscScore;
+        sub.status = 'graded';
+
+        saveData();
+        renderTeacherExamsList(c);
+        showToast(`Correção salva! Nota final de ${st.name}: ${sub.finalScore.toFixed(1)} / ${ex.maxGrade}`);
+      }, "💾 Salvar Correção");
+    }
+
+    function deleteExam(examId) {
+      showConfirmModal("🗑️ Excluir Prova", "Deseja realmente excluir esta prova online?", () => {
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        if (!c) return;
+        c.exams = (c.exams || []).filter(e => e.id !== examId);
+        saveData(); renderTeacherExamsList(c); showToast("Prova excluída com sucesso!");
+      }, "Sim, Excluir");
+    }
+
+    function transferExamGradeToJournal(examId, studentId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      const sub = (c.examSubmissions || []).find(s => s.examId === examId && s.studentId === studentId);
+      const st = c.students.find(s => s.id === studentId);
+      if (!ex || !sub || !st) return;
+
+      const period = ex.period || "A1";
+      if (!c.periods[period]) c.periods[period] = [];
+
+      let act = c.periods[period].find(a => a.name === `Prova: ${ex.title}`);
+      if (!act) {
+        act = { id: "act-exam-" + Date.now(), name: `Prova: ${ex.title}`, maxVal: ex.maxGrade, description: "Importada da Avaliação Online" };
+        c.periods[period].push(act);
+      }
+
+      if (!st.grades) st.grades = {};
+      if (!st.grades[period]) st.grades[period] = {};
+      st.grades[period][act.id] = sub.finalScore ?? sub.autoScore;
+
+      saveData();
+      showToast(`Nota ${(sub.finalScore ?? sub.autoScore).toFixed(1)} de ${st.name} lançada no Diário de ${period}!`);
+    }
+
+    // MENSAGENS COM FILTRAGEM POR PROFESSOR/TURMA
     function renderTeacherMessages() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const container = document.getElementById('teacher-messages-list');
       container.innerHTML = '';
       let count = 0;
+
       c.students.forEach(s => {
-        const msgs = s.messages || [];
+        const msgs = (s.messages || []).filter(m => !m.classId || m.classId === c.id);
         if (msgs.length > 0) {
           count++;
           let chatHtml = msgs.map(m => {
@@ -2860,18 +3201,16 @@
               <h5 style="margin-bottom:8px;">👤 ${s.name} (Código: ${s.code})</h5>
               <div class="chat-box">${chatHtml}</div>
               <div style="display:flex; gap:8px; align-items:center;">
-                <input type="text" id="reply-input-${s.id}" placeholder="Responder..." style="flex:1; padding:6px; border:1px solid #cbd5e1; border-radius:4px;">
-                <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo para o aluno">
-                  📎
-                  <input type="file" id="reply-file-${s.id}" style="display:none;">
-                </label>
+                <input type="text" id="reply-input-${s.id}" placeholder="Responder ao aluno..." style="flex:1; padding:6px; border:1px solid #cbd5e1; border-radius:4px;">
+                <label class="btn btn-secondary btn-sm" style="cursor:pointer;" title="Anexar arquivo">📎 <input type="file" id="reply-file-${s.id}" style="display:none;"></label>
                 <button onclick="sendTeacherReply('${s.id}')" class="btn btn-primary btn-sm">Responder</button>
               </div>
             </div>
           `;
         }
       });
-      if (count === 0) container.innerHTML = '<p style="color:#64748b;">Nenhuma mensagem nesta turma.</p>';
+
+      if (count === 0) container.innerHTML = '<p style="color:#64748b;">Nenhuma mensagem registrada nesta turma.</p>';
     }
 
     function sendTeacherReply(studentId) {
@@ -2887,18 +3226,18 @@
       const pushReply = (fileObj) => {
         if (!s.messages) s.messages = [];
         s.messages.push({
-          id: "m-" + Date.now(), sender: "professor", text: text || "Envio de arquivo anexado", file: fileObj,
+          id: "m-" + Date.now(), sender: "professor", text: text || "Arquivo anexado", file: fileObj,
+          classId: c.id, teacherId: c.teacherId, discipline: c.discipline,
           date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
         });
         saveData();
         renderTeacherMessages();
+        showToast("Resposta enviada ao aluno!");
       };
 
       if (file) {
         const reader = new FileReader();
-        reader.onload = (evt) => {
-          pushReply({ name: file.name, data: evt.target.result });
-        };
+        reader.onload = (evt) => { pushReply({ name: file.name, data: evt.target.result }); };
         reader.readAsDataURL(file);
       } else {
         pushReply(null);
@@ -2909,543 +3248,6 @@
       loadData();
       switchProfile(state.activeProfile || 'portal');
     });
-  
-    // NOVAS FUNCIONALIDADES V6: FECHAMENTO DE ETAPAS, A3 RECURSOS & PROVAS ONLINE
-
-    function toggleClosePeriod(pk) {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      if (!c) return;
-      if (!c.closedPeriods) c.closedPeriods = {};
-      c.closedPeriods[pk] = !c.closedPeriods[pk];
-      saveData();
-      renderTeacherGradesTable(c);
-      showToast(c.closedPeriods[pk] ? `🔒 Etapa ${pk} FECHADA e publicada no Boletim!` : `🔓 Etapa ${pk} REABERTA para lançamentos nos diários.`);
-    }
-
-    function renderA3RecoveryAlert(c) {
-      if (c.mode !== 'semestral') return '';
-      const a3Students = [];
-      (c.students || []).forEach(s => {
-        const st = calcStudentAcademicStatus(s, c);
-        if (parseFloat(st.avgPartial) < 6.0) {
-          a3Students.push({ student: s, status: st });
-        }
-      });
-      if (a3Students.length === 0) return '';
-
-      let rows = a3Students.map(item => {
-        const s = item.student;
-        const st = item.status;
-        const a3Val = st.a3Note ?? null;
-        let statusLabel = '';
-        if (a3Val !== null && a3Val !== undefined) {
-          statusLabel = parseFloat(a3Val) >= 6.0 
-            ? `<span style="color:#15803d; font-weight:700;">✅ Nota A3: ${a3Val} (Aprovado!)</span>` 
-            : `<span style="color:#dc2626; font-weight:700;">❌ Nota A3: ${a3Val} (Retido)</span>`;
-        } else {
-          statusLabel = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando A3 (Precisa de 6.0)</span>`;
-        }
-
-        return `
-          <tr>
-            <td><strong>${s.name}</strong> (${s.code || 'S/C'})</td>
-            <td><span class="grade-red">${st.avgPartial}</span></td>
-            <td>${statusLabel}</td>
-            <td>
-              <button onclick="promptA3Note('${s.id}')" class="btn btn-secondary btn-sm">✏️ Lançar Nota A3</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      return `
-        <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:#9f1239; margin-bottom:6px;">🚨 Alunos Convocados para a A3 (Prova Final / Recuperação)</h4>
-          <p style="font-size:0.85rem; color:#881337; margin-bottom:10px;">
-            Os alunos abaixo obtiveram média parcial (A1 + A2) abaixo de 6,0 e precisam realizar a A3 para alcançar a aprovação:
-          </p>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead><tr><th>Aluno</th><th>Média Parcial (A1+A2)/2</th><th>Status da A3</th><th>Ação Rápida</th></tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-          </div>
-        </div>
-      `;
-    }
-
-    function promptA3Note(studentId) {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      const s = c.students.find(item => item.id === studentId);
-      if (!s) return;
-
-      const currentA3 = (s.grades && s.grades["A3 (Prova Final)"]) ? s.grades["A3 (Prova Final)"].a3Note : '';
-
-      const contentHtml = `
-        <p style="font-size:0.95rem; margin-bottom:12px;">Aluno: <strong>${s.name}</strong> (${s.code || 'S/C'})</p>
-        <div class="form-group">
-          <label>Nota da A3 (Prova Final / Recuperação)</label>
-          <input type="number" step="0.1" id="m-a3-val" value="${currentA3 ?? 6.0}" min="0" max="10" required>
-        </div>
-      `;
-
-      showCustomModal("✏️ Lançar Nota A3", contentHtml, () => {
-        const noteVal = parseFloat(document.getElementById('m-a3-val').value);
-        if (isNaN(noteVal)) {
-          showAlertModal("Atenção", "Informe um valor numérico válido para a nota.");
-          return false;
-        }
-
-        if (!s.grades) s.grades = {};
-        if (!s.grades["A3 (Prova Final)"]) s.grades["A3 (Prova Final)"] = {};
-        s.grades["A3 (Prova Final)"].a3Note = noteVal;
-
-        saveData();
-        renderTeacherGradesTable(c);
-        showToast(`Nota A3 (${noteVal}) lançada para ${s.name}!`);
-      }, "💾 Salvar Nota A3");
-    }
-
-    function openAddExamModal() {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      if (!c) return;
-      if (!c.exams) c.exams = [];
-
-      const periodsList = Object.keys(c.periods || {});
-      const periodOptions = periodsList.map(p => 
-        `<option value="${p}" ${p === state.currentPeriod ? 'selected' : ''}>${p}</option>`
-      ).join('');
-
-      const contentHtml = `
-        <div class="form-group">
-          <label>Título da Prova / Avaliação Online</label>
-          <input type="text" id="m-ex-title" placeholder="Ex: Prova Parcial de Biologia Humana" required>
-        </div>
-        <div class="form-group">
-          <label>Etapa da Prova</label>
-          <select id="m-ex-period">${periodOptions}</select>
-        </div>
-        <div class="form-group">
-          <label>Valor Total em Pontos (ex: 10.0)</label>
-          <input type="number" step="0.5" id="m-ex-max" value="10.0" required>
-        </div>
-        <div class="form-group">
-          <label>Descrição / Orientações para os Alunos</label>
-          <textarea id="m-ex-desc" rows="2" placeholder="Ex: Leia atentamente as questões objetivas e discursivas antes de responder..."></textarea>
-        </div>
-
-        <hr style="border:0; border-top:1px solid #e2e8f0; margin:16px 0;">
-        
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h4 style="color:#6d28d9;">📋 Questões da Prova</h4>
-          <button type="button" onclick="addQuestionCardToExamModal()" class="btn btn-secondary btn-sm">+ Adicionar Questão</button>
-        </div>
-
-        <div id="m-ex-questions-container"></div>
-      `;
-
-      showCustomModal("📝 Criar Prova / Avaliação Online", contentHtml, () => {
-        const title = document.getElementById('m-ex-title').value.trim();
-        if (!title) { showAlertModal("Atenção", "Digite o título da prova."); return false; }
-        const period = document.getElementById('m-ex-period').value;
-        const maxGrade = parseFloat(document.getElementById('m-ex-max').value) || 10.0;
-        const desc = document.getElementById('m-ex-desc').value.trim();
-
-        const qCards = document.querySelectorAll('.exam-question-card');
-        if (qCards.length === 0) {
-          showAlertModal("Atenção", "Adicione pelo menos 1 questão para criar a prova.");
-          return false;
-        }
-
-        const questions = [];
-        let isValid = true;
-
-        qCards.forEach((card, idx) => {
-          const qType = card.querySelector('.q-type').value;
-          const qText = card.querySelector('.q-text').value.trim();
-          const qPoints = parseFloat(card.querySelector('.q-points').value) || 1.0;
-
-          if (!qText) isValid = false;
-
-          if (qType === 'multiple') {
-            const optA = card.querySelector('.q-opt-a').value.trim();
-            const optB = card.querySelector('.q-opt-b').value.trim();
-            const optC = card.querySelector('.q-opt-c').value.trim();
-            const optD = card.querySelector('.q-opt-d').value.trim();
-            const correctOpt = parseInt(card.querySelector('.q-correct-opt:checked').value) || 0;
-
-            questions.push({
-              id: "q-" + Date.now() + "-" + idx,
-              type: "multiple",
-              text: qText,
-              points: qPoints,
-              options: [optA || "Opção A", optB || "Opção B", optC || "Opção C", optD || "Opção D"],
-              correctOpt: correctOpt
-            });
-          } else {
-            questions.push({
-              id: "q-" + Date.now() + "-" + idx,
-              type: "discursive",
-              text: qText,
-              points: qPoints
-            });
-          }
-        });
-
-        if (!isValid) {
-          showAlertModal("Atenção", "Por favor, preencha o enunciado de todas as questões.");
-          return false;
-        }
-
-        const exam = {
-          id: "exam-" + Date.now(),
-          title: title,
-          description: desc,
-          period: period,
-          maxGrade: maxGrade,
-          questions: questions
-        };
-
-        c.exams.push(exam);
-        saveData();
-        renderTeacherExamsList(c);
-        showToast("📝 Prova Online criada com sucesso!");
-      }, "💾 Criar Prova Online", true);
-
-      addQuestionCardToExamModal();
-    }
-
-    function addQuestionCardToExamModal() {
-      const container = document.getElementById('m-ex-questions-container');
-      if (!container) return;
-
-      const qIdx = container.children.length + 1;
-      const qCard = document.createElement('div');
-      qCard.className = 'exam-question-card';
-      qCard.style.cssText = 'background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:14px; margin-bottom:12px; position:relative;';
-
-      qCard.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <strong style="color:#6d28d9;">Questão ${qIdx}</strong>
-          <button type="button" onclick="this.closest('.exam-question-card').remove()" class="btn btn-secondary btn-sm" style="color:#dc2626;">🗑️ Remov. Questão</button>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px;">
-          <div>
-            <label style="font-size:0.8rem; font-weight:600;">Tipo de Questão:</label>
-            <select class="q-type" onchange="toggleExamQuestionOptionsUI(this)" style="padding:6px; font-size:0.85rem;">
-              <option value="multiple">Múltipla Escolha (Gabarito Automático)</option>
-              <option value="discursive">Discursiva / Texto Aberto (Correção Manual)</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:0.8rem; font-weight:600;">Pontos:</label>
-            <input type="number" step="0.5" class="q-points" value="5.0" style="padding:6px; font-size:0.85rem;">
-          </div>
-        </div>
-
-        <div style="margin-bottom:8px;">
-          <label style="font-size:0.8rem; font-weight:600;">Enunciado da Pergunta:</label>
-          <textarea class="q-text" rows="2" placeholder="Digite a pergunta da questão..." style="font-size:0.88rem; padding:6px;"></textarea>
-        </div>
-
-        <div class="q-options-box" style="margin-top:8px;">
-          <label style="font-size:0.8rem; font-weight:600; color:#475569;">Alternativas e Marcação da Resposta Correta:</label>
-          <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
-              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="0" checked>
-              <strong>A)</strong> <input type="text" class="q-opt-a" value="Opção A" style="flex:1; padding:4px 8px;">
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
-              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="1">
-              <strong>B)</strong> <input type="text" class="q-opt-b" value="Opção B" style="flex:1; padding:4px 8px;">
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
-              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="2">
-              <strong>C)</strong> <input type="text" class="q-opt-c" value="Opção C" style="flex:1; padding:4px 8px;">
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
-              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="3">
-              <strong>D)</strong> <input type="text" class="q-opt-d" value="Opção D" style="flex:1; padding:4px 8px;">
-            </label>
-          </div>
-        </div>
-      `;
-
-      container.appendChild(qCard);
-    }
-
-    function toggleExamQuestionOptionsUI(selectEl) {
-      const card = selectEl.closest('.exam-question-card');
-      const optBox = card.querySelector('.q-options-box');
-      if (optBox) {
-        if (selectEl.value === 'discursive') {
-          optBox.style.display = 'none';
-        } else {
-          optBox.style.display = 'block';
-        }
-      }
-    }
-
-    function renderTeacherExamsList(c) {
-      const container = document.getElementById('teacher-exams-list');
-      if (!container) return;
-      if (!c.exams) c.exams = [];
-
-      if (c.exams.length === 0) {
-        container.innerHTML = '<p style="color:#64748b;">Nenhuma prova online criada para esta turma. Clique em "+ Criar Nova Prova Online" acima.</p>';
-        return;
-      }
-
-      let html = '';
-      c.exams.forEach(ex => {
-        const subs = (c.examSubmissions || []).filter(s => s.examId === ex.id);
-        
-        let subsRows = (c.students || []).map(st => {
-          const sub = subs.find(s => s.studentId === st.id);
-          let subStatus = '<span style="color:#94a3b8;">⏳ Pendente de Resposta</span>';
-          let actionBtn = '';
-
-          if (sub) {
-            const finalNote = (sub.finalScore ?? sub.autoScore).toFixed(1);
-            if (sub.status === 'pending_manual') {
-              subStatus = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando Correção Discursiva (Parcial: ${sub.autoScore.toFixed(1)})</span>`;
-              actionBtn = `<button onclick="openTeacherGradeSubmissionModal('${c.id}', '${ex.id}', '${st.id}')" class="btn btn-primary btn-sm">✏️ Corrigir Respostas Discursivas</button>`;
-            } else {
-              subStatus = `<span style="color:#15803d; font-weight:700;">✅ Corrigido (Nota Final: ${finalNote} / ${ex.maxGrade})</span>`;
-              actionBtn = `
-                <button onclick="openTeacherGradeSubmissionModal('${c.id}', '${ex.id}', '${st.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Revisar Correção</button>
-                <button onclick="transferExamGradeToJournal('${ex.id}', '${st.id}')" class="btn btn-success btn-sm" title="Lançar nota no Diário">📥 Lançar no Diário</button>
-              `;
-            }
-          }
-
-          return `
-            <tr>
-              <td><strong>${st.name}</strong> (${st.code || 'S/C'})</td>
-              <td>${subStatus}</td>
-              <td>${actionBtn}</td>
-            </tr>
-          `;
-        }).join('');
-
-        html += `
-          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
-              <div>
-                <strong style="color:#6d28d9; font-size:1.05rem;">📝 ${ex.title} (Etapa ${ex.period})</strong>
-                <div style="font-size:0.85rem; color:#64748b; margin-top:2px;">Vale ${ex.maxGrade} pts | ${ex.questions.length} questões cadastradas</div>
-                ${ex.description ? `<div style="font-size:0.85rem; color:#334155;">${ex.description}</div>` : ''}
-              </div>
-              <div>
-                <button onclick="deleteExam('${ex.id}')" class="btn btn-danger btn-sm">🗑️ Excluir Prova</button>
-              </div>
-            </div>
-
-            <h5 style="color:#1e293b; margin-bottom:8px;">📊 Entregas dos Alunos:</h5>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead><tr><th>Aluno</th><th>Status da Prova</th><th>Ação</th></tr></thead>
-                <tbody>${subsRows}</tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function deleteExam(examId) {
-      showConfirmModal(
-        "🗑️ Excluir Prova Online",
-        "Deseja realmente excluir esta prova online e todas as respostas entregues pelos alunos?",
-        () => {
-          const c = state.classes.find(item => item.id === state.currentClassId);
-          if (!c) return;
-          c.exams = (c.exams || []).filter(e => e.id !== examId);
-          saveData();
-          renderTeacherExamsList(c);
-          showToast("Prova excluída com sucesso!");
-        },
-        "Sim, Excluir Prova"
-      );
-    }
-
-    function transferExamGradeToJournal(examId, studentId) {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      if (!c) return;
-      const ex = (c.exams || []).find(e => e.id === examId);
-      const sub = (c.examSubmissions || []).find(s => s.examId === examId && s.studentId === studentId);
-      const st = c.students.find(s => s.id === studentId);
-      if (!ex || !sub || !st) return;
-
-      const period = ex.period || "A1";
-      if (!c.periods[period]) c.periods[period] = [];
-
-      let act = c.periods[period].find(a => a.name === `Prova: ${ex.title}`);
-      if (!act) {
-        act = {
-          id: "act-exam-" + Date.now(),
-          name: `Prova: ${ex.title}`,
-          maxVal: ex.maxGrade,
-          description: "Nota importada da Avaliação Online"
-        };
-        c.periods[period].push(act);
-      }
-
-      if (!st.grades) st.grades = {};
-      if (!st.grades[period]) st.grades[period] = {};
-      st.grades[period][act.id] = sub.autoScore;
-
-      saveData();
-      showToast(`Nota ${sub.autoScore.toFixed(1)} de ${st.name} lançada no Diário!`);
-    }
-
-    function renderStudentExamsForDetails(c, s) {
-      const container = document.getElementById('student-exams-container');
-      if (!container) return;
-
-      const exams = c.exams || [];
-      if (exams.length === 0) {
-        container.innerHTML = '<div style="color:#94a3b8; padding:10px 0;">Nenhuma prova online disponível nesta disciplina no momento.</div>';
-        return;
-      }
-
-      let html = '';
-      exams.forEach(ex => {
-        const sub = (c.examSubmissions || []).find(sub => sub.examId === ex.id && sub.studentId === s.id);
-        const isSubmitted = !!sub;
-
-        const actionBtn = isSubmitted 
-          ? `<span style="color:#15803d; font-weight:700;">✅ Entregue (Nota: ${sub.autoScore.toFixed(1)} / ${ex.maxGrade})</span>` 
-          : `<button onclick="openStudentTakeExamModal('${c.id}', '${ex.id}')" class="btn btn-primary btn-sm">✍️ Responder Prova Online</button>`;
-
-        html += `
-          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <div>
-              <strong style="color:#6d28d9;">📝 ${ex.title} (${ex.period})</strong>
-              <div style="font-size:0.85rem; color:#64748b;">Vale ${ex.maxGrade} pts | ${ex.questions.length} questões</div>
-              ${ex.description ? `<div style="font-size:0.85rem; color:#334155; margin-top:2px;">${ex.description}</div>` : ''}
-            </div>
-            <div>${actionBtn}</div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function openStudentTakeExamModal(classId, examId) {
-      const c = state.classes.find(item => item.id === classId);
-      if (!c) return;
-      const ex = (c.exams || []).find(e => e.id === examId);
-      if (!ex) return;
-
-      const rec = state.matchedStudentRecords.find(r => r.class.id === classId);
-      if (!rec) return;
-      const s = rec.student;
-
-      let formHtml = `<div style="padding:10px;"><h3>📝 ${ex.title}</h3><p style="color:#64748b; font-size:0.9rem; margin-bottom:16px;">${ex.description || 'Responda as questões abaixo e clique em Enviar Respostas.'}</p>`;
-
-      ex.questions.forEach((q, idx) => {
-        formHtml += `
-          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-            <strong>Questão ${idx + 1} (${q.points} pts):</strong>
-            <p style="margin:6px 0 10px 0; color:#1e293b;">${q.text}</p>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              ${q.options.map((opt, oIdx) => `
-                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem;">
-                  <input type="radio" name="exam_q_${q.id}" value="${oIdx}">
-                  <span><strong>${['A','B','C','D'][oIdx]}):</strong> ${opt}</span>
-                </label>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      });
-
-      formHtml += `</div>`;
-
-      const examOverlay = document.createElement('div');
-      examOverlay.id = 'exam-modal-overlay';
-      examOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:99999; padding:20px;';
-
-      examOverlay.innerHTML = `
-        <div style="background:#fff; border-radius:10px; max-width:650px; width:100%; max-height:90vh; overflow-y:auto; padding:24px; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
-          ${formHtml}
-          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px; border-top:1px solid #e2e8f0; padding-top:12px;">
-            <button onclick="document.getElementById('exam-modal-overlay').remove()" class="btn btn-secondary">Cancelar</button>
-            <button onclick="submitStudentExamAnswers('${classId}', '${examId}', '${s.id}')" class="btn btn-primary">📤 Enviar Respostas</button>
-          </div>
-        </div>
-      `;
-
-      document.body.appendChild(examOverlay);
-    }
-
-    function submitStudentExamAnswers(classId, examId, studentId) {
-      const c = state.classes.find(item => item.id === classId);
-      const ex = (c.exams || []).find(e => e.id === examId);
-      if (!c || !ex) return;
-
-      let totalScore = 0;
-      const answers = {};
-
-      ex.questions.forEach(q => {
-        const selected = document.querySelector(`input[name="exam_q_${q.id}"]:checked`);
-        if (selected) {
-          const val = parseInt(selected.value);
-          answers[q.id] = val;
-          if (val === q.correctOpt) {
-            totalScore += q.points;
-          }
-        }
-      });
-
-      if (!c.examSubmissions) c.examSubmissions = [];
-      c.examSubmissions = c.examSubmissions.filter(s => !(s.examId === examId && s.studentId === studentId));
-
-      c.examSubmissions.push({
-        id: "sub-" + Date.now(),
-        examId: examId,
-        studentId: studentId,
-        answers: answers,
-        autoScore: totalScore,
-        submittedAt: new Date().toISOString()
-      });
-
-      // Automatically record grade into student activity grades
-      const st = c.students.find(s => s.id === studentId);
-      if (st) {
-        const period = ex.period || "A1";
-        if (!c.periods[period]) c.periods[period] = [];
-
-        let act = c.periods[period].find(a => a.name === `Prova: ${ex.title}`);
-        if (!act) {
-          act = {
-            id: "act-exam-" + Date.now(),
-            name: `Prova: ${ex.title}`,
-            maxVal: ex.maxGrade,
-            description: "Avaliação Online"
-          };
-          c.periods[period].push(act);
-        }
-
-        if (!st.grades) st.grades = {};
-        if (!st.grades[period]) st.grades[period] = {};
-        st.grades[period][act.id] = totalScore;
-      }
-
-      saveData();
-
-      const overlay = document.getElementById('exam-modal-overlay');
-      if (overlay) overlay.remove();
-
-      showToast(`✅ Prova enviada! Sua nota foi: ${totalScore.toFixed(1)} / ${ex.maxGrade}`);
-      if (state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);
-    }
-
   </script>
 </body>
 </html>
