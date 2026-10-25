@@ -94,7 +94,7 @@
     .login-card { max-width: 420px; margin: 40px auto; }
     .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
     .class-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; position: relative; }
-    .class-card:hover { border-color: #6d28d9; transform: translateY(-2px); }
+    .class-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
     .period-tab-btn { padding: 6px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
     .period-tab-btn.active { background: #6d28d9; color: #fff; border-color: #6d28d9; }
@@ -108,6 +108,84 @@
       #printable-boletim { position: absolute; left: 0; top: 0; width: 100%; }
       .no-print { display: none !important; }
     }
+  
+    /* SISTEMA DE MODAIS VISUAIS (V8) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.04);
+      border: 1px solid #cbd5e1;
+      transform: translateY(10px);
+      transition: transform 0.2s ease;
+    }
+    .modal-card-lg {
+      max-width: 750px;
+    }
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .modal-header h3 {
+      color: #6d28d9;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .modal-close-btn:hover {
+      color: #dc2626;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 24px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+    }
+
   </style>
 </head>
 <body>
@@ -132,7 +210,7 @@
     <!-- ==================== TELA INICIAL UNIFICADA / PORTAL ==================== -->
     <section id="screen-portal">
       <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Sistema de Ensino</h1>
+        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Diário Escolar Digital</h1>
         <p style="color: #64748b; font-size: 1rem; margin-top: 6px;">Selecione o seu tipo de acesso para continuar:</p>
       </div>
 
@@ -144,18 +222,18 @@
             <div class="portal-card-icon">👨‍🎓</div>
             <h2 style="margin-bottom: 8px;">Área do Aluno</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Consulte seu boletim escolar, notas, diário de presença, provas online e fale com seus professores.
+              Consulte seu boletim escolar, notas, diário de presença, fale com seus professores e acesse seu histórico acadêmico.
             </p>
             <form onsubmit="handlePortalStudentAccess(event)">
               <div class="form-group">
-                <label>Código Único ou Nome do Aluno</label>
-                <input type="text" id="portal-student-code" placeholder="Digite seu código (ex: 2026001) ou nome" required>
+                <label>Código Único do Aluno</label>
+                <input type="text" id="portal-student-code" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required>
               </div>
               <button type="submit" class="btn btn-primary btn-block">🔍 Acessar Área do Aluno</button>
             </form>
           </div>
           <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
-            Acesso rápido direto pelo seu código individual ou nome
+            Acesso rápido direto pelo seu código individual
           </div>
         </div>
 
@@ -165,7 +243,7 @@
             <div class="portal-card-icon">👨‍🏫</div>
             <h2 style="margin-bottom: 8px;">Acesso do Docente / Gestor</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Lançamento de notas, atividades, provas online, fechamento de etapas e diários de turma.
+              Lançamento de notas, atividades, diário de presença, gestão de turmas e avisos.
             </p>
             
             <div id="portal-login-box">
@@ -226,18 +304,18 @@
     <!-- ==================== PORTAL DO ALUNO ==================== -->
     <section id="screen-aluno" class="hidden">
       
-      <!-- CAIXA DE BUSCA DE CÓDIGO -->
+      <!-- CAIXA DE BUSCA DE CÓDIGO (SE NÃO BUSCOU AINDA OU QUISER TROCAR) -->
       <div class="student-search-box card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <h2>Portal do Aluno</h2>
           <button onclick="switchProfile('portal')" class="btn btn-secondary btn-sm">← Sair / Voltar à Inicial</button>
         </div>
         <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">
-          Informe o <strong>Código Único ou Nome do Aluno</strong> para acessar o painel completo.
+          Informe o <strong>Código Único de Aluno</strong> para acessar seu painel completo.
         </p>
         <form onsubmit="handleStudentSearch(event)">
           <div class="form-group" style="display:flex; gap:8px;">
-            <input type="text" id="student-search-input" placeholder="Digite seu código (ex: 2026001) ou nome" required style="flex:1;">
+            <input type="text" id="student-search-input" placeholder="Digite seu código (ex: 2026001)" maxlength="10" required style="flex:1;">
             <button type="submit" class="btn btn-primary">🔍 Entrar</button>
           </div>
         </form>
@@ -253,7 +331,7 @@
               <div id="bol-student-photo-container"></div>
               <div>
                 <h2 id="bol-student-name">Nome do Aluno</h2>
-                <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#6d28d9;">--</strong></p>
+                <p style="color: #64748b; font-size: 0.875rem;">Código do Aluno: <strong id="bol-student-code" style="color:#2563eb;">--</strong></p>
                 <div class="no-print" style="margin-top:6px;">
                   <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
                     📷 Alterar Minha Foto
@@ -268,20 +346,36 @@
 
         <!-- MURAL DE AVISOS DO PROFESSOR -->
         <div id="student-mural-box" class="mural-card hidden">
-          <h4 style="color:#5b21b6;">📢 Mural de Avisos da Escola</h4>
+          <h4 style="color:#1e3a8a;">📢 Mural de Avisos da Escola</h4>
           <div id="student-mural-items"></div>
         </div>
 
         <!-- MENU DE NAVEGAÇÃO DO ALUNO (4 SEÇÕES SEPARADAS) -->
         <div class="student-main-nav">
-          <button id="st-tab-boletim" class="student-nav-btn active" onclick="switchStudentTab('boletim')">📊 1. Boletim</button>
-          <button id="st-tab-diarios" class="student-nav-btn" onclick="switchStudentTab('diarios')">📖 2. Diários</button>
-          <button id="st-tab-mensagens" class="student-nav-btn" onclick="switchStudentTab('mensagens')">💬 3. Caixa de Mensagens</button>
-          <button id="st-tab-historico" class="student-nav-btn" onclick="switchStudentTab('historico')">📜 4. Histórico</button>
+          <button id="st-tab-sala" class="student-nav-btn active" onclick="switchStudentTab('sala')">🏫 1. Sala de Aula Virtual</button>
+          <button id="st-tab-boletim" class="student-nav-btn" onclick="switchStudentTab('boletim')">📊 2. Boletim</button>
+          <button id="st-tab-diarios" class="student-nav-btn" onclick="switchStudentTab('diarios')">📖 3. Diários</button>
+          <button id="st-tab-mensagens" class="student-nav-btn" onclick="switchStudentTab('mensagens')">💬 4. Caixa de Mensagens</button>
+          <button id="st-tab-historico" class="student-nav-btn" onclick="switchStudentTab('historico')">📜 5. Histórico</button>
         </div>
 
         <!-- ================= SEÇÃO 1: BOLETIM CONSOLIDADO ================= -->
-        <div id="st-section-boletim" class="boletim-card">
+        <!-- ================= SEÇÃO 1: SALA DE AULA VIRTUAL (PROVAS & ATIVIDADES) ================= -->
+        <div id="st-section-sala" class="boletim-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h3 style="color:#1e293b;">🏫 Sala de Aula Virtual & Central de Avaliações</h3>
+              <p style="color:#64748b; font-size:0.88rem; margin-top:4px;">
+                Acesse aqui todas as suas <strong>provas online, simulados e atividades discursivas</strong> cadastradas pelos professores.
+              </p>
+            </div>
+            <button onclick="if(state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);" class="btn btn-secondary btn-sm">🔄 Atualizar Sala</button>
+          </div>
+
+          <div id="student-classroom-exams-list"></div>
+        </div>
+
+        <div id="st-section-boletim" class="boletim-card hidden">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
             <h3 style="color:#1e293b;">📊 Boletim Escolar Consolidado</h3>
             <button onclick="window.print()" class="btn btn-secondary btn-sm">🖨️ Imprimir Boletim</button>
@@ -298,7 +392,7 @@
         <div id="st-section-diarios" class="boletim-card hidden">
           <h3 style="color:#1e293b; margin-bottom:8px;">📖 Diários & Detalhamento de Atividades</h3>
           <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-            Selecione a disciplina abaixo para ver todas as notas detalhadas de cada teste/trabalho, provas online e o registro diário de presenças.
+            Selecione a disciplina abaixo para ver todas as notas detalhadas de cada teste/trabalho e o registro diário de faltas e presenças.
           </p>
 
           <div id="student-period-selector" style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;"></div>
@@ -339,7 +433,7 @@
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
-        ⚠️ Nenhum aluno encontrado com este Código Único ou Nome.
+        ⚠️ Nenhum aluno encontrado com este Código Único.
       </div>
     </section>
 
@@ -356,7 +450,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap:wrap; gap:10px;">
         <div>
           <h2 id="user-display-name">Painel de Gestão</h2>
-          <span id="user-role-badge" style="font-size:0.8rem; background:#f3e8ff; color:#5b21b6; padding:2px 8px; border-radius:12px; font-weight:600;">Organizador</span>
+          <span id="user-role-badge" style="font-size:0.8rem; background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:12px; font-weight:600;">Organizador</span>
         </div>
         <div>
           <button onclick="openProfileModal()" class="btn btn-secondary" style="margin-right:4px;">✏️ Meus Dados</button>
@@ -565,24 +659,24 @@
         exams: [
           {
             id: "exam-1",
-            title: "Simulado de Biologia Humana",
-            description: "Avaliação online sobre Sistema Digestório e órgãos",
+            title: "Simulado de Biologia Humana & Nutrição",
+            description: "Avaliação online com questões objetivas e discursivas sobre o Sistema Digestório",
             period: "A1",
             maxGrade: 10.0,
             questions: [
               { id: "q1", type: "multiple", text: "Onde ocorre a maior parte da absorção de nutrientes no corpo humano?", options: ["Estômago", "Intestino Delgado", "Fígado", "Esôfago"], correctOpt: 1, points: 5.0 },
-              { id: "q2", type: "multiple", text: "Qual enzima é responsável por iniciar a digestão de amido na boca?", options: ["Pepsina", "Ptialina (Amilase Salivar)", "Lipse", "Tripsina"], correctOpt: 1, points: 5.0 }
+              { id: "q2", type: "discursive", text: "Explique sucintamente com suas palavras como a digestão química dos carboidratos se inicia na boca e qual enzima participa desse processo.", points: 5.0 }
             ]
           }
         ],
         examSubmissions: [],
         periods: {
           "A1": [
-            { id: "act-1", name: "Teste 1", maxVal: 2.0, description: "Avaliação escrita de introdução às ciências" },
-            { id: "act-2", name: "Prova A1", maxVal: 8.0, description: "Prova geral A1" }
+            { id: "act-1", name: "Teste 1", description: "Avaliação escrita de introdução às ciências" },
+            { id: "act-2", name: "Prova A1", description: "Prova geral A1" }
           ],
           "A2": [
-            { id: "act-3", name: "Simulado A2", maxVal: 10.0, description: "Simulado teórico e prático" }
+            { id: "act-3", name: "Simulado A2", description: "Simulado teórico e prático" }
           ],
           "A3 (Prova Final)": []
         },
@@ -590,7 +684,6 @@
           {
             id: "les-1",
             date: "2026-10-01",
-            count: 2,
             content: "Sistema Digestório — órgãos e digestão química",
             attendance: { "al-1": "P" }
           }
@@ -599,9 +692,9 @@
           {
             id: "al-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null,
             grades: {
-              "A1": { "act-1": 2.0, "act-2": 7.8 },
+              "A1": { "act-1": 7.0, "act-2": 8.0 },
               "A2": { "act-3": 4.0 },
-              "A3 (Prova Final)": { a3Note: 10.0 }
+              "A3 (Prova Final)": { a3Note: 6.0 }
             },
             messages: []
           }
@@ -616,15 +709,12 @@
         mode: "semestral",
         discipline: "Matemática",
         year: 2026,
-        closedPeriods: { "A1": false, "A2": false, "A3 (Prova Final)": false },
-        exams: [],
-        examSubmissions: [],
         periods: {
           "A1": [
-            { id: "act-m1", name: "Prova M1", maxVal: 10.0, description: "Cálculo e álgebra linear" }
+            { id: "act-m1", name: "Prova M1", description: "Cálculo e álgebra linear" }
           ],
           "A2": [
-            { id: "act-m2", name: "Trabalho M2", maxVal: 10.0, description: "Atividade em dupla" }
+            { id: "act-m2", name: "Trabalho M2", description: "Atividade em dupla" }
           ],
           "A3 (Prova Final)": []
         },
@@ -632,7 +722,6 @@
           {
             id: "les-2",
             date: "2026-10-02",
-            count: 2,
             content: "Funções e Gráficos",
             attendance: { "al-1-mat": "P" }
           }
@@ -661,12 +750,79 @@
       currentClassId: null,
       currentPeriod: "A1",
       currentUser: null,
-      activeProfile: "portal",
-      activeStudentTab: "boletim",
+      activeProfile: "portal", // 'portal', 'aluno', 'professor'
+      activeStudentTab: "boletim", // 'boletim', 'diarios', 'mensagens', 'historico'
       lastSearchedCode: "",
       matchedStudentRecords: [],
       activeStudentPeriod: "A1"
     };
+
+    
+    // ==========================================
+    // SISTEMA DE MODAIS VISUAIS NATIVOS (V8)
+    // ==========================================
+
+    function showCustomModal(title, contentHtml, onSave, saveBtnText = "💾 Salvar", large = false) {
+      const existing = document.getElementById('app-custom-modal');
+      if (existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = 'app-custom-modal';
+      overlay.className = 'modal-overlay active';
+
+      overlay.innerHTML = `
+        <div class="modal-card ${large ? 'modal-card-lg' : ''}">
+          <div class="modal-header">
+            <h3>${title}</h3>
+            <button class="modal-close-btn" onclick="closeCustomModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            ${contentHtml}
+          </div>
+          <div class="modal-footer">
+            <button onclick="closeCustomModal()" class="btn btn-secondary">Cancelar</button>
+            <button id="modal-save-btn" class="btn btn-primary">${saveBtnText}</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      document.getElementById('modal-save-btn').onclick = () => {
+        if (onSave) {
+          const success = onSave();
+          if (success !== false) {
+            closeCustomModal();
+          }
+        } else {
+          closeCustomModal();
+        }
+      };
+    }
+
+    function closeCustomModal() {
+      const el = document.getElementById('app-custom-modal');
+      if (el) el.remove();
+    }
+
+    function showConfirmModal(title, message, onConfirm, confirmBtnText = "Sim, Confirmar") {
+      showCustomModal(
+        title,
+        `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`,
+        onConfirm,
+        confirmBtnText
+      );
+    }
+
+    function showAlertModal(title, message) {
+      showCustomModal(
+        title,
+        `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`,
+        null,
+        "Entendido"
+      );
+    }
+
 
     function loadData() {
       const sStored = localStorage.getItem("diario_settings_v18") || localStorage.getItem("diario_settings_v17") || localStorage.getItem("diario_settings");
@@ -762,6 +918,7 @@
       return Array.from(map.values());
     }
 
+    // CÁLCULO DE FREQUÊNCIA DO ALUNO
     function calcStudentAttendance(student, c) {
       const lessons = c.lessons || [];
       if (lessons.length === 0) return { totalLessons: 0, absences: 0, frequency: "100.0%", freqNum: 100.0 };
@@ -846,8 +1003,7 @@
           finalGrade: avg.toFixed(1),
           isGradePassed,
           hasMinAttendance,
-          isPassed,
-          closedPeriods: closed
+          isPassed
         };
       }
     }
@@ -924,11 +1080,12 @@
       }
     }
 
+    // NAVEGAÇÃO ENTRE AS 4 SEÇÕES DO ALUNO
     function switchStudentTab(tab) {
       state.activeStudentTab = tab;
       saveData();
 
-      const tabs = ['boletim', 'diarios', 'mensagens', 'historico'];
+      const tabs = ['sala', 'boletim', 'diarios', 'mensagens', 'historico'];
       tabs.forEach(t => {
         const btn = document.getElementById(`st-tab-${t}`);
         const sec = document.getElementById(`st-section-${t}`);
@@ -942,6 +1099,7 @@
       if (activeSec) activeSec.classList.remove('hidden');
     }
 
+    // PORTAL DO ALUNO - BUSCA
     function handleStudentSearch(e) {
       e.preventDefault();
       const query = document.getElementById('student-search-input').value.trim();
@@ -998,17 +1156,19 @@
 
         renderAcademicConsolidatedTable();
         renderStudentMural();
+        renderStudentClassroomTab();
         renderStudentPeriodSelector();
         renderStudentChatHistory();
         renderStudentHistoryTab();
 
-        switchStudentTab(state.activeStudentTab || 'boletim');
+        switchStudentTab(state.activeStudentTab || 'sala');
       } else {
         portalContent.classList.add('hidden');
         notFoundCard.classList.remove('hidden');
       }
     }
 
+    // 1. BOLETIM CONSOLIDADO (LIMPO E EM LISTA)
     function renderAcademicConsolidatedTable() {
       const summaryBox = document.getElementById('student-academic-summary-table');
       const footerBox = document.getElementById('student-footer-metrics');
@@ -1138,7 +1298,7 @@
     }
 
     function uploadStudentPhoto(e) {
-      const file = e.target.files;
+      const file = e.target.files[0];
       if (!file || state.matchedStudentRecords.length === 0) return;
 
       const reader = new FileReader();
@@ -1178,6 +1338,7 @@
       }
     }
 
+    // 2. DIÁRIOS (DETALHAMENTO DE ATIVIDADES E FREQUÊNCIA)
     function renderStudentPeriodSelector() {
       const container = document.getElementById('student-period-selector');
       container.innerHTML = '';
@@ -1208,12 +1369,13 @@
 
       let html = '';
 
-      Object.keys(c.periods || {}).forEach(pk => {
+      // NOTAS E DESCRIÇÃO DAS ATIVIDADES
+      Object.keys(c.periods).forEach(pk => {
         const acts = c.periods[pk] || [];
         const pGrades = (s.grades && s.grades[pk]) ? s.grades[pk] : {};
 
         let actsHtml = acts.map(act => {
-          const valBadge = act.maxVal ? ` <span style="font-size:0.8rem; color:#6d28d9; font-weight:600;">(Vale ${act.maxVal} pts)</span>` : '';
+          const valBadge = act.maxVal ? ` <span style="font-size:0.8rem; color:#2563eb; font-weight:600;">(Vale ${act.maxVal} pts)</span>` : '';
           return `
             <tr>
               <td>
@@ -1229,7 +1391,7 @@
 
         html += `
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
-            <h5 style="color:#6d28d9; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
+            <h5 style="color:#2563eb; margin-bottom:8px;">${pk} — Atividades de ${c.discipline}</h5>
             <table class="data-table">
               <thead><tr><th>Avaliação / Atividade & Descrição</th><th>Sua Nota</th></tr></thead>
               <tbody>${actsHtml}</tbody>
@@ -1238,13 +1400,14 @@
         `;
       });
 
+      // REGISTRO DE AULAS E CONTEÚDO MINISTRADO
       const lessons = c.lessons || [];
       let lessonsHtml = '';
       lessons.forEach(l => {
         const lCount = l.count || 1;
         const status = (l.attendance && l.attendance[s.id]) === 'F' 
           ? `<span style="color:#dc2626; font-weight:700;">❌ FALTA (${lCount} ${lCount === 1 ? 'falta' : 'faltas'})</span>` 
-          : `<span style="color:#15803d; font-weight:700;">✅ PRESENÇA (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</span>`;
+          : `<span style="color:#16a34a; font-weight:700;">✅ PRESENÇA (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</span>`;
         lessonsHtml += `
           <tr>
             <td>${l.date} (${lCount} ${lCount === 1 ? 'aula' : 'aulas'})</td>
@@ -1275,6 +1438,7 @@
       renderStudentExamsForDetails(c, s);
     }
 
+    // 3. CAIXA DE MENSAGENS COM O PROFESSOR
     function renderStudentChatHistory() {
       const container = document.getElementById('student-chat-history');
       container.innerHTML = '';
@@ -1302,7 +1466,7 @@
       const input = document.getElementById('student-msg-input');
       const fileInput = document.getElementById('student-msg-file');
       const text = input.value.trim();
-      const file = fileInput.files;
+      const file = fileInput.files[0];
 
       if ((!text && !file) || state.matchedStudentRecords.length === 0) return;
 
@@ -1332,6 +1496,7 @@
       }
     }
 
+    // 4. HISTÓRICO ACADÊMICO
     function renderStudentHistoryTab() {
       const container = document.getElementById('student-history-content');
       if (state.matchedStudentRecords.length === 0) return;
@@ -1359,7 +1524,7 @@
 
       container.innerHTML = `
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:#5b21b6; margin-bottom:6px;">📁 Registro Escolar Permanente — ${primary.name}</h4>
+          <h4 style="color:#1e40af; margin-bottom:6px;">📁 Registro Escolar Permanente — ${primary.name}</h4>
           <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">Código do Registro: <code>${primary.code}</code></p>
           
           <div class="table-responsive">
@@ -1381,6 +1546,183 @@
         </div>
       `;
     }
+
+    // LOGIN E REGISTRO DE PROFESSOR
+    
+    function renderStudentClassroomTab() {
+      const container = document.getElementById('student-classroom-exams-list');
+      if (!container) return;
+
+      if (state.matchedStudentRecords.length === 0) {
+        container.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:20px;">Nenhuma turma encontrada.</div>';
+        return;
+      }
+
+      let allExamsList = [];
+      state.matchedStudentRecords.forEach(rec => {
+        const c = rec.class;
+        const s = rec.student;
+        (c.exams || []).forEach(ex => {
+          allExamsList.push({ class: c, student: s, exam: ex });
+        });
+      });
+
+      if (allExamsList.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:30px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;">
+            <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
+            <h4 style="color:#1e293b;">Nenhuma prova ou atividade online disponível no momento</h4>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:4px;">
+              Assim que seus professores cadastrarem provas, simulados ou trabalhos discursivos, eles aparecerão aqui para você responder.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      allExamsList.forEach(item => {
+        const c = item.class;
+        const s = item.student;
+        const ex = item.exam;
+
+        const sub = (c.examSubmissions || []).find(sub => sub.examId === ex.id && sub.studentId === s.id);
+        const isSubmitted = !!sub;
+
+        const hasDiscursive = (ex.questions || []).some(q => q.type === 'discursive');
+        const questionTypesBadge = hasDiscursive 
+          ? `<span style="font-size:0.75rem; background:#f3e8ff; color:#6d28d9; padding:2px 8px; border-radius:12px; font-weight:600;">📝 Múltipla Escolha & Discursivas</span>`
+          : `<span style="font-size:0.75rem; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px; font-weight:600;">⚡ Múltipla Escolha (Correção Automática)</span>`;
+
+        let actionBtnHtml = '';
+        if (!isSubmitted) {
+          actionBtnHtml = `<button onclick="openStudentTakeExamModal('${c.id}', '${ex.id}')" class="btn btn-primary btn-sm">✍️ Entrar na Sala & Fazer Prova</button>`;
+        } else if (sub.status === 'pending_manual') {
+          actionBtnHtml = `
+            <div style="text-align:right;">
+              <span class="status-badge" style="background:#fef3c7; color:#92400e;">⏳ Entregue (Aguardando Correção Discursiva)</span>
+              <div style="margin-top:6px;">
+                <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Minha Resposta</button>
+              </div>
+            </div>
+          `;
+        } else {
+          actionBtnHtml = `
+            <div style="text-align:right;">
+              <span class="status-badge status-aprovado">✅ Concluído (Nota: ${(sub.finalScore ?? sub.autoScore).toFixed(1)} / ${ex.maxGrade})</span>
+              <div style="margin-top:6px;">
+                <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Resultado & Feedback</button>
+              </div>
+            </div>
+          `;
+        }
+
+        html += `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                  <strong style="color:#6d28d9; font-size:1.1rem;">📝 ${ex.title}</strong>
+                  ${questionTypesBadge}
+                </div>
+                <div style="font-size:0.88rem; color:#475569;">
+                  Disciplina: <strong>${c.discipline}</strong> | Prof. ${c.teacherName || 'Responsável'} | Etapa: <strong>${ex.period}</strong>
+                </div>
+                <div style="font-size:0.85rem; color:#64748b; margin-top:2px;">
+                  Pontuação Máxima: <strong>${ex.maxGrade} pts</strong> | Total de Questões: <strong>${ex.questions.length}</strong>
+                </div>
+                ${ex.description ? `<div style="font-size:0.88rem; color:#334155; margin-top:6px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1;">${ex.description}</div>` : ''}
+              </div>
+              <div style="align-self:center;">
+                ${actionBtnHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openStudentViewSubmissionModal(classId, examId) {
+      const c = state.classes.find(item => item.id === classId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!ex) return;
+      const rec = state.matchedStudentRecords.find(r => r.class.id === classId);
+      if (!rec) return;
+      const s = rec.student;
+      const sub = (c.examSubmissions || []).find(sub => sub.examId === examId && sub.studentId === s.id);
+      if (!sub) return;
+
+      let qHtml = '';
+      ex.questions.forEach((q, idx) => {
+        if (q.type === 'discursive') {
+          const answerText = (sub.discursiveAnswers && sub.discursiveAnswers[q.id]) ? sub.discursiveAnswers[q.id] : '<em>Sem resposta por escrito.</em>';
+          const givenScore = (sub.discursiveScores && sub.discursiveScores[q.id] !== undefined) ? sub.discursiveScores[q.id] : null;
+          const feedback = (sub.discursiveFeedbacks && sub.discursiveFeedbacks[q.id]) ? sub.discursiveFeedbacks[q.id] : '';
+
+          let scoreBadge = givenScore !== null 
+            ? `<span style="color:#15803d; font-weight:700;">Nota: ${givenScore.toFixed(1)} / ${q.points} pts</span>` 
+            : `<span style="color:#b45309; font-weight:700;">⏳ Aguardando correção do professor (Vale ${q.points} pts)</span>`;
+
+          qHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>Questão ${idx + 1} (Discursiva):</strong>
+                <div>${scoreBadge}</div>
+              </div>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              <div style="background:#ffffff; border:1px solid #cbd5e1; padding:10px; border-radius:6px; margin-top:6px;">
+                <small style="color:#64748b; font-weight:600; display:block; margin-bottom:4px;">Sua Resposta Escrita:</small>
+                <div style="white-space:pre-wrap; font-size:0.9rem; color:#334155;">${answerText}</div>
+              </div>
+              ${feedback ? `<div style="margin-top:6px; font-size:0.85rem; color:#15803d; background:#f0fdf4; padding:6px 10px; border-radius:4px;">💬 <strong>Feedback do Professor:</strong> ${feedback}</div>` : ''}
+            </div>
+          `;
+        } else {
+          const selectedOpt = (sub.multipleAnswers && sub.multipleAnswers[q.id] !== undefined) ? sub.multipleAnswers[q.id] : null;
+          const isCorrect = selectedOpt === q.correctOpt;
+          const pointsAwarded = isCorrect ? q.points : 0;
+
+          qHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>Questão ${idx + 1} (Múltipla Escolha):</strong>
+                <span style="font-weight:700; color:${isCorrect ? '#15803d' : '#dc2626'};">${isCorrect ? '✅ Acertou' : '❌ Incorreto'} (${pointsAwarded.toFixed(1)} / ${q.points} pts)</span>
+              </div>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              <div style="font-size:0.88rem; color:#475569;">
+                Sua Resposta: <strong>${selectedOpt !== null ? ['A','B','C','D'][selectedOpt] + ') ' + q.options[selectedOpt] : 'Nenhuma'}</strong><br>
+                Resposta Correta: <strong style="color:#15803d;">${['A','B','C','D'][q.correctOpt]}) ${q.options[q.correctOpt]}</strong>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      const modalOverlay = document.createElement('div');
+      modalOverlay.id = 'submission-view-overlay';
+      modalOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:99999; padding:20px;';
+
+      modalOverlay.innerHTML = `
+        <div style="background:#fff; border-radius:10px; max-width:650px; width:100%; max-height:90vh; overflow-y:auto; padding:24px; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
+          <div style="border-bottom:2px solid #6d28d9; padding-bottom:10px; margin-bottom:16px;">
+            <h3>👁️ Detalhes da Minha Entrega — ${ex.title}</h3>
+            <p style="color:#64748b; font-size:0.88rem;">
+              Nota Final: <strong style="color:#6d28d9; font-size:1.1rem;">${(sub.finalScore ?? sub.autoScore).toFixed(1)} / ${ex.maxGrade} pts</strong>
+            </p>
+          </div>
+          ${qHtml}
+          <div style="text-align:right; border-top:1px solid #e2e8f0; padding-top:12px;">
+            <button onclick="document.getElementById('submission-view-overlay').remove()" class="btn btn-primary">Fechar Visualização</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modalOverlay);
+    }
+
 
     function toggleRegisterForm(show) {
       if (show) {
@@ -1474,7 +1816,7 @@
           <div onclick="openClassDetail('${c.id}')">
             <h3>${c.name}</h3>
             <p>Disciplina: <strong>${c.discipline}</strong> | Prof. Principal: <strong>${c.teacherName || 'Prof. Responsável'}</strong></p>
-            <div style="font-size:0.85rem; color:#6d28d9; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
+            <div style="font-size:0.85rem; color:#2563eb; margin-top:6px; font-weight:600;">👥 ${c.students.length} alunos cadastrados</div>
           </div>
         `;
         grid.appendChild(card);
@@ -1485,45 +1827,67 @@
       }
     }
 
+    // EDIÇÃO E EXCLUSÃO DE TURMA
     function openEditClassModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
 
-      const newName = prompt("Nome da Turma:", c.name); if (!newName) return;
-      const newDisc = prompt("Disciplina:", c.discipline);
-      
-      let teacherPrompt = "Escolha o Professor Principal da Turma:\n\n";
       const approvedTeachers = state.teachers.filter(t => t.status === 'approved');
-      approvedTeachers.forEach((t, i) => {
-        teacherPrompt += `${i + 1}. ${t.name} (${t.discipline})\n`;
-      });
-      const choice = prompt(teacherPrompt, "1");
-      if (choice) {
-        const idx = parseInt(choice.trim()) - 1;
-        if (!isNaN(idx) && idx >= 0 && idx < approvedTeachers.length) {
-          c.teacherId = approvedTeachers[idx].id;
-          c.teacherName = approvedTeachers[idx].name;
+      let teacherOptions = approvedTeachers.map(t => 
+        `<option value="${t.id}" ${t.id === c.teacherId ? 'selected' : ''}>${t.name} (${t.discipline})</option>`
+      ).join('');
+
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome da Turma</label>
+          <input type="text" id="m-edit-class-name" value="${c.name}" required>
+        </div>
+        <div class="form-group">
+          <label>Disciplina</label>
+          <input type="text" id="m-edit-class-disc" value="${c.discipline}" required>
+        </div>
+        <div class="form-group">
+          <label>Professor Principal</label>
+          <select id="m-edit-class-teacher">${teacherOptions}</select>
+        </div>
+      `;
+
+      showCustomModal("✏️ Editar Turma", contentHtml, () => {
+        const newName = document.getElementById('m-edit-class-name').value.trim();
+        if (!newName) { showAlertModal("Atenção", "O nome da turma não pode ficar em branco."); return false; }
+        const newDisc = document.getElementById('m-edit-class-disc').value.trim();
+        const newTeacherId = document.getElementById('m-edit-class-teacher').value;
+
+        const teacherObj = approvedTeachers.find(t => t.id === newTeacherId);
+
+        c.name = newName;
+        if (newDisc) c.discipline = newDisc;
+        if (teacherObj) {
+          c.teacherId = teacherObj.id;
+          c.teacherName = teacherObj.name;
         }
-      }
 
-      c.name = newName;
-      if (newDisc) c.discipline = newDisc;
-
-      saveData();
-      openClassDetail(c.id);
-      showToast("Turma atualizada com sucesso!");
+        saveData();
+        openClassDetail(c.id);
+        showToast("Turma atualizada com sucesso!");
+      }, "💾 Salvar Alterações");
     }
 
     function deleteCurrentClass() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       if (!c) return;
 
-      if (confirm(`⚠️ Tem certeza que deseja excluir a turma "${c.name}"? Todos os lançamentos e notas desta turma serão apagados!`)) {
-        state.classes = state.classes.filter(item => item.id !== state.currentClassId);
-        saveData();
-        closeClassDetail();
-        showToast("Turma excluída com sucesso!");
-      }
+      showConfirmModal(
+        "🗑️ Excluir Turma",
+        `⚠️ Tem certeza que deseja excluir a turma "<strong>${c.name}</strong>"? Todos os lançamentos, notas e diários desta turma serão apagados permanentemente!`,
+        () => {
+          state.classes = state.classes.filter(item => item.id !== state.currentClassId);
+          saveData();
+          closeClassDetail();
+          showToast("Turma excluída com sucesso!");
+        },
+        "Sim, Excluir Turma"
+      );
     }
 
     function renderTeachersManagement() {
@@ -1577,43 +1941,107 @@
     }
 
     function openAddTeacherModal() {
-      const name = prompt("Nome Completo do Professor:"); if (!name) return;
-      const disc = prompt("Disciplina:");
-      const user = prompt("Usuário:"); if (!user) return;
-      const pass = prompt("Senha:"); if (!pass) return;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome Completo do Professor</label>
+          <input type="text" id="m-teach-name" placeholder="Ex: Prof. Carlos Silva" required>
+        </div>
+        <div class="form-group">
+          <label>Disciplina Principal</label>
+          <input type="text" id="m-teach-disc" placeholder="Ex: Matemática, Física" required>
+        </div>
+        <div class="form-group">
+          <label>Usuário de Acesso</label>
+          <input type="text" id="m-teach-user" placeholder="Ex: carlossilva" required>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="m-teach-pass" placeholder="Senha de acesso" required>
+        </div>
+      `;
 
-      state.teachers.push({ id: "prof-" + Date.now(), name, discipline: disc || "Geral", username: user, password: pass, role: "teacher", status: "approved" });
-      saveData();
-      renderTeachersManagement();
+      showCustomModal("👨‍🏫 Cadastrar Novo Professor", contentHtml, () => {
+        const name = document.getElementById('m-teach-name').value.trim();
+        const disc = document.getElementById('m-teach-disc').value.trim();
+        const user = document.getElementById('m-teach-user').value.trim();
+        const pass = document.getElementById('m-teach-pass').value.trim();
+
+        if (!name || !user || !pass) {
+          showAlertModal("Atenção", "Preencha nome, usuário e senha para cadastrar o professor.");
+          return false;
+        }
+
+        state.teachers.push({
+          id: "prof-" + Date.now(),
+          name: name,
+          discipline: disc || "Geral",
+          username: user,
+          password: pass,
+          role: "teacher",
+          status: "approved"
+        });
+
+        saveData();
+        renderTeachersManagement();
+        showToast("Professor cadastrado com sucesso!");
+      }, "💾 Cadastrar Professor");
     }
 
     function deleteTeacher(id) {
-      if (confirm("Remover este professor?")) {
-        state.teachers = state.teachers.filter(t => t.id !== id);
-        saveData();
-        renderTeachersManagement();
-      }
+      const t = state.teachers.find(item => item.id === id);
+      if (!t) return;
+
+      showConfirmModal(
+        "🗑️ Remover Professor",
+        `Deseja realmente remover o cadastro do professor "<strong>${t.name}</strong>"?`,
+        () => {
+          state.teachers = state.teachers.filter(item => item.id !== id);
+          saveData();
+          renderTeachersManagement();
+          showToast("Professor removido!");
+        },
+        "Sim, Remover"
+      );
     }
 
     function openProfileModal() {
       if (!state.currentUser) return;
-      const name = prompt("Seu Nome Completo (ex: Prof. Thyago Gomes):", state.currentUser.name);
-      if (!name) return;
-      const disc = prompt("Sua Disciplina Principal:", state.currentUser.discipline);
-      const pass = prompt("Sua Nova Senha:", state.currentUser.password);
+      const u = state.currentUser;
 
-      state.currentUser.name = name;
-      state.currentUser.discipline = disc || "Geral";
-      if (pass) state.currentUser.password = pass;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Seu Nome Completo</label>
+          <input type="text" id="m-prof-name" value="${u.name}" required>
+        </div>
+        <div class="form-group">
+          <label>Sua Disciplina Principal</label>
+          <input type="text" id="m-prof-disc" value="${u.discipline || ''}">
+        </div>
+        <div class="form-group">
+          <label>Nova Senha</label>
+          <input type="password" id="m-prof-pass" value="${u.password}">
+        </div>
+      `;
 
-      saveData();
-      setupDashboardPermissions();
-      alert("Seus dados foram atualizados com sucesso!");
+      showCustomModal("✏️ Meus Dados", contentHtml, () => {
+        const name = document.getElementById('m-prof-name').value.trim();
+        if (!name) { showAlertModal("Atenção", "Seu nome não pode ficar em branco."); return false; }
+        const disc = document.getElementById('m-prof-disc').value.trim();
+        const pass = document.getElementById('m-prof-pass').value.trim();
+
+        u.name = name;
+        u.discipline = disc || "Geral";
+        if (pass) u.password = pass;
+
+        saveData();
+        setupDashboardPermissions();
+        showToast("Seus dados foram atualizados com sucesso!");
+      }, "💾 Salvar Alterações");
     }
 
     function renderSettingsForm() {
       const set = state.settings || {};
-      document.getElementById('set-school-name').value = set.schoolName || "Sistema de Ensino";
+      document.getElementById('set-school-name').value = set.schoolName || "Diário Escolar Digital";
       
       const logoBox = document.getElementById('preview-logo-box');
       logoBox.innerHTML = set.schoolLogo ? `<img src="${set.schoolLogo}" style="max-height:60px;">` : '<em>Nenhuma logo personalizada configurada.</em>';
@@ -1625,8 +2053,8 @@
     function handleSaveSettings(e) {
       e.preventDefault();
       const schoolName = document.getElementById('set-school-name').value.trim();
-      const logoFile = document.getElementById('set-school-logo').files;
-      const bgFile = document.getElementById('set-school-bg').files;
+      const logoFile = document.getElementById('set-school-logo').files[0];
+      const bgFile = document.getElementById('set-school-bg').files[0];
 
       state.settings.schoolName = schoolName;
 
@@ -1660,13 +2088,18 @@
     }
 
     function resetSettingsDefaults() {
-      if (confirm("Restaurar as configurações originais de tema?")) {
-        state.settings = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
-        saveData();
-        applySettingsUI();
-        renderSettingsForm();
-        showToast("Configurações restauradas!");
-      }
+      showConfirmModal(
+        "🔄 Restaurar Padrões",
+        "Restaurar as configurações originais de tema e nome da escola?",
+        () => {
+          state.settings = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
+          saveData();
+          applySettingsUI();
+          renderSettingsForm();
+          showToast("Configurações restauradas!");
+        },
+        "Sim, Restaurar"
+      );
     }
 
     function renderMuralAdminList() {
@@ -1687,13 +2120,32 @@
     }
 
     function openAddMuralModal() {
-      const title = prompt("Título do Recado / Atividade:"); if (!title) return;
-      const msg = prompt("Mensagem ou Instrução:"); if (!msg) return;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Título do Recado / Atividade</label>
+          <input type="text" id="m-mural-title" placeholder="Ex: Atividade Avaliativa de História" required>
+        </div>
+        <div class="form-group">
+          <label>Mensagem ou Instruções</label>
+          <textarea id="m-mural-msg" rows="4" placeholder="Escreva aqui a mensagem ou orientações..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Anexar Arquivo/Documento (opcional)</label>
+          <input type="file" id="m-mural-file">
+        </div>
+      `;
 
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.onchange = (e) => {
-        const file = e.target.files;
+      showCustomModal("📢 Publicar Aviso no Mural", contentHtml, () => {
+        const title = document.getElementById('m-mural-title').value.trim();
+        const msg = document.getElementById('m-mural-msg').value.trim();
+        const fileInput = document.getElementById('m-mural-file');
+        const file = fileInput.files;
+
+        if (!title || !msg) {
+          showAlertModal("Atenção", "Preencha o título e a mensagem para publicar.");
+          return false;
+        }
+
         if (file) {
           const reader = new FileReader();
           reader.onload = (evt) => {
@@ -1703,13 +2155,7 @@
         } else {
           pushMural(title, msg, null);
         }
-      };
-      
-      if (confirm("Deseja anexar um arquivo/documento neste recado?")) {
-        fileInput.click();
-      } else {
-        pushMural(title, msg, null);
-      }
+      }, "📢 Publicar Aviso");
     }
 
     function pushMural(title, msg, fileObj) {
@@ -1737,41 +2183,41 @@
 
       const availableTeachers = state.teachers.filter(t => t.status === 'approved' && t.id !== c.teacherId);
       if (availableTeachers.length === 0) {
-        alert("Não existem outros professores cadastrados para adicionar como auxiliares.");
+        showAlertModal("Informação", "Não existem outros professores cadastrados para adicionar como auxiliares.");
         return;
       }
 
-      let promptMsg = `Professores da Turma "${c.name}":\n`;
-      promptMsg += `• Prof. Principal: ${c.teacherName}\n`;
-      promptMsg += `• Professores Auxiliares Atuais: `;
-      const currentCoNames = c.coTeacherIds.map(id => {
-        const t = state.teachers.find(item => item.id === id);
-        return t ? t.name : '';
-      }).filter(Boolean);
-      promptMsg += (currentCoNames.length > 0 ? currentCoNames.join(', ') : 'Nenhum') + '\n\n';
+      let listHtml = availableTeachers.map(t => {
+        const isChecked = c.coTeacherIds.includes(t.id);
+        return `
+          <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:8px; cursor:pointer;">
+            <input type="checkbox" class="co-teacher-checkbox" value="${t.id}" ${isChecked ? 'checked' : ''}>
+            <div>
+              <strong>${t.name}</strong> <span style="font-size:0.8rem; color:#64748b;">(${t.discipline})</span>
+            </div>
+          </label>
+        `;
+      }).join('');
 
-      promptMsg += `Escolha uma opção:\n`;
-      availableTeachers.forEach((t, i) => {
-        const isAssigned = c.coTeacherIds.includes(t.id);
-        promptMsg += `${i + 1}. ${isAssigned ? '✅ [REMOVER]' : '➕ [ADICIONAR]'} ${t.name} (${t.discipline})\n`;
-      });
-      promptMsg += `\nDigite o NÚMERO do professor para Alternar (Adicionar/Remover), ou Cancele:`;
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:12px;">
+          Selecione os professores que terão permissão auxiliar para lançar notas e presenças nesta turma:
+        </p>
+        <div>${listHtml}</div>
+      `;
 
-      const choice = prompt(promptMsg);
-      if (!choice) return;
-      const num = parseInt(choice.trim());
-      if (!isNaN(num) && num > 0 && num <= availableTeachers.length) {
-        const targetTeacher = availableTeachers[num - 1];
-        if (c.coTeacherIds.includes(targetTeacher.id)) {
-          c.coTeacherIds = c.coTeacherIds.filter(id => id !== targetTeacher.id);
-          showToast(`Professor ${targetTeacher.name} removido da turma.`);
-        } else {
-          c.coTeacherIds.push(targetTeacher.id);
-          showToast(`Professor ${targetTeacher.name} adicionado como co-docente!`);
-        }
+      showCustomModal("👨‍🏫 Gerenciar Co-Docentes", contentHtml, () => {
+        const checkboxes = document.querySelectorAll('.co-teacher-checkbox');
+        const newCoIds = [];
+        checkboxes.forEach(cb => {
+          if (cb.checked) newCoIds.push(cb.value);
+        });
+
+        c.coTeacherIds = newCoIds;
         saveData();
         openClassDetail(c.id);
-      }
+        showToast("Professores auxiliares atualizados!");
+      }, "💾 Salvar Co-Docentes");
     }
 
     function openClassDetail(classId) {
@@ -1838,6 +2284,7 @@
       });
     }
 
+    // TABELA DE NOTAS & CRIAÇÃO/EDIÇÃO/EXCLUSÃO DE ATIVIDADES
     function renderTeacherGradesTable(c) {
       const thead = document.getElementById('teacher-grades-thead');
       const tbody = document.getElementById('teacher-grades-tbody');
@@ -1889,7 +2336,7 @@
 
       let thHtml = `<tr><th>Aluno</th>`;
       acts.forEach(act => { 
-        const valInfo = act.maxVal ? `<div style="font-size:0.75rem; color:#6d28d9; font-weight:600;">Vale ${act.maxVal} pts</div>` : '';
+        const valInfo = act.maxVal ? `<div style="font-size:0.75rem; color:#2563eb; font-weight:600;">Vale ${act.maxVal} pts</div>` : '';
         thHtml += `
           <th style="min-width:140px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1900,7 +2347,7 @@
               </span>
             </div>
             ${valInfo}
-            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">${act.description}</div>` : ''}
+            ${act.description ? `<div style="font-size:0.75rem; color:#64748b; font-weight:400;">\${act.description}</div>` : ''}
           </th>`; 
       });
       thHtml += `<th>Soma da Etapa</th></tr>`;
@@ -1924,22 +2371,39 @@
     }
 
     function openAddActivityModal() {
-      const name = prompt(`Nome da nova atividade em ${state.currentPeriod} (ex: Teste Surpresa, Prova, Simulado):`);
-      if (!name) return;
-      const maxValStr = prompt(`Valor Máximo / Pontuação da Atividade (ex: 2.0, 10.0):`, "10.0");
-      const maxVal = parseFloat(maxValStr) || 10.0;
-      const desc = prompt(`Descrição / Detalhes da atividade (opcional, para o aluno visualizar):`);
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome da Atividade / Avaliação (${state.currentPeriod})</label>
+          <input type="text" id="m-act-name" placeholder="Ex: Teste 1, Trabalho em Grupo, Prova A1" required>
+        </div>
+        <div class="form-group">
+          <label>Valor Máximo / Pontuação (ex: 2.0, 10.0)</label>
+          <input type="number" step="0.5" id="m-act-max" value="10.0" required>
+        </div>
+        <div class="form-group">
+          <label>Descrição / Detalhes (opcional para o aluno)</label>
+          <textarea id="m-act-desc" rows="2" placeholder="Instruções ou resumo sobre a atividade..."></textarea>
+        </div>
+      `;
 
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      c.periods[state.currentPeriod].push({
-        id: "act-" + Date.now(),
-        name: name,
-        maxVal: maxVal,
-        description: desc || ""
-      });
-      saveData();
-      renderTeacherGradesTable(c);
-      showToast("Atividade criada com sucesso!");
+      showCustomModal(`➕ Criar Atividade em ${state.currentPeriod}`, contentHtml, () => {
+        const name = document.getElementById('m-act-name').value.trim();
+        if (!name) { showAlertModal("Atenção", "Digite o nome da atividade."); return false; }
+        const maxVal = parseFloat(document.getElementById('m-act-max').value) || 10.0;
+        const desc = document.getElementById('m-act-desc').value.trim();
+
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        c.periods[state.currentPeriod].push({
+          id: "act-" + Date.now(),
+          name: name,
+          maxVal: maxVal,
+          description: desc || ""
+        });
+
+        saveData();
+        renderTeacherGradesTable(c);
+        showToast("Atividade criada com sucesso!");
+      }, "💾 Criar Atividade");
     }
 
     function editActivity(actId) {
@@ -1948,28 +2412,50 @@
       const act = acts.find(a => a.id === actId);
       if (!act) return;
 
-      const newName = prompt("Editar Nome da Atividade:", act.name); if (!newName) return;
-      const newMaxValStr = prompt("Editar Valor Máximo da Atividade:", act.maxVal || 10.0);
-      const newMaxVal = parseFloat(newMaxValStr) || 10.0;
-      const newDesc = prompt("Editar Descrição / Detalhes:", act.description || "");
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome da Atividade</label>
+          <input type="text" id="m-edit-act-name" value="${act.name}" required>
+        </div>
+        <div class="form-group">
+          <label>Valor Máximo / Pontuação</label>
+          <input type="number" step="0.5" id="m-edit-act-max" value="${act.maxVal || 10.0}" required>
+        </div>
+        <div class="form-group">
+          <label>Descrição / Detalhes</label>
+          <textarea id="m-edit-act-desc" rows="2">${act.description || ''}</textarea>
+        </div>
+      `;
 
-      act.name = newName;
-      act.maxVal = newMaxVal;
-      act.description = newDesc || "";
+      showCustomModal("✏️ Editar Atividade", contentHtml, () => {
+        const newName = document.getElementById('m-edit-act-name').value.trim();
+        if (!newName) { showAlertModal("Atenção", "O nome da atividade não pode ficar vazio."); return false; }
+        const newMaxVal = parseFloat(document.getElementById('m-edit-act-max').value) || 10.0;
+        const newDesc = document.getElementById('m-edit-act-desc').value.trim();
 
-      saveData();
-      renderTeacherGradesTable(c);
-      showToast("Atividade atualizada!");
+        act.name = newName;
+        act.maxVal = newMaxVal;
+        act.description = newDesc || "";
+
+        saveData();
+        renderTeacherGradesTable(c);
+        showToast("Atividade atualizada!");
+      }, "💾 Salvar Alterações");
     }
 
     function deleteActivity(actId) {
-      if (confirm("Deseja realmente excluir esta atividade? As notas lançadas para ela serão apagadas.")) {
-        const c = state.classes.find(item => item.id === state.currentClassId);
-        c.periods[state.currentPeriod] = c.periods[state.currentPeriod].filter(a => a.id !== actId);
-        saveData();
-        renderTeacherGradesTable(c);
-        showToast("Atividade excluída!");
-      }
+      showConfirmModal(
+        "🗑️ Excluir Atividade",
+        "Deseja realmente excluir esta atividade? As notas lançadas para ela serão apagadas.",
+        () => {
+          const c = state.classes.find(item => item.id === state.currentClassId);
+          c.periods[state.currentPeriod] = c.periods[state.currentPeriod].filter(a => a.id !== actId);
+          saveData();
+          renderTeacherGradesTable(c);
+          showToast("Atividade excluída!");
+        },
+        "Sim, Excluir"
+      );
     }
 
     function updateGradeVal(studentId, field, val) {
@@ -1987,6 +2473,7 @@
       showToast("💾 Notas salvas e publicadas com sucesso!");
     }
 
+    // REGISTRO DE AULAS, FREQUÊNCIA E CONTEÚDO MINISTRADO
     function renderTeacherAttendanceTable(c) {
       const container = document.getElementById('teacher-attendance-records');
       if (!c.lessons) c.lessons = [];
@@ -2017,7 +2504,7 @@
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom:16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
               <div>
-                <strong style="color:#6d28d9; font-size:1.05rem;">📅 Aula do dia ${les.date} (${les.count || 1} ${(les.count || 1) === 1 ? 'aula' : 'aulas'})</strong>
+                <strong style="color:#2563eb; font-size:1.05rem;">📅 Aula do dia ${les.date} (${les.count || 1} ${(les.count || 1) === 1 ? 'aula' : 'aulas'})</strong>
                 <div style="font-size:0.9rem; color:#334155; margin-top:2px;">📖 <strong>Conteúdo Ministrado:</strong> ${les.content}</div>
               </div>
               <div>
@@ -2038,31 +2525,51 @@
     }
 
     function openAddLessonModal() {
-      const c = state.classes.find(item => item.id === state.currentClassId);
-      if (!c) return;
+      const defaultDate = new Date().toISOString().split('T')[0];
 
-      const defaultDate = new Date().toISOString().split('T');
-      const date = prompt("Data da Aula (AAAA-MM-DD):", defaultDate); if (!date) return;
-      const countStr = prompt("Quantidade de aulas ministradas neste dia (ex: 1, 2, 3):", "1");
-      const count = parseInt(countStr) || 1;
-      const content = prompt("Conteúdo Ministrado na Aula (ex: Sistema Digestório):"); if (!content) return;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Data da Aula</label>
+          <input type="date" id="m-les-date" value="${defaultDate}" required>
+        </div>
+        <div class="form-group">
+          <label>Quantidade de Aulas (ex: 1, 2, 3)</label>
+          <input type="number" id="m-les-count" value="1" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Conteúdo Ministrado na Aula</label>
+          <textarea id="m-les-content" rows="3" placeholder="Ex: Sistema Digestório — órgãos e digestão química..." required></textarea>
+        </div>
+      `;
 
-      if (!c.lessons) c.lessons = [];
+      showCustomModal("📅 Registrar Nova Aula", contentHtml, () => {
+        const date = document.getElementById('m-les-date').value;
+        const count = parseInt(document.getElementById('m-les-count').value) || 1;
+        const content = document.getElementById('m-les-content').value.trim();
 
-      const initialAtt = {};
-      c.students.forEach(s => initialAtt[s.id] = "P");
+        if (!date || !content) {
+          showAlertModal("Atenção", "Preencha a data e o conteúdo da aula.");
+          return false;
+        }
 
-      c.lessons.unshift({
-        id: "les-" + Date.now(),
-        date: date,
-        count: count,
-        content: content,
-        attendance: initialAtt
-      });
+        const c = state.classes.find(item => item.id === state.currentClassId);
+        if (!c.lessons) c.lessons = [];
 
-      saveData();
-      renderTeacherAttendanceTable(c);
-      showToast("Aula registrada!");
+        const initialAtt = {};
+        c.students.forEach(s => initialAtt[s.id] = "P");
+
+        c.lessons.unshift({
+          id: "les-" + Date.now(),
+          date: date,
+          count: count,
+          content: content,
+          attendance: initialAtt
+        });
+
+        saveData();
+        renderTeacherAttendanceTable(c);
+        showToast("Aula registrada com sucesso!");
+      }, "💾 Salvar Aula");
     }
 
     function editLesson(lesId) {
@@ -2070,28 +2577,54 @@
       const les = c.lessons.find(l => l.id === lesId);
       if (!les) return;
 
-      const newDate = prompt("Editar Data da Aula:", les.date); if (!newDate) return;
-      const newCountStr = prompt("Editar Quantidade de Aulas do Dia:", les.count || 1);
-      const newCount = parseInt(newCountStr) || 1;
-      const newContent = prompt("Editar Conteúdo Ministrado:", les.content); if (!newContent) return;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Data da Aula</label>
+          <input type="date" id="m-edit-les-date" value="${les.date}" required>
+        </div>
+        <div class="form-group">
+          <label>Quantidade de Aulas</label>
+          <input type="number" id="m-edit-les-count" value="${les.count || 1}" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Conteúdo Ministrado</label>
+          <textarea id="m-edit-les-content" rows="3" required>${les.content}</textarea>
+        </div>
+      `;
 
-      les.date = newDate;
-      les.count = newCount;
-      les.content = newContent;
+      showCustomModal("✏️ Editar Registro de Aula", contentHtml, () => {
+        const date = document.getElementById('m-edit-les-date').value;
+        const count = parseInt(document.getElementById('m-edit-les-count').value) || 1;
+        const content = document.getElementById('m-edit-les-content').value.trim();
 
-      saveData();
-      renderTeacherAttendanceTable(c);
-      showToast("Aula atualizada!");
+        if (!date || !content) {
+          showAlertModal("Atenção", "A data e o conteúdo não podem ficar vazios.");
+          return false;
+        }
+
+        les.date = date;
+        les.count = count;
+        les.content = content;
+
+        saveData();
+        renderTeacherAttendanceTable(c);
+        showToast("Aula atualizada com sucesso!");
+      }, "💾 Salvar Alterações");
     }
 
     function deleteLesson(lesId) {
-      if (confirm("Deseja apagar o registro desta aula?")) {
-        const c = state.classes.find(item => item.id === state.currentClassId);
-        c.lessons = c.lessons.filter(l => l.id !== lesId);
-        saveData();
-        renderTeacherAttendanceTable(c);
-        showToast("Aula removida!");
-      }
+      showConfirmModal(
+        "🗑️ Apagar Registro de Aula",
+        "Deseja realmente apagar o registro desta aula e o histórico de frequência do dia?",
+        () => {
+          const c = state.classes.find(item => item.id === state.currentClassId);
+          c.lessons = c.lessons.filter(l => l.id !== lesId);
+          saveData();
+          renderTeacherAttendanceTable(c);
+          showToast("Aula removida!");
+        },
+        "Sim, Apagar"
+      );
     }
 
     function updateAttendanceVal(lesId, studentId, status) {
@@ -2127,120 +2660,179 @@
     function openStudentModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
       const existingStudents = getAllSystemStudents();
-      let selectedStudent = null;
 
+      let existingOptionsHtml = '';
       if (existingStudents.length > 0) {
-        let optionsText = "Alunos já cadastrados no sistema da escola:\n\n";
-        existingStudents.forEach((st, i) => {
-          optionsText += `${i + 1}. ${st.name} (Código: ${st.code || 'S/C'})\n`;
-        });
-        optionsText += `\nDigite o NÚMERO da opção acima para vincular o aluno à turma (${c.name}), ou digite '0' para cadastrar um NOVO código:`;
-
-        const choice = prompt(optionsText, "0");
-        if (choice === null) return;
-        const num = parseInt(choice.trim());
-        if (!isNaN(num) && num > 0 && num <= existingStudents.length) {
-          selectedStudent = existingStudents[num - 1];
-        }
+        existingOptionsHtml = `
+          <div class="form-group" style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:16px;">
+            <label>Selecione um Aluno já cadastrado no sistema:</label>
+            <select id="m-st-existing-select" onchange="toggleStudentModalNewFields(this.value)">
+              <option value="">-- Cadastrar NOVO Código / Aluno --</option>
+              ${existingStudents.map(st => `<option value="${st.code}">${st.name} (Código: ${st.code || 'S/C'})</option>`).join('')}
+            </select>
+          </div>
+        `;
       }
 
-      let name, code, photo;
+      const contentHtml = `
+        ${existingOptionsHtml}
+        <div id="m-st-new-fields">
+          <div class="form-group">
+            <label>Código Único do Aluno (Até 10 dígitos)</label>
+            <input type="text" id="m-st-code" maxlength="10" placeholder="Ex: 2026001" required>
+          </div>
+          <div class="form-group">
+            <label>Nome Completo do Aluno</label>
+            <input type="text" id="m-st-name" placeholder="Ex: Thyago Gomes Barreto" required>
+          </div>
+        </div>
+      `;
 
-      if (selectedStudent) {
-        name = selectedStudent.name;
-        code = selectedStudent.code;
-        photo = selectedStudent.photo;
-      } else {
-        let validCode = false;
-        while (!validCode) {
-          code = prompt("Digite o CÓDIGO ÚNICO do Aluno (Até 10 dígitos, números ou letras):");
-          if (!code) return;
-          code = code.trim();
+      showCustomModal(`👥 Cadastrar / Vincular Aluno na Turma (${c.name})`, contentHtml, () => {
+        const selectEl = document.getElementById('m-st-existing-select');
+        const selectedCode = selectEl ? selectEl.value : "";
+
+        let name, code, photo;
+
+        if (selectedCode) {
+          const found = existingStudents.find(st => st.code === selectedCode);
+          if (found) {
+            name = found.name;
+            code = found.code;
+            photo = found.photo;
+          }
+        } else {
+          code = document.getElementById('m-st-code').value.trim();
+          name = document.getElementById('m-st-name').value.trim();
+
+          if (!code || !name) {
+            showAlertModal("Atenção", "Digite o código e o nome completo do aluno.");
+            return false;
+          }
 
           if (code.length > 10) {
-            alert("⚠️ O código do aluno deve ter no máximo 10 dígitos!");
-            continue;
-          }
-
-          const matchSystem = existingStudents.find(st => (st.code || "").toLowerCase() === code.toLowerCase());
-          
-          if (matchSystem) {
-            const confirmReuse = confirm(`ℹ️ O código "${code}" já pertence ao aluno "${matchSystem.name}".\n\nDeseja adicionar este mesmo aluno à turma "${c.name}"?`);
-            if (confirmReuse) {
-              name = matchSystem.name;
-              photo = matchSystem.photo;
-              validCode = true;
-            } else {
-              continue;
-            }
-          } else {
-            name = prompt("Nome Completo do Novo Aluno:");
-            if (!name) return;
-            photo = null;
-            validCode = true;
+            showAlertModal("Atenção", "O código do aluno deve ter no máximo 10 dígitos!");
+            return false;
           }
         }
-      }
 
-      const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === code.toLowerCase());
-      if (alreadyInClass) {
-        alert(`⚠️ O aluno "${name}" (Código: ${code}) já está cadastrado nesta turma!`);
-        return;
-      }
+        const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === code.toLowerCase());
+        if (alreadyInClass) {
+          showAlertModal("Aviso", `O aluno "${name}" (Código: ${code}) já está cadastrado nesta turma!`);
+          return false;
+        }
 
-      c.students.push({
-        id: "al-" + Date.now(),
-        name: name,
-        code: code,
-        photo: photo || null,
-        grades: {},
-        messages: []
-      });
+        c.students.push({
+          id: "al-" + Date.now(),
+          name: name,
+          code: code,
+          photo: photo || null,
+          grades: {},
+          messages: []
+        });
 
-      saveData();
-      renderStudentsTable();
-      renderTeacherGradesTable(c);
-      showToast(`Aluno ${name} (Código: ${code}) adicionado à turma!`);
-    }
-
-    function deleteStudent(studentId) {
-      if (confirm("Deseja realmente excluir este aluno desta turma?")) {
-        const c = state.classes.find(item => item.id === state.currentClassId);
-        c.students = c.students.filter(s => s.id !== studentId);
         saveData();
         renderStudentsTable();
         renderTeacherGradesTable(c);
+        showToast(`Aluno ${name} (Código: ${code}) adicionado à turma!`);
+      }, "➕ Vincular Aluno");
+    }
+
+    function toggleStudentModalNewFields(val) {
+      const fields = document.getElementById('m-st-new-fields');
+      if (fields) {
+        if (val) {
+          fields.style.display = 'none';
+        } else {
+          fields.style.display = 'block';
+        }
       }
     }
 
+    function deleteStudent(studentId) {
+      const c = state.classes.find(item => item.id === state.currentClassId);
+      const s = c.students.find(item => item.id === studentId);
+      if (!s) return;
+
+      showConfirmModal(
+        "🗑️ Remover Aluno",
+        `Deseja realmente remover o aluno "<strong>${s.name}</strong>" desta turma?`,
+        () => {
+          c.students = c.students.filter(item => item.id !== studentId);
+          saveData();
+          renderStudentsTable();
+          renderTeacherGradesTable(c);
+          showToast("Aluno removido da turma!");
+        },
+        "Sim, Remover"
+      );
+    }
+
     function openClassModal() {
-      const name = prompt("Nome da Turma:"); if (!name) return;
-      const disc = prompt("Disciplina:", state.currentUser ? state.currentUser.discipline : "Ciências");
-      const isSemestral = confirm("Modalidade da Turma:\n\nOK = Ensino Superior / Semestral (A1, A2, A3)\nCancelar = Ensino Básico (Bimestral)");
+      const defaultTeacherId = state.currentUser ? state.currentUser.id : "prof-thyago";
+      const approvedTeachers = state.teachers.filter(t => t.status === 'approved');
 
-      const periodsObj = isSemestral 
-        ? { "A1": [], "A2": [], "A3 (Prova Final)": [] }
-        : { "1º Bimestre": [], "2º Bimestre": [], "3º Bimestre": [], "4º Bimestre": [] };
+      let teacherOptions = approvedTeachers.map(t => 
+        `<option value="${t.id}" ${t.id === defaultTeacherId ? 'selected' : ''}>${t.name} (${t.discipline})</option>`
+      ).join('');
 
-      state.classes.push({
-        id: "turma-" + Date.now(),
-        teacherId: state.currentUser ? state.currentUser.id : "prof-thyago",
-        teacherName: state.currentUser ? state.currentUser.name : "Prof. Responsável",
-        coTeacherIds: [],
-        name: name,
-        discipline: disc || "Geral",
-        mode: isSemestral ? "semestral" : "bimestral",
-        year: 2026,
-        closedPeriods: { "A1": false, "A2": false, "A3 (Prova Final)": false },
-        exams: [],
-        examSubmissions: [],
-        periods: periodsObj,
-        lessons: [],
-        students: []
-      });
-      saveData();
-      renderClassesGrid();
-      showToast("Nova turma criada!");
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome da Turma</label>
+          <input type="text" id="m-class-name" placeholder="Ex: Ensino Superior - Módulo 1 ou 3º Ano B" required>
+        </div>
+        <div class="form-group">
+          <label>Disciplina</label>
+          <input type="text" id="m-class-disc" value="${state.currentUser ? state.currentUser.discipline : 'Ciências'}" required>
+        </div>
+        <div class="form-group">
+          <label>Professor Principal</label>
+          <select id="m-class-teacher">${teacherOptions}</select>
+        </div>
+        <div class="form-group">
+          <label>Modalidade da Turma</label>
+          <select id="m-class-mode">
+            <option value="semestral">Ensino Superior / Semestral (Etapas A1, A2, A3)</option>
+            <option value="bimestral">Ensino Básico (1º, 2º, 3º, 4º Bimestres)</option>
+          </select>
+        </div>
+      `;
+
+      showCustomModal("➕ Nova Turma", contentHtml, () => {
+        const name = document.getElementById('m-class-name').value.trim();
+        if (!name) { showAlertModal("Atenção", "Por favor, digite o nome da turma."); return false; }
+        const disc = document.getElementById('m-class-disc').value.trim() || "Geral";
+        const teacherId = document.getElementById('m-class-teacher').value;
+        const mode = document.getElementById('m-class-mode').value;
+
+        const teacherObj = approvedTeachers.find(t => t.id === teacherId);
+
+        const isSemestral = mode === 'semestral';
+        const periodsObj = isSemestral 
+          ? { "A1": [], "A2": [], "A3 (Prova Final)": [] }
+          : { "1º Bimestre": [], "2º Bimestre": [], "3º Bimestre": [], "4º Bimestre": [] };
+
+        state.classes.push({
+          id: "turma-" + Date.now(),
+          teacherId: teacherObj ? teacherObj.id : defaultTeacherId,
+          teacherName: teacherObj ? teacherObj.name : "Prof. Responsável",
+          coTeacherIds: [],
+          name: name,
+          discipline: disc,
+          mode: mode,
+          year: 2026,
+          closedPeriods: isSemestral ? { "A1": false, "A2": false, "A3 (Prova Final)": false } : {},
+          exams: [],
+          examSubmissions: [],
+          periods: periodsObj,
+          lessons: [],
+          students: []
+        });
+
+        saveData();
+        renderClassesGrid();
+        showToast("Nova turma criada com sucesso!");
+      }, "💾 Criar Turma");
     }
 
     function renderTeacherMessages() {
@@ -2288,7 +2880,7 @@
       const input = document.getElementById(`reply-input-${studentId}`);
       const fileInput = document.getElementById(`reply-file-${studentId}`);
       const text = input.value.trim();
-      const file = fileInput.files;
+      const file = fileInput.files[0];
 
       if (!text && !file) return;
 
@@ -2313,6 +2905,11 @@
       }
     }
 
+    document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+      switchProfile(state.activeProfile || 'portal');
+    });
+  
     // NOVAS FUNCIONALIDADES V6: FECHAMENTO DE ETAPAS, A3 RECURSOS & PROVAS ONLINE
 
     function toggleClosePeriod(pk) {
@@ -2381,17 +2978,32 @@
       const c = state.classes.find(item => item.id === state.currentClassId);
       const s = c.students.find(item => item.id === studentId);
       if (!s) return;
+
       const currentA3 = (s.grades && s.grades["A3 (Prova Final)"]) ? s.grades["A3 (Prova Final)"].a3Note : '';
-      const noteStr = prompt(`Lançar/Editar Nota da A3 (Prova Final) para ${s.name}:`, currentA3 ?? "6.0");
-      if (noteStr === null) return;
-      const note = parseFloat(noteStr);
-      if (isNaN(note)) return;
-      if (!s.grades) s.grades = {};
-      if (!s.grades["A3 (Prova Final)"]) s.grades["A3 (Prova Final)"] = {};
-      s.grades["A3 (Prova Final)"].a3Note = note;
-      saveData();
-      renderTeacherGradesTable(c);
-      showToast(`Nota A3 (${note}) lançada para ${s.name}!`);
+
+      const contentHtml = `
+        <p style="font-size:0.95rem; margin-bottom:12px;">Aluno: <strong>${s.name}</strong> (${s.code || 'S/C'})</p>
+        <div class="form-group">
+          <label>Nota da A3 (Prova Final / Recuperação)</label>
+          <input type="number" step="0.1" id="m-a3-val" value="${currentA3 ?? 6.0}" min="0" max="10" required>
+        </div>
+      `;
+
+      showCustomModal("✏️ Lançar Nota A3", contentHtml, () => {
+        const noteVal = parseFloat(document.getElementById('m-a3-val').value);
+        if (isNaN(noteVal)) {
+          showAlertModal("Atenção", "Informe um valor numérico válido para a nota.");
+          return false;
+        }
+
+        if (!s.grades) s.grades = {};
+        if (!s.grades["A3 (Prova Final)"]) s.grades["A3 (Prova Final)"] = {};
+        s.grades["A3 (Prova Final)"].a3Note = noteVal;
+
+        saveData();
+        renderTeacherGradesTable(c);
+        showToast(`Nota A3 (${noteVal}) lançada para ${s.name}!`);
+      }, "💾 Salvar Nota A3");
     }
 
     function openAddExamModal() {
@@ -2399,59 +3011,180 @@
       if (!c) return;
       if (!c.exams) c.exams = [];
 
-      const title = prompt("Título da Prova / Simulado Online (ex: Simulado Geral de Ciências):");
-      if (!title) return;
-      const desc = prompt("Descrição / Instruções para os alunos:") || "";
-      const period = prompt("Etapa da Prova (ex: A1, A2):", state.currentPeriod || "A1") || "A1";
-      const maxValStr = prompt("Valor Total em Pontos da Prova (ex: 10.0):", "10.0");
-      const maxGrade = parseFloat(maxValStr) || 10.0;
+      const periodsList = Object.keys(c.periods || {});
+      const periodOptions = periodsList.map(p => 
+        `<option value="${p}" ${p === state.currentPeriod ? 'selected' : ''}>${p}</option>`
+      ).join('');
 
-      const qCountStr = prompt("Quantidade de Questões de Múltipla Escolha que deseja cadastrar agora (ex: 2):", "2");
-      const qCount = parseInt(qCountStr) || 1;
+      const contentHtml = `
+        <div class="form-group">
+          <label>Título da Prova / Avaliação Online</label>
+          <input type="text" id="m-ex-title" placeholder="Ex: Prova Parcial de Biologia Humana" required>
+        </div>
+        <div class="form-group">
+          <label>Etapa da Prova</label>
+          <select id="m-ex-period">${periodOptions}</select>
+        </div>
+        <div class="form-group">
+          <label>Valor Total em Pontos (ex: 10.0)</label>
+          <input type="number" step="0.5" id="m-ex-max" value="10.0" required>
+        </div>
+        <div class="form-group">
+          <label>Descrição / Orientações para os Alunos</label>
+          <textarea id="m-ex-desc" rows="2" placeholder="Ex: Leia atentamente as questões objetivas e discursivas antes de responder..."></textarea>
+        </div>
 
-      const questions = [];
-      const pointsPerQ = (maxGrade / qCount).toFixed(1);
-
-      for (let i = 1; i <= qCount; i++) {
-        const qText = prompt(`Questão ${i}: Digite o enunciado da pergunta:`, `Pergunta da questão ${i}`);
-        if (!qText) break;
-        const optA = prompt(`Questão ${i}: Alternativa A:`, "Opção A");
-        const optB = prompt(`Questão ${i}: Alternativa B:`, "Opção B");
-        const optC = prompt(`Questão ${i}: Alternativa C:`, "Opção C");
-        const optD = prompt(`Questão ${i}: Alternativa D:`, "Opção D");
-        const correctStr = prompt(`Questão ${i}: Qual a alternativa correta? (Digite A, B, C ou D):`, "A");
+        <hr style="border:0; border-top:1px solid #e2e8f0; margin:16px 0;">
         
-        let correctOpt = 0;
-        if (correctStr) {
-          const u = correctStr.trim().toUpperCase();
-          if (u === 'B') correctOpt = 1;
-          else if (u === 'C') correctOpt = 2;
-          else if (u === 'D') correctOpt = 3;
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h4 style="color:#6d28d9;">📋 Questões da Prova</h4>
+          <button type="button" onclick="addQuestionCardToExamModal()" class="btn btn-secondary btn-sm">+ Adicionar Questão</button>
+        </div>
+
+        <div id="m-ex-questions-container"></div>
+      `;
+
+      showCustomModal("📝 Criar Prova / Avaliação Online", contentHtml, () => {
+        const title = document.getElementById('m-ex-title').value.trim();
+        if (!title) { showAlertModal("Atenção", "Digite o título da prova."); return false; }
+        const period = document.getElementById('m-ex-period').value;
+        const maxGrade = parseFloat(document.getElementById('m-ex-max').value) || 10.0;
+        const desc = document.getElementById('m-ex-desc').value.trim();
+
+        const qCards = document.querySelectorAll('.exam-question-card');
+        if (qCards.length === 0) {
+          showAlertModal("Atenção", "Adicione pelo menos 1 questão para criar a prova.");
+          return false;
         }
 
-        questions.push({
-          id: "q-" + Date.now() + "-" + i,
-          type: "multiple",
-          text: qText,
-          options: [optA || "Opção A", optB || "Opção B", optC || "Opção C", optD || "Opção D"],
-          correctOpt: correctOpt,
-          points: parseFloat(pointsPerQ)
+        const questions = [];
+        let isValid = true;
+
+        qCards.forEach((card, idx) => {
+          const qType = card.querySelector('.q-type').value;
+          const qText = card.querySelector('.q-text').value.trim();
+          const qPoints = parseFloat(card.querySelector('.q-points').value) || 1.0;
+
+          if (!qText) isValid = false;
+
+          if (qType === 'multiple') {
+            const optA = card.querySelector('.q-opt-a').value.trim();
+            const optB = card.querySelector('.q-opt-b').value.trim();
+            const optC = card.querySelector('.q-opt-c').value.trim();
+            const optD = card.querySelector('.q-opt-d').value.trim();
+            const correctOpt = parseInt(card.querySelector('.q-correct-opt:checked').value) || 0;
+
+            questions.push({
+              id: "q-" + Date.now() + "-" + idx,
+              type: "multiple",
+              text: qText,
+              points: qPoints,
+              options: [optA || "Opção A", optB || "Opção B", optC || "Opção C", optD || "Opção D"],
+              correctOpt: correctOpt
+            });
+          } else {
+            questions.push({
+              id: "q-" + Date.now() + "-" + idx,
+              type: "discursive",
+              text: qText,
+              points: qPoints
+            });
+          }
         });
+
+        if (!isValid) {
+          showAlertModal("Atenção", "Por favor, preencha o enunciado de todas as questões.");
+          return false;
+        }
+
+        const exam = {
+          id: "exam-" + Date.now(),
+          title: title,
+          description: desc,
+          period: period,
+          maxGrade: maxGrade,
+          questions: questions
+        };
+
+        c.exams.push(exam);
+        saveData();
+        renderTeacherExamsList(c);
+        showToast("📝 Prova Online criada com sucesso!");
+      }, "💾 Criar Prova Online", true);
+
+      addQuestionCardToExamModal();
+    }
+
+    function addQuestionCardToExamModal() {
+      const container = document.getElementById('m-ex-questions-container');
+      if (!container) return;
+
+      const qIdx = container.children.length + 1;
+      const qCard = document.createElement('div');
+      qCard.className = 'exam-question-card';
+      qCard.style.cssText = 'background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:14px; margin-bottom:12px; position:relative;';
+
+      qCard.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <strong style="color:#6d28d9;">Questão ${qIdx}</strong>
+          <button type="button" onclick="this.closest('.exam-question-card').remove()" class="btn btn-secondary btn-sm" style="color:#dc2626;">🗑️ Remov. Questão</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:600;">Tipo de Questão:</label>
+            <select class="q-type" onchange="toggleExamQuestionOptionsUI(this)" style="padding:6px; font-size:0.85rem;">
+              <option value="multiple">Múltipla Escolha (Gabarito Automático)</option>
+              <option value="discursive">Discursiva / Texto Aberto (Correção Manual)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; font-weight:600;">Pontos:</label>
+            <input type="number" step="0.5" class="q-points" value="5.0" style="padding:6px; font-size:0.85rem;">
+          </div>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <label style="font-size:0.8rem; font-weight:600;">Enunciado da Pergunta:</label>
+          <textarea class="q-text" rows="2" placeholder="Digite a pergunta da questão..." style="font-size:0.88rem; padding:6px;"></textarea>
+        </div>
+
+        <div class="q-options-box" style="margin-top:8px;">
+          <label style="font-size:0.8rem; font-weight:600; color:#475569;">Alternativas e Marcação da Resposta Correta:</label>
+          <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
+              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="0" checked>
+              <strong>A)</strong> <input type="text" class="q-opt-a" value="Opção A" style="flex:1; padding:4px 8px;">
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
+              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="1">
+              <strong>B)</strong> <input type="text" class="q-opt-b" value="Opção B" style="flex:1; padding:4px 8px;">
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
+              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="2">
+              <strong>C)</strong> <input type="text" class="q-opt-c" value="Opção C" style="flex:1; padding:4px 8px;">
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem;">
+              <input type="radio" name="correct_opt_${qIdx}" class="q-correct-opt" value="3">
+              <strong>D)</strong> <input type="text" class="q-opt-d" value="Opção D" style="flex:1; padding:4px 8px;">
+            </label>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(qCard);
+    }
+
+    function toggleExamQuestionOptionsUI(selectEl) {
+      const card = selectEl.closest('.exam-question-card');
+      const optBox = card.querySelector('.q-options-box');
+      if (optBox) {
+        if (selectEl.value === 'discursive') {
+          optBox.style.display = 'none';
+        } else {
+          optBox.style.display = 'block';
+        }
       }
-
-      const exam = {
-        id: "exam-" + Date.now(),
-        title: title,
-        description: desc,
-        period: period,
-        maxGrade: maxGrade,
-        questions: questions
-      };
-
-      c.exams.push(exam);
-      saveData();
-      renderTeacherExamsList(c);
-      showToast("📝 Prova Online criada com sucesso!");
     }
 
     function renderTeacherExamsList(c) {
@@ -2470,19 +3203,28 @@
         
         let subsRows = (c.students || []).map(st => {
           const sub = subs.find(s => s.studentId === st.id);
-          const subStatus = sub 
-            ? `<span style="color:#15803d; font-weight:700;">✅ Entregue (Nota: ${sub.autoScore.toFixed(1)} / ${ex.maxGrade})</span>` 
-            : `<span style="color:#94a3b8;">⏳ Pendente</span>`;
+          let subStatus = '<span style="color:#94a3b8;">⏳ Pendente de Resposta</span>';
+          let actionBtn = '';
 
-          const transferBtn = sub 
-            ? `<button onclick="transferExamGradeToJournal('${ex.id}', '${st.id}')" class="btn btn-secondary btn-sm" title="Lançar nota no Diário">📥 Lançar no Diário</button>` 
-            : '';
+          if (sub) {
+            const finalNote = (sub.finalScore ?? sub.autoScore).toFixed(1);
+            if (sub.status === 'pending_manual') {
+              subStatus = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando Correção Discursiva (Parcial: ${sub.autoScore.toFixed(1)})</span>`;
+              actionBtn = `<button onclick="openTeacherGradeSubmissionModal('${c.id}', '${ex.id}', '${st.id}')" class="btn btn-primary btn-sm">✏️ Corrigir Respostas Discursivas</button>`;
+            } else {
+              subStatus = `<span style="color:#15803d; font-weight:700;">✅ Corrigido (Nota Final: ${finalNote} / ${ex.maxGrade})</span>`;
+              actionBtn = `
+                <button onclick="openTeacherGradeSubmissionModal('${c.id}', '${ex.id}', '${st.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Revisar Correção</button>
+                <button onclick="transferExamGradeToJournal('${ex.id}', '${st.id}')" class="btn btn-success btn-sm" title="Lançar nota no Diário">📥 Lançar no Diário</button>
+              `;
+            }
+          }
 
           return `
             <tr>
               <td><strong>${st.name}</strong> (${st.code || 'S/C'})</td>
               <td>${subStatus}</td>
-              <td>${transferBtn}</td>
+              <td>${actionBtn}</td>
             </tr>
           `;
         }).join('');
@@ -2515,14 +3257,19 @@
     }
 
     function deleteExam(examId) {
-      if (confirm("Deseja realmente excluir esta prova online?")) {
-        const c = state.classes.find(item => item.id === state.currentClassId);
-        if (!c) return;
-        c.exams = (c.exams || []).filter(e => e.id !== examId);
-        saveData();
-        renderTeacherExamsList(c);
-        showToast("Prova excluída com sucesso!");
-      }
+      showConfirmModal(
+        "🗑️ Excluir Prova Online",
+        "Deseja realmente excluir esta prova online e todas as respostas entregues pelos alunos?",
+        () => {
+          const c = state.classes.find(item => item.id === state.currentClassId);
+          if (!c) return;
+          c.exams = (c.exams || []).filter(e => e.id !== examId);
+          saveData();
+          renderTeacherExamsList(c);
+          showToast("Prova excluída com sucesso!");
+        },
+        "Sim, Excluir Prova"
+      );
     }
 
     function transferExamGradeToJournal(examId, studentId) {
@@ -2668,6 +3415,7 @@
         submittedAt: new Date().toISOString()
       });
 
+      // Automatically record grade into student activity grades
       const st = c.students.find(s => s.id === studentId);
       if (st) {
         const period = ex.period || "A1";
@@ -2698,10 +3446,6 @@
       if (state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      loadData();
-      switchProfile(state.activeProfile || 'portal');
-    });
   </script>
 </body>
 </html>
