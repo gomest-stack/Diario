@@ -702,7 +702,11 @@
       const apiKey = (set.firebaseApiKey || "").trim();
 
       if (typeof firebase === 'undefined') {
-        updateCloudStatusUI(false, "⚠= Modo Local");
+        updateCloudStatusUI(false, "⚠ Modo Local");
+        return;
+      }
+
+      if (isCloudListenerAttached && activeDbUrl === dbUrl) {
         return;
       }
 
@@ -714,20 +718,29 @@
         else firebaseApp = firebase.apps[0];
         firebaseDb = firebase.database();
 
+        if (activeDbUrl && activeDbUrl !== dbUrl) {
+          try { firebaseDb.ref("diario_escola_data_v10").off(); } catch (e) {}
+        }
+
+        activeDbUrl = dbUrl;
+        isCloudListenerAttached = true;
+
         firebaseDb.ref("diario_escola_data_v10").on("value", (snapshot) => {
           const val = snapshot.val();
           if (val) {
             onCloudDataReceived(val);
-            updateCloudStatusUI(true, "‼ Conectado ");
+            updateCloudStatusUI(true, "🟢 Conectado à Nuvem");
           } else {
             syncDataToCloud();
-            updateCloudStatusUI(true, "‼ Conectado ");
+            updateCloudStatusUI(true, "🟢 Conectado à Nuvem");
           }
         }, (error) => {
-          updateCloudStatusUI(false, "⚀ Modo Local");
+          isCloudListenerAttached = false;
+          updateCloudStatusUI(false, "🔴 Modo Local");
         });
 
       } catch (err) {
+        isCloudListenerAttached = false;
         updateCloudStatusUI(false, "⚠ Modo Local");
       }
     }
@@ -737,7 +750,7 @@
       const statusEls = document.querySelectorAll(".cloud-status-indicator");
       statusEls.forEach(el => {
         el.innerHTML = connected
-          ? '<span style="font-size:0.8rem; background:$dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-weight:600;">' + text + '</span>'
+          ? '<span style="font-size:0.8rem; background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-weight:600;">' + text + '</span>'
           : '<span style="font-size:0.8rem; background:#fee2e2; color:#b91c1c; padding:3px 10px; border-radius:12px; font-weight:600;">' + text + '</span>';
       });
     }
@@ -762,15 +775,18 @@
       if (cloudVal.teachers) state.teachers = cloudVal.teachers;
       if (cloudVal.classes) state.classes = cloudVal.classes;
       if (cloudVal.mural) state.mural = cloudVal.mural;
+
       localStorage.setItem("diario_settings_v20", JSON.stringify(state.settings));
       localStorage.setItem("diario_global_students_v20", JSON.stringify(state.globalStudents));
       localStorage.setItem("diario_teachers_v20", JSON.stringify(state.teachers));
       localStorage.setItem("diario_classes_v20", JSON.stringify(state.classes));
       localStorage.setItem("diario_mural_v20", JSON.stringify(state.mural));
+
       applySettingsUI();
-      initCloudSync();
-      if (state.activeProfile === 'aluno' && state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);
-      else if (state.activeProfile === 'professor') {
+
+      if (state.activeProfile === 'aluno' && state.lastSearchedCode) {
+        executeStudentSearch(state.lastSearchedCode);
+      } else if (state.activeProfile === 'professor') {
         if (state.currentClassId) {
           const c = state.classes.find(i => i.id === state.currentClassId);
           if (c) {
@@ -780,12 +796,17 @@
             renderTeacherExamsList(c);
             renderTeacherMessages();
           }
-        } else renderClassesGrid();
+        } else {
+          renderClassesGrid();
+        }
       }
-      isSyncingFromCloud = false;
+
+      setTimeout(() => {
+        isSyncingFromCloud = false;
+      }, 300);
     }
 
-function loadData() {
+    function loadData() {
       const sStored = localStorage.getItem("diario_settings_v20") || localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
