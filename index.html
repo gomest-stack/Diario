@@ -133,6 +133,8 @@
     .exam-question-img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; margin: 8px 0; display: block; }
     .exam-opt-img { max-width: 120px; max-height: 100px; object-fit: contain; border-radius: 4px; border: 1px solid #cbd5e1; margin-top: 4px; display: block; }
   </style>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -141,7 +143,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino</div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino</div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div class="nav-tabs-profile">
         <button id="nav-btn-portal" class="nav-tab-btn active" onclick="switchProfile('portal')">🏠 Início / Login</button>
@@ -689,53 +691,150 @@
       showCustomModal(title, `<p style="font-size:0.95rem; color:#334155; line-height:1.6;">${message}</p>`, null, "Entendido");
     }
 
-    function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v19") || localStorage.getItem("diario_settings_v18");
+        let firebaseApp = null;
+    let firebaseDb = null;
+    let isCloudSynced = false;
+    let isSyncingFromCloud = false;
+
+    function initCloudSync() {
+      const set = state.settings || {};
+      const dbUrl = (set.firebaseUrl || "https://diario-escolar-digital-default-rtdb.firebaseio.com").trim();
+      const apiKey = (set.firebaseApiKey || "").trim();
+
+      if (typeof firebase === 'undefined') {
+        updateCloudStatusUI(false, "⚠= Modo Local");
+        return;
+      }
+
+      try {
+        const config = { databaseURL: dbUrl };
+        if (apiKey) config.apiKey = apiKey;
+
+        if (!firebase.apps.length) firebaseApp = firebase.initializeApp(config);
+        else firebaseApp = firebase.apps[0];
+        firebaseDb = firebase.database();
+
+        firebaseDb.ref("diario_escola_data_v10").on("value", (snapshot) => {
+          const val = snapshot.val();
+          if (val) {
+            onCloudDataReceived(val);
+            updateCloudStatusUI(true, "‼ Conectado ");
+          } else {
+            syncDataToCloud();
+            updateCloudStatusUI(true, "‼ Conectado ");
+          }
+        }, (error) => {
+          updateCloudStatusUI(false, "⚀ Modo Local");
+        });
+
+      } catch (err) {
+        updateCloudStatusUI(false, "⚠ Modo Local");
+      }
+    }
+
+    function updateCloudStatusUI(connected, text) {
+      isCloudSynced = connected;
+      const statusEls = document.querySelectorAll(".cloud-status-indicator");
+      statusEls.forEach(el => {
+        el.innerHTML = connected
+          ? '<span style="font-size:0.8rem; background:$dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-weight:600;">' + text + '</span>'
+          : '<span style="font-size:0.8rem; background:#fee2e2; color:#b91c1c; padding:3px 10px; border-radius:12px; font-weight:600;">' + text + '</span>';
+      });
+    }
+
+    function syncDataToCloud() {
+      if (!firebaseDb || isSyncingFromCloud) return;
+      const payload = {
+        settings: state.settings,
+        globalStudents: state.globalStudents,
+        teachers: state.teachers,
+        classes: state.classes,
+        mural: state.mural,
+        updatedAt: new Date().toISOString()
+      };
+      firebaseDb.ref("diario_escola_data_v10").set(payload).catch(err => {});
+    }
+
+    function onCloudDataReceived(cloudVal) {
+      isSyncingFromCloud = true;
+      if (cloudVal.settings) state.settings = cloudVal.settings;
+      if (cloudVal.globalStudents) state.globalStudents = cloudVal.globalStudents;
+      if (cloudVal.teachers) state.teachers = cloudVal.teachers;
+      if (cloudVal.classes) state.classes = cloudVal.classes;
+      if (cloudVal.mural) state.mural = cloudVal.mural;
+      localStorage.setItem("diario_settings_v20", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v20", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v20", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v20", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v20", JSON.stringify(state.mural));
+      applySettingsUI();
+      initCloudSync();
+      if (state.activeProfile === 'aluno' && state.lastSearchedCode) executeStudentSearch(state.lastSearchedCode);
+      else if (state.activeProfile === 'professor') {
+        if (state.currentClassId) {
+          const c = state.classes.find(i => i.id === state.currentClassId);
+          if (c) {
+            renderStudentsTable();
+            renderTeacherGradesTable(c);
+            renderTeacherAttendanceTable(c);
+            renderTeacherExamsList(c);
+            renderTeacherMessages();
+          }
+        } else renderClassesGrid();
+      }
+      isSyncingFromCloud = false;
+    }
+
+function loadData() {
+      const sStored = localStorage.getItem("diario_settings_v20") || localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const gsStored = localStorage.getItem("diario_global_students_v19");
+      const gsStored = localStorage.getItem("diario_global_students_v20");
       state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
 
-      const tStored = localStorage.getItem("diario_teachers_v19") || localStorage.getItem("diario_teachers_v18");
+      const tStored = localStorage.getItem("diario_teachers_v20") || localStorage.getItem("diario_teachers_v18");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v19") || localStorage.getItem("diario_classes_v18");
+      const cStored = localStorage.getItem("diario_classes_v20") || localStorage.getItem("diario_classes_v18");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v19") || localStorage.getItem("diario_mural_v18");
+      const mStored = localStorage.getItem("diario_mural_v20") || localStorage.getItem("diario_mural_v18");
       state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const uStored = localStorage.getItem("diario_session_v19") || localStorage.getItem("diario_session_v18");
+      const uStored = localStorage.getItem("diario_session_v20") || localStorage.getItem("diario_session_v18");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v19") || localStorage.getItem("diario_active_profile_v18");
+      const pStored = localStorage.getItem("diario_active_profile_v20") || localStorage.getItem("diario_active_profile_v18");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v19") || localStorage.getItem("diario_active_student_tab_v18");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v20") || localStorage.getItem("diario_active_student_tab_v18");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v19") || localStorage.getItem("diario_last_student_code_v18");
+      const codeStored = localStorage.getItem("diario_last_student_code_v20") || localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
       applySettingsUI();
+      initCloudSync();
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v19", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v19", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v19", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v19", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v19", JSON.stringify(state.mural));
-      localStorage.setItem("diario_active_profile_v19", state.activeProfile || "portal");
-      localStorage.setItem("diario_active_student_tab_v19", state.activeStudentTab || "sala");
-      localStorage.setItem("diario_last_student_code_v19", state.lastSearchedCode || "");
+      localStorage.setItem("diario_settings_v20", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v20", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v20", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v20", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v20", JSON.stringify(state.mural));
+      localStorage.setItem("diario_active_profile_v20", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v20", state.activeStudentTab || "sala");
+      localStorage.setItem("diario_last_student_code_v20", state.lastSearchedCode || "");
       
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v19", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v20", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v19");
+        localStorage.removeItem("diario_session_v20");
       }
+
+      if (!isSyncingFromCloud) { syncDataToCloud(); }
     }
 
     function applySettingsUI() {
@@ -2139,11 +2238,13 @@
           const readerBg = new FileReader();
           readerBg.onload = (evt) => {
             state.settings.bgImage = evt.target.result;
-            saveData(); applySettingsUI(); showToast("🎨 Personalizações salvas!");
+            saveData(); applySettingsUI();
+      initCloudSync(); showToast("🎨 Personalizações salvas!");
           };
           readerBg.readAsDataURL(bgFile);
         } else {
-          saveData(); applySettingsUI(); showToast("🎨 Personalizações salvas!");
+          saveData(); applySettingsUI();
+      initCloudSync(); showToast("🎨 Personalizações salvas!");
         }
       };
 
@@ -2159,7 +2260,8 @@
     function resetSettingsDefaults() {
       showConfirmModal("🔄 Restaurar Padrões", "Restaurar as configurações originais de tema?", () => {
         state.settings = { schoolName: "Sistema de Ensino", schoolLogo: null, bgImage: null };
-        saveData(); applySettingsUI(); renderSettingsForm(); showToast("Configurações restauradas!");
+        saveData(); applySettingsUI();
+      initCloudSync(); renderSettingsForm(); showToast("Configurações restauradas!");
       }, "Sim, Restaurar");
     }
 
