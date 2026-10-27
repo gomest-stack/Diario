@@ -132,9 +132,37 @@
     /* IMAGENS DE QUESTÕES DE PROVAS */
     .exam-question-img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; margin: 8px 0; display: block; }
     .exam-opt-img { max-width: 120px; max-height: 100px; object-fit: contain; border-radius: 4px; border: 1px solid #cbd5e1; margin-top: 4px; display: block; }
+
+    /* CHAT ESTILO WHATSAPP */
+    .chat-box-whatsapp { max-height: 420px; overflow-y: auto; background-color: #f0f2f5; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .chat-bubble { display: flex; gap: 10px; max-width: 80%; align-items: flex-end; }
+    .chat-bubble-aluno { align-self: flex-start; }
+    .chat-bubble-prof { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-bubble-content { background: #ffffff; border-radius: 12px; padding: 10px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.92rem; color: #1e293b; position: relative; }
+    .chat-bubble-prof .chat-bubble-content { background: #dcfce7; color: #14532d; }
+    .chat-bubble-author { font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; color: #6d28d9; }
+    .chat-bubble-prof .chat-bubble-author { color: #15803d; text-align: right; }
+    .chat-bubble-time { font-size: 0.65rem; opacity: 0.7; text-align: right; margin-top: 4px; }
+
+    /* STATUS CURSANDO */
+    .status-cursando { background-color: #e0f2fe; color: #0369a1; }
+
+    /* GOV.BR DIGITAL SIGNATURE STAMP */
+    .gov-signature-stamp { background: #f0fdf4; border: 2px dashed #16a34a; border-radius: 8px; padding: 16px; margin-top: 20px; font-size: 0.88rem; color: #14532d; position: relative; }
+    .gov-signature-title { font-weight: 800; font-size: 0.95rem; color: #15803d; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .gov-signature-font { font-size: 1.6rem; margin: 8px 0; color: #0f172a; line-height: 1.2; }
+
+    /* REGRAS DE IMPRESSÃO A4 */
+    @media print {
+      body * { visibility: hidden !important; background: none !important; }
+      #printable-document, #printable-document * { visibility: visible !important; }
+      #printable-document { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; padding: 20px !important; color: #000 !important; background: #fff !important; }
+      .no-print { display: none !important; }
+    }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Pacifico&family=Caveat:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -145,10 +173,8 @@
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
         <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino</div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
-      <div class="nav-tabs-profile">
-        <button id="nav-btn-portal" class="nav-tab-btn active" onclick="switchProfile('portal')">🏠 Início / Login</button>
-        <button id="nav-btn-aluno" class="nav-tab-btn" onclick="switchProfile('aluno')">👨‍🎓 Área do Aluno</button>
-        <button id="nav-btn-professor" class="nav-tab-btn" onclick="switchProfile('professor')">👨‍🏫 Área do Professor</button>
+      <div id="header-user-nav">
+        <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
       </div>
     </div>
   </header>
@@ -245,6 +271,23 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL DOS PAIS ==================== -->
+    <section id="screen-pais" class="hidden">
+      <div class="boletim-card" style="margin-bottom: 16px; padding: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; border-bottom:2px solid #6d28d9; padding-bottom:12px;">
+          <div>
+            <h2 style="color:#1e293b;">👨‍👩‍👧 Portal dos Pais / Responsáveis</h2>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:2px;">Acompanhamento do Boletim Acadêmico Oficial e Frequência</p>
+          </div>
+          <button onclick="showPortalHome()" class="btn btn-secondary btn-sm">← Sair</button>
+        </div>
+
+        <div id="parent-student-header" style="display:flex; align-items:center; gap:16px; margin-bottom:20px; background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #e2e8f0;"></div>
+
+        <div id="parent-bulletin-container"></div>
       </div>
     </section>
 
@@ -628,7 +671,8 @@
       }
     ];
 
-    let state = {
+    window.state = {
+      settings: {},
       settings: {},
       globalStudents: [],
       teachers: [],
@@ -776,11 +820,11 @@
       if (cloudVal.classes) state.classes = cloudVal.classes;
       if (cloudVal.mural) state.mural = cloudVal.mural;
 
-      localStorage.setItem("diario_settings_v20", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v20", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v20", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v20", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v20", JSON.stringify(state.mural));
+      localStorage.setItem("diario_settings_v12", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v12", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v12", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v12", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v12", JSON.stringify(state.mural));
 
       applySettingsUI();
 
@@ -806,32 +850,398 @@
       }, 300);
     }
 
+    
+    // ==========================================
+    // V12 NEW FUNCTIONS: PARENTS, GOV.BR SIGNATURE, MASTER LOCK, GLOBAL STUDENTS
+    // ==========================================
+
+    function isSystemLocked() {
+      const set = state.settings || {};
+      if (set.masterLock) return true;
+      const now = new Date();
+      if (set.startDate && new Date(set.startDate) > now) return true;
+      if (set.endDate && new Date(set.endDate) < now) return true;
+      return false;
+    }
+
+    function handlePortalParentAccess(e) {
+      e.preventDefault();
+      const code = document.getElementById('portal-parent-code').value.trim();
+      if (!code) return;
+      state.lastSearchedCode = code;
+      switchProfile('pais');
+      executeParentSearch(code);
+    }
+
+    function executeParentSearch(code) {
+      const codeClean = code.toLowerCase().trim();
+      const records = [];
+      state.classes.forEach(c => {
+        (c.students || []).forEach(s => {
+          if ((s.code || "").toLowerCase().trim() === codeClean) {
+            records.push({ class: c, student: s, status: calcStudentAcademicStatus(s, c) });
+          }
+        });
+      });
+
+      const container = document.getElementById('parent-bulletin-container');
+      const headerBox = document.getElementById('parent-student-header');
+
+      if (!container || !headerBox) return;
+
+      if (records.length === 0) {
+        headerBox.innerHTML = '';
+        container.innerHTML = '<div style="color:#dc2626; text-align:center; padding:20px;">⚠️ Nenhum aluno encontrado com este código.</div>';
+        return;
+      }
+
+      const st = records[0].student;
+      headerBox.innerHTML = `
+        <div class="student-avatar student-avatar-lg">${st.photo ? `<img src="${st.photo}" class="student-avatar student-avatar-lg">` : '👤'}</div>
+        <div>
+          <h3>${st.name}</h3>
+          <p style="color:#64748b; font-size:0.88rem;">Código Acadêmico: <strong>${st.code}</strong></p>
+        </div>
+      `;
+
+      let tableRows = records.map(r => {
+        const c = r.class;
+        const stat = r.status;
+        return `
+          <tr>
+            <td><strong>${c.discipline}</strong><br><small style="color:#64748b;">Prof. ${c.teacherName}</small></td>
+            <td>${stat.sumA1 ?? '-'}</td>
+            <td>${stat.sumA2 ?? '-'}</td>
+            <td>${stat.a3Note ?? '-'}</td>
+            <td><strong style="color:#6d28d9; font-size:1.05rem;">${stat.finalGrade}</strong></td>
+            <td>${stat.absencesInfo || '0 Faltas'}</td>
+            <td><span class="status-badge ${stat.isPassed ? 'status-aprovado' : 'status-cursando'}">${stat.displayStatus}</span></td>
+          </tr>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Componente Curricular / Docente</th>
+                <th>Etapa A1</th>
+                <th>Etapa A2</th>
+                <th>A3 (Final)</th>
+                <th>Média Final (MF)</th>
+                <th>Faltas & Presença</th>
+                <th>Situação Acadêmica</th>
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
+        <div style="margin-top:20px; text-align:right;">
+          <button onclick="printParentBulletin('${code}')" class="btn btn-primary">🖨️ Imprimir Boletim Oficial A4</button>
+        </div>
+      `;
+    }
+
+    function printParentBulletin(code) {
+      const records = [];
+      state.classes.forEach(c => {
+        (c.students || []).forEach(s => {
+          if ((s.code || "").toLowerCase().trim() === code.toLowerCase().trim()) {
+            records.push({ class: c, student: s, status: calcStudentAcademicStatus(s, c) });
+          }
+        });
+      });
+      if (records.length === 0) return;
+
+      const st = records[0].student;
+      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
+
+      let rowsHtml = records.map(r => `
+        <tr>
+          <td style="border:1px solid #000; padding:8px;"><strong>${r.class.discipline}</strong> (Prof. ${r.class.teacherName})</td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.sumA1 ?? '-'}</td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.sumA2 ?? '-'}</td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.a3Note ?? '-'}</td>
+          <td style="border:1px solid #000; padding:8px;"><strong>${r.status.finalGrade}</strong></td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.absencesInfo}</td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.displayStatus}</td>
+        </tr>
+      `).join('');
+
+      const printEl = document.getElementById('printable-document');
+      if (!printEl) return;
+      printEl.innerHTML = `
+        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:20px;">
+          <h2 style="margin:0;">${schoolName}</h2>
+          <h4 style="margin-top:4px; font-weight:normal;">BOLETIM ACADÊMICO OFICIAL DO ALUNO</h4>
+        </div>
+        <div style="margin-bottom:20px;">
+          <p><strong>Nome do Aluno:</strong> ${st.name}</p>
+          <p><strong>Código de Registro:</strong> ${st.code}</p>
+          <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+        <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="border:1px solid #000; padding:8px;">Disciplina / Docente</th>
+              <th style="border:1px solid #000; padding:8px;">A1</th>
+              <th style="border:1px solid #000; padding:8px;">A2</th>
+              <th style="border:1px solid #000; padding:8px;">A3</th>
+              <th style="border:1px solid #000; padding:8px;">Média Final</th>
+              <th style="border:1px solid #000; padding:8px;">Faltas</th>
+              <th style="border:1px solid #000; padding:8px;">Situação</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      `;
+
+      window.print();
+    }
+
+    function requestOfficialHistory() {
+      if (state.matchedStudentRecords.length === 0) return;
+      const st = state.matchedStudentRecords[0].student;
+
+      if (!state.historyRequests) state.historyRequests = [];
+      const existing = state.historyRequests.find(r => r.studentCode === st.code && r.status === 'pending');
+      if (existing) { showToast("Você já possui um pedido de histórico em análise!"); return; }
+
+      state.historyRequests.push({
+        id: "req-" + Date.now(), studentCode: st.code, studentName: st.name,
+        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+        status: "pending", signedData: null
+      });
+
+      saveData();
+      renderStudentHistoryTab();
+      showToast("📜 Solicitação enviada ao Administrador!");
+    }
+
+    function renderAdminHistoryRequests() {
+      const tbody = document.getElementById('history-requests-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const reqs = state.historyRequests || [];
+
+      if (reqs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b;">Nenhuma solicitação de histórico registrada.</td></tr>';
+        return;
+      }
+
+      reqs.forEach(r => {
+        const actionBtn = r.status === 'pending'
+          ? `<button onclick="openSignHistoryModal('${r.id}')" class="btn btn-primary btn-sm">✒️ Assinar e Aprovar</button>`
+          : `<span style="color:#15803d; font-weight:700;">✅ Assinado & Liberado</span>`;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${r.date}</td>
+            <td><code>${r.studentCode}</code></td>
+            <td><strong>${r.studentName}</strong></td>
+            <td><span class="status-badge ${r.status === 'approved' ? 'status-aprovado' : 'status-cursando'}">${r.status === 'approved' ? 'Aprovado' : 'Pendente'}</span></td>
+            <td>${actionBtn}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function openSignHistoryModal(reqId) {
+      const req = (state.historyRequests || []).find(r => r.id === reqId);
+      if (!req) return;
+
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:12px;">Assinatura Digital Oficial (Padrão Gov.br) para o aluno <strong>${req.studentName}</strong>:</p>
+        <div class="form-group">
+          <label>Nome do Autorizador / Gestor</label>
+          <input type="text" id="m-sign-name" value="${state.currentUser ? state.currentUser.name : 'Prof. Thyago Gomes'}" required>
+        </div>
+        <div class="form-group">
+          <label>Cargo / Função Exercida no Momento</label>
+          <input type="text" id="m-sign-role" value="Diretor Geral & Coordenador Pedagógico" required>
+        </div>
+        <div class="form-group">
+          <label>Estilo de Fonte da Assinatura Manuscrita</label>
+          <select id="m-sign-font">
+            <option value="'Dancing Script', cursive">Dancing Script (Elegante)</option>
+            <option value="'Great Vibes', cursive">Great Vibes (Clássica)</option>
+            <option value="'Pacifico', cursive">Pacifico (Moderna)</option>
+            <option value="'Caveat', cursive">Caveat (Despojada)</option>
+          </select>
+        </div>
+      `;
+
+      showCustomModal("✒️ Assinar Histórico Digital (Gov.br)", contentHtml, () => {
+        const name = document.getElementById('m-sign-name').value.trim();
+        const role = document.getElementById('m-sign-role').value.trim();
+        const font = document.getElementById('m-sign-font').value;
+
+        req.status = 'approved';
+        req.signedData = {
+          signerName: name, signerRole: role, fontFamily: font,
+          signedAt: new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR'),
+          code: 'GOV-BR-' + Date.now().toString(36).toUpperCase()
+        };
+
+        saveData();
+        renderAdminHistoryRequests();
+        showToast("Histórico assinado com sucesso!");
+      }, "✒️ Assinar e Liberar");
+    }
+
+    function printOfficialSignedHistory(code) {
+      const records = [];
+      state.classes.forEach(c => {
+        (c.students || []).forEach(s => {
+          if ((s.code || "").toLowerCase().trim() === code.toLowerCase().trim()) {
+            records.push({ class: c, student: s, status: calcStudentAcademicStatus(s, c) });
+          }
+        });
+      });
+      if (records.length === 0) return;
+
+      const st = records[0].student;
+      const req = (state.historyRequests || []).find(r => r.studentCode === st.code && r.status === 'approved');
+      const sd = req ? req.signedData : { signerName: "Direção Escolar", signerRole: "Diretor Geral", fontFamily: "'Dancing Script', cursive", signedAt: new Date().toLocaleDateString('pt-BR'), code: "GOV-BR-2026" };
+
+      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
+
+      let rowsHtml = records.map(r => `
+        <tr>
+          <td style="border:1px solid #000; padding:8px;">${r.class.year || 2026}</td>
+          <td style="border:1px solid #000; padding:8px;"><strong>${r.class.discipline}</strong></td>
+          <td style="border:1px solid #000; padding:8px;">Prof. ${r.class.teacherName}</td>
+          <td style="border:1px solid #000; padding:8px;"><strong>${r.status.finalGrade}</strong></td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.absencesInfo}</td>
+          <td style="border:1px solid #000; padding:8px;">${r.status.displayStatus}</td>
+        </tr>
+      `).join('');
+
+      const printEl = document.getElementById('printable-document');
+      if (!printEl) return;
+      printEl.innerHTML = `
+        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:20px;">
+          <h2 style="margin:0;">${schoolName}</h2>
+          <h4 style="margin-top:4px; font-weight:normal;">HISTÓRICO ACADÊMICO OFICIAL PERMANENTE</h4>
+        </div>
+        <div style="margin-bottom:20px;">
+          <p><strong>Nome do Aluno:</strong> ${st.name}</p>
+          <p><strong>Código Único de Registro:</strong> ${st.code}</p>
+          <p><strong>Data da Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+        <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:30px;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="border:1px solid #000; padding:8px;">Ano</th>
+              <th style="border:1px solid #000; padding:8px;">Componente Curricular</th>
+              <th style="border:1px solid #000; padding:8px;">Docente</th>
+              <th style="border:1px solid #000; padding:8px;">Média Final</th>
+              <th style="border:1px solid #000; padding:8px;">Faltas</th>
+              <th style="border:1px solid #000; padding:8px;">Situação</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+        <div style="border:2px dashed #000; padding:16px; border-radius:6px; margin-top:20px;">
+          <p style="margin:0; font-weight:bold;">ASSINATURA DIGITAL OFICIAL (PADRÃO GOV.BR)</p>
+          <p style="margin:4px 0 0 0; font-size:0.9rem;">Documento assinado eletronicamente por <strong>${sd.signerName}</strong> (${sd.signerRole}).</p>
+          <div style="font-family:${sd.fontFamily}; font-size:1.8rem; margin:10px 0;">${sd.signerName}</div>
+          <p style="margin:0; font-size:0.8rem;">Código de Validação: <code>${sd.code}</code> | Data/Hora: ${sd.signedAt}</p>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    function renderGlobalStudents() {
+      const tbody = document.getElementById('global-students-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const list = state.globalStudents || [];
+
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="color:#64748b;">Nenhum aluno cadastrado no Banco Geral.</td></tr>';
+        return;
+      }
+
+      list.forEach(st => {
+        tbody.innerHTML += `
+          <tr>
+            <td><div class="student-avatar" style="width:36px; height:36px;">${st.photo ? `<img src="${st.photo}" class="student-avatar" style="width:36px; height:36px;">` : '👤'}</div></td>
+            <td><code>${st.code}</code></td>
+            <td><strong>${st.name}</strong></td>
+            <td>
+              <button onclick="deleteGlobalStudent('${st.id}')" class="btn btn-secondary btn-sm" style="color:#dc2626;">Excluir do Banco</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openAddGlobalStudentModal() {
+      const contentHtml = `
+        <div class="form-group">
+          <label>Nome Completo do Aluno</label>
+          <input type="text" id="m-gst-name" placeholder="Ex: Thyago Gomes Barreto" required>
+        </div>
+        <div class="form-group">
+          <label>Código Único do Aluno (Até 10 dígitos)</label>
+          <input type="text" id="m-gst-code" placeholder="Ex: 2026001" maxlength="10" required>
+        </div>
+      `;
+
+      showCustomModal("👨‍🎓 Cadastrar Novo Aluno no Banco Geral", contentHtml, () => {
+        const name = document.getElementById('m-gst-name').value.trim();
+        const code = document.getElementById('m-gst-code').value.trim();
+
+        if (!name || !code) { alert("Preencha nome e código."); return false; }
+
+        if (!state.globalStudents) state.globalStudents = [];
+        state.globalStudents.push({ id: "gst-" + Date.now(), name, code, photo: null });
+
+        saveData();
+        renderGlobalStudents();
+        showToast("Aluno cadastrado no Banco Geral!");
+      }, "💾 Cadastrar Aluno");
+    }
+
+    function deleteGlobalStudent(id) {
+      showConfirmModal("🗑️ Excluir Aluno do Banco", "Deseja remover este aluno do Banco Geral?", () => {
+        state.globalStudents = (state.globalStudents || []).filter(s => s.id !== id);
+        saveData();
+        renderGlobalStudents();
+        showToast("Aluno removido!");
+      });
+    }
+
+
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v20") || localStorage.getItem("diario_settings_v18");
+      const sStored = localStorage.getItem("diario_settings_v12") || localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const gsStored = localStorage.getItem("diario_global_students_v20");
+      const gsStored = localStorage.getItem("diario_global_students_v12");
       state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
 
-      const tStored = localStorage.getItem("diario_teachers_v20") || localStorage.getItem("diario_teachers_v18");
+      const tStored = localStorage.getItem("diario_teachers_v12") || localStorage.getItem("diario_teachers_v18");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v20") || localStorage.getItem("diario_classes_v18");
+      const cStored = localStorage.getItem("diario_classes_v12") || localStorage.getItem("diario_classes_v18");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v20") || localStorage.getItem("diario_mural_v18");
+      const mStored = localStorage.getItem("diario_mural_v12") || localStorage.getItem("diario_mural_v18");
       state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const uStored = localStorage.getItem("diario_session_v20") || localStorage.getItem("diario_session_v18");
+      const uStored = localStorage.getItem("diario_session_v12") || localStorage.getItem("diario_session_v18");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v20") || localStorage.getItem("diario_active_profile_v18");
+      const pStored = localStorage.getItem("diario_active_profile_v12") || localStorage.getItem("diario_active_profile_v18");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v20") || localStorage.getItem("diario_active_student_tab_v18");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v12") || localStorage.getItem("diario_active_student_tab_v18");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v20") || localStorage.getItem("diario_last_student_code_v18");
+      const codeStored = localStorage.getItem("diario_last_student_code_v12") || localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       saveData();
@@ -840,19 +1250,19 @@
     }
 
     function saveData() {
-      localStorage.setItem("diario_settings_v20", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v20", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v20", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v20", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v20", JSON.stringify(state.mural));
-      localStorage.setItem("diario_active_profile_v20", state.activeProfile || "portal");
-      localStorage.setItem("diario_active_student_tab_v20", state.activeStudentTab || "sala");
-      localStorage.setItem("diario_last_student_code_v20", state.lastSearchedCode || "");
+      localStorage.setItem("diario_settings_v12", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v12", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v12", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v12", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v12", JSON.stringify(state.mural));
+      localStorage.setItem("diario_active_profile_v12", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v12", state.activeStudentTab || "sala");
+      localStorage.setItem("diario_last_student_code_v12", state.lastSearchedCode || "");
       
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v20", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v12", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v20");
+        localStorage.removeItem("diario_session_v12");
       }
 
       if (!isSyncingFromCloud) { syncDataToCloud(); }
@@ -960,6 +1370,30 @@
 
         const isPassed = isGradePassed && hasMinAttendance;
 
+        let displayStatus = "🟢 Cursando";
+        const isStagesEvaluated = (closed["A1"] && closed["A2"]) || (gA3.a3Note !== undefined && gA3.a3Note !== null);
+
+        if (isStagesEvaluated) {
+          if (finalGrade >= 6.0) {
+            displayStatus = "Aprovado";
+          } else if (closed["A1"] && closed["A2"] && isA3Needed) {
+            displayStatus = "Em A3 (Prova Final)";
+          } else if (!isGradePassed) {
+            displayStatus = "Retido por Nota";
+          }
+        } else if (avgPartial >= 6.0 && (sumA1 > 0 || sumA2 > 0)) {
+          displayStatus = "🟢 Cursando (Média Parcial " + avgPartial.toFixed(1) + ")";
+        }
+
+        let absencesA1 = 0, absencesA2 = 0;
+        (c.lessons || []).forEach(l => {
+          if (l.attendance && l.attendance[student.id] === 'F') {
+            const cnt = parseInt(l.count) || 1;
+            if (l.period === 'A2') absencesA2 += cnt;
+            else absencesA1 += cnt;
+          }
+        });
+
         return {
           sumA1: sumA1.toFixed(1),
           sumA2: sumA2.toFixed(1),
@@ -967,7 +1401,9 @@
           a3Note: gA3.a3Note ?? null,
           finalGrade: finalGrade.toFixed(1),
           isA3Needed, isGradePassed, hasMinAttendance, isPassed,
-          closedPeriods: closed, closedSnapshots: snapshots
+          closedPeriods: closed, closedSnapshots: snapshots,
+          displayStatus: displayStatus,
+          absencesInfo: `A1: ${absencesA1}F | A2: ${absencesA2}F (Total: ${absencesA1 + absencesA2}F)`
         };
       } else {
         const pKeys = Object.keys(c.periods);
@@ -995,33 +1431,50 @@
       state.activeProfile = profile;
       saveData();
 
-      document.getElementById('nav-btn-portal').classList.remove('active');
-      document.getElementById('nav-btn-aluno').classList.remove('active');
-      document.getElementById('nav-btn-professor').classList.remove('active');
+      const btnPortal = document.getElementById('nav-btn-portal');
+      const btnAluno = document.getElementById('nav-btn-aluno');
+      const btnProf = document.getElementById('nav-btn-professor');
+      if (btnPortal) btnPortal.classList.remove('active');
+      if (btnAluno) btnAluno.classList.remove('active');
+      if (btnProf) btnProf.classList.remove('active');
 
-      document.getElementById('screen-portal').classList.add('hidden');
-      document.getElementById('screen-aluno').classList.add('hidden');
-      document.getElementById('screen-professor-app').classList.add('hidden');
+      const scPortal = document.getElementById('screen-portal');
+      const scPais = document.getElementById('screen-pais');
+      const scAluno = document.getElementById('screen-aluno');
+      const scProf = document.getElementById('screen-professor-app');
+
+      if (scPortal) scPortal.classList.add('hidden');
+      if (scPais) scPais.classList.add('hidden');
+      if (scAluno) scAluno.classList.add('hidden');
+      if (scProf) scProf.classList.add('hidden');
+
+      const btnBack = document.getElementById('btn-header-back');
 
       if (profile === 'portal') {
-        document.getElementById('nav-btn-portal').classList.add('active');
-        document.getElementById('screen-portal').classList.remove('hidden');
-      } else if (profile === 'aluno') {
-        document.getElementById('nav-btn-aluno').classList.add('active');
-        document.getElementById('screen-aluno').classList.remove('hidden');
-        if (state.lastSearchedCode) {
-          document.getElementById('student-search-input').value = state.lastSearchedCode;
-          executeStudentSearch(state.lastSearchedCode);
-        }
-      } else if (profile === 'professor') {
-        document.getElementById('nav-btn-professor').classList.add('active');
-        if (state.currentUser) {
-          document.getElementById('screen-professor-app').classList.remove('hidden');
-          setupDashboardPermissions();
-          renderClassesGrid();
-        } else {
-          document.getElementById('screen-portal').classList.remove('hidden');
-          document.getElementById('nav-btn-portal').classList.add('active');
+        if (btnBack) btnBack.classList.add('hidden');
+        if (btnPortal) btnPortal.classList.add('active');
+        if (scPortal) scPortal.classList.remove('hidden');
+      } else {
+        if (btnBack) btnBack.classList.remove('hidden');
+        if (profile === 'pais') {
+          if (scPais) scPais.classList.remove('hidden');
+        } else if (profile === 'aluno') {
+          if (btnAluno) btnAluno.classList.add('active');
+          if (scAluno) scAluno.classList.remove('hidden');
+          if (state.lastSearchedCode) {
+            const input = document.getElementById('student-search-input');
+            if (input) input.value = state.lastSearchedCode;
+            executeStudentSearch(state.lastSearchedCode);
+          }
+        } else if (profile === 'professor') {
+          if (btnProf) btnProf.classList.add('active');
+          if (state.currentUser) {
+            if (scProf) scProf.classList.remove('hidden');
+            setupDashboardPermissions();
+            renderClassesGrid();
+          } else {
+            switchProfile('portal');
+          }
         }
       }
     }
@@ -3372,5 +3825,8 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
       switchProfile(state.activeProfile || 'portal');
     });
   </script>
+  <!-- ÁREA DE IMPRESSÃO ISOLADA A4 -->
+  <div id="printable-document" class="hidden"></div>
+
 </body>
 </html>
