@@ -171,7 +171,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v17.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v18.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -557,6 +557,15 @@
 
       <!-- SOLICITAÇÕES DE HISTÓRICO (ADMIN) -->
       <div id="view-history-requests-section" class="hidden card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3>📜 Solicitações de Histórico Acadêmico Assinado</h3>
+            <p style="color:#64748b; font-size:0.88rem; margin-top:2px;">
+              Gerencie as solicitações dos alunos ou emita e assine o histórico de qualquer aluno diretamente.
+            </p>
+          </div>
+          <button onclick="openDirectSignHistoryModal()" class="btn btn-purple">➕ Emitir & Assinar Histórico Direto</button>
+        </div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3>📜 Solicitações de Histórico Acadêmico Assinado</h3>
         </div>
@@ -674,6 +683,17 @@
 
     const INITIAL_GLOBAL_STUDENTS = [
       { id: "gst-1", name: "Thyago Gomes Barreto", code: "2026001", photo: null }
+    ];
+
+    const INITIAL_HISTORY_REQUESTS = [
+      {
+        id: "req-sample-01",
+        studentCode: "2026001",
+        studentName: "Thyago Gomes Barreto",
+        date: new Date().toLocaleDateString('pt-BR') + ' 10:00',
+        status: "pending",
+        signedData: null
+      }
     ];
 
     const INITIAL_TEACHERS = [
@@ -882,12 +902,12 @@
       if (cloudVal.mural) state.mural = cloudVal.mural;
       if (cloudVal.historyRequests) state.historyRequests = cloudVal.historyRequests;
 
-      localStorage.setItem("diario_settings_v17", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v17", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v17", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v17", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v17", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v17", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v18", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
 
       applySettingsUI();
 
@@ -1085,7 +1105,84 @@
       showToast("📜 Solicitação enviada ao Administrador!");
     }
 
-    function renderAdminHistoryRequests() {
+    function openDirectSignHistoryModal() {
+      const allStudents = state.globalStudents || [];
+      if (allStudents.length === 0) {
+        showAlertModal("Aviso", "Nenhum aluno cadastrado no Banco Geral de Alunos.");
+        return;
+      }
+
+      const studentOptions = allStudents.map(s => `<option value="${s.code}">${s.name} (Código: ${s.code})</option>`).join('');
+      const defaultName = state.currentUser ? state.currentUser.name : "Prof. Thyago Gomes";
+
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:14px; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+          Selecione um aluno para emitir e assinar digitalmente o Histórico Oficial no padrão Gov.br:
+        </p>
+        <div class="form-group">
+          <label>Selecionar Aluno</label>
+          <select id="m-direct-student-code">${studentOptions}</select>
+        </div>
+        <div class="form-group">
+          <label>Nome do Autorizador / Gestor</label>
+          <input type="text" id="m-direct-sign-name" value="${defaultName}" required>
+        </div>
+        <div class="form-group">
+          <label>Cargo / Função Exercida no Momento</label>
+          <input type="text" id="m-direct-sign-role" value="Diretor Geral & Coordenador Pedagógico" required>
+        </div>
+        <div class="form-group">
+          <label>Estilo da Fonte da Assinatura Manuscrita Digital</label>
+          <select id="m-direct-sign-font">
+            <option value="'Dancing Script', cursive">Dancing Script (Elegante)</option>
+            <option value="'Great Vibes', cursive">Great Vibes (Clássica)</option>
+            <option value="'Pacifico', cursive">Pacifico (Moderna)</option>
+            <option value="'Caveat', cursive">Caveat (Despojada)</option>
+          </select>
+        </div>
+      `;
+
+      showCustomModal("✒️ Emitir e Assinar Histórico Direto (Gov.br)", contentHtml, () => {
+        const stCode = document.getElementById('m-direct-student-code').value;
+        const name = document.getElementById('m-direct-sign-name').value.trim();
+        const role = document.getElementById('m-direct-sign-role').value.trim();
+        const font = document.getElementById('m-direct-sign-font').value;
+
+        const stObj = allStudents.find(s => s.code === stCode);
+        const stName = stObj ? stObj.name : "Aluno";
+
+        if (!state.historyRequests) state.historyRequests = [];
+        
+        let req = state.historyRequests.find(r => r.studentCode === stCode);
+        if (!req) {
+          req = {
+            id: "req-" + Date.now(),
+            studentCode: stCode,
+            studentName: stName,
+            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+            status: 'approved',
+            signedData: null
+          };
+          state.historyRequests.push(req);
+        }
+
+        req.status = 'approved';
+        req.signedData = {
+          signerName: name || defaultName,
+          signerRole: role || "Diretor Geral",
+          fontFamily: font,
+          signedAt: new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+          verificationCode: "GOV-BR-VERIFIED-" + Math.floor(100000 + Math.random() * 900000)
+        };
+
+        saveData();
+        renderAdminHistoryRequests();
+        showToast("✒️ Histórico emitido, assinado digitalmente e liberado!");
+        printOfficialSignedHistory(stCode);
+      }, "✒️ Emitir, Assinar e Imprimir");
+    }
+
+function renderAdminHistoryRequests() {
       const tbody = document.getElementById('history-requests-tbody');
       if (!tbody) return;
       tbody.innerHTML = '';
@@ -1294,34 +1391,34 @@
 
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v17") || localStorage.getItem("diario_settings_v18");
+      const sStored = localStorage.getItem("diario_settings_v18") || localStorage.getItem("diario_settings_v18");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const gsStored = localStorage.getItem("diario_global_students_v17");
+      const gsStored = localStorage.getItem("diario_global_students_v18");
       state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
 
-      const tStored = localStorage.getItem("diario_teachers_v17") || localStorage.getItem("diario_teachers_v18");
+      const tStored = localStorage.getItem("diario_teachers_v18") || localStorage.getItem("diario_teachers_v18");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v17") || localStorage.getItem("diario_classes_v18");
+      const cStored = localStorage.getItem("diario_classes_v18") || localStorage.getItem("diario_classes_v18");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v17") || localStorage.getItem("diario_mural_v18");
+      const mStored = localStorage.getItem("diario_mural_v18") || localStorage.getItem("diario_mural_v18");
       state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const hrStored = localStorage.getItem("diario_history_requests_v17");
-      state.historyRequests = hrStored ? JSON.parse(hrStored) : [];
+      const hrStored = localStorage.getItem("diario_history_requests_v18");
+      state.historyRequests = hrStored ? JSON.parse(hrStored) : INITIAL_HISTORY_REQUESTS;
 
-      const uStored = localStorage.getItem("diario_session_v17") || localStorage.getItem("diario_session_v18");
+      const uStored = localStorage.getItem("diario_session_v18") || localStorage.getItem("diario_session_v18");
       if (uStored) state.currentUser = JSON.parse(uStored);
 
-      const pStored = localStorage.getItem("diario_active_profile_v17") || localStorage.getItem("diario_active_profile_v18");
+      const pStored = localStorage.getItem("diario_active_profile_v18") || localStorage.getItem("diario_active_profile_v18");
       if (pStored) state.activeProfile = pStored;
 
-      const stTabStored = localStorage.getItem("diario_active_student_tab_v17") || localStorage.getItem("diario_active_student_tab_v18");
+      const stTabStored = localStorage.getItem("diario_active_student_tab_v18") || localStorage.getItem("diario_active_student_tab_v18");
       if (stTabStored) state.activeStudentTab = stTabStored;
 
-      const codeStored = localStorage.getItem("diario_last_student_code_v17") || localStorage.getItem("diario_last_student_code_v18");
+      const codeStored = localStorage.getItem("diario_last_student_code_v18") || localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
       window.state = state;
@@ -1332,20 +1429,20 @@
 
     function saveData() {
       window.state = state;
-      localStorage.setItem("diario_settings_v17", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v17", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v17", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v17", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v17", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v17", JSON.stringify(state.historyRequests || []));
-      localStorage.setItem("diario_active_profile_v17", state.activeProfile || "portal");
-      localStorage.setItem("diario_active_student_tab_v17", state.activeStudentTab || "sala");
-      localStorage.setItem("diario_last_student_code_v17", state.lastSearchedCode || "");
+      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v18", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
+      localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "sala");
+      localStorage.setItem("diario_last_student_code_v18", state.lastSearchedCode || "");
       
       if (state.currentUser) {
-        localStorage.setItem("diario_session_v17", JSON.stringify(state.currentUser));
+        localStorage.setItem("diario_session_v18", JSON.stringify(state.currentUser));
       } else {
-        localStorage.removeItem("diario_session_v17");
+        localStorage.removeItem("diario_session_v18");
       }
 
       if (!isSyncingFromCloud) { syncDataToCloud(); }
@@ -3964,7 +4061,84 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
       showToast("📜 Solicitação de histórico enviada com sucesso ao Administrador!");
     }
 
-    function renderAdminHistoryRequests() {
+    function openDirectSignHistoryModal() {
+      const allStudents = state.globalStudents || [];
+      if (allStudents.length === 0) {
+        showAlertModal("Aviso", "Nenhum aluno cadastrado no Banco Geral de Alunos.");
+        return;
+      }
+
+      const studentOptions = allStudents.map(s => `<option value="${s.code}">${s.name} (Código: ${s.code})</option>`).join('');
+      const defaultName = state.currentUser ? state.currentUser.name : "Prof. Thyago Gomes";
+
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:14px; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+          Selecione um aluno para emitir e assinar digitalmente o Histórico Oficial no padrão Gov.br:
+        </p>
+        <div class="form-group">
+          <label>Selecionar Aluno</label>
+          <select id="m-direct-student-code">${studentOptions}</select>
+        </div>
+        <div class="form-group">
+          <label>Nome do Autorizador / Gestor</label>
+          <input type="text" id="m-direct-sign-name" value="${defaultName}" required>
+        </div>
+        <div class="form-group">
+          <label>Cargo / Função Exercida no Momento</label>
+          <input type="text" id="m-direct-sign-role" value="Diretor Geral & Coordenador Pedagógico" required>
+        </div>
+        <div class="form-group">
+          <label>Estilo da Fonte da Assinatura Manuscrita Digital</label>
+          <select id="m-direct-sign-font">
+            <option value="'Dancing Script', cursive">Dancing Script (Elegante)</option>
+            <option value="'Great Vibes', cursive">Great Vibes (Clássica)</option>
+            <option value="'Pacifico', cursive">Pacifico (Moderna)</option>
+            <option value="'Caveat', cursive">Caveat (Despojada)</option>
+          </select>
+        </div>
+      `;
+
+      showCustomModal("✒️ Emitir e Assinar Histórico Direto (Gov.br)", contentHtml, () => {
+        const stCode = document.getElementById('m-direct-student-code').value;
+        const name = document.getElementById('m-direct-sign-name').value.trim();
+        const role = document.getElementById('m-direct-sign-role').value.trim();
+        const font = document.getElementById('m-direct-sign-font').value;
+
+        const stObj = allStudents.find(s => s.code === stCode);
+        const stName = stObj ? stObj.name : "Aluno";
+
+        if (!state.historyRequests) state.historyRequests = [];
+        
+        let req = state.historyRequests.find(r => r.studentCode === stCode);
+        if (!req) {
+          req = {
+            id: "req-" + Date.now(),
+            studentCode: stCode,
+            studentName: stName,
+            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+            status: 'approved',
+            signedData: null
+          };
+          state.historyRequests.push(req);
+        }
+
+        req.status = 'approved';
+        req.signedData = {
+          signerName: name || defaultName,
+          signerRole: role || "Diretor Geral",
+          fontFamily: font,
+          signedAt: new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+          verificationCode: "GOV-BR-VERIFIED-" + Math.floor(100000 + Math.random() * 900000)
+        };
+
+        saveData();
+        renderAdminHistoryRequests();
+        showToast("✒️ Histórico emitido, assinado digitalmente e liberado!");
+        printOfficialSignedHistory(stCode);
+      }, "✒️ Emitir, Assinar e Imprimir");
+    }
+
+function renderAdminHistoryRequests() {
       const tbody = document.getElementById('history-requests-tbody');
       if (!tbody) return;
       tbody.innerHTML = '';
