@@ -171,7 +171,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v18.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v19.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -554,25 +554,20 @@
           <button onclick="openAddMuralModal()" class="btn btn-primary btn-sm">+ Publicar Recado / Anexo</button>
         </div>
         <div id="mural-admin-list"></div>
+      </div>
 
       <!-- SOLICITAÇÕES DE HISTÓRICO (ADMIN) -->
       <div id="view-history-requests-section" class="hidden card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; border-bottom:2px solid #6d28d9; padding-bottom:12px;">
           <div>
-            <h3>📜 Solicitações de Histórico Acadêmico Assinado</h3>
+            <h3 style="color:#1e293b;">📜 Solicitações de Histórico Acadêmico Assinado</h3>
             <p style="color:#64748b; font-size:0.88rem; margin-top:2px;">
-              Gerencie as solicitações dos alunos ou emita e assine o histórico de qualquer aluno diretamente.
+              Gerencie os pedidos enviados pelos alunos ou emita e assine o histórico oficial de qualquer aluno em tempo real.
             </p>
           </div>
           <button onclick="openDirectSignHistoryModal()" class="btn btn-purple">➕ Emitir & Assinar Histórico Direto</button>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3>📜 Solicitações de Histórico Acadêmico Assinado</h3>
-        </div>
-        <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
-          Abaixo estão as solicitações de histórico enviadas pelos alunos. Clique em "✒️ Assinar e Aprovar" para validar e liberar o histórico assinado digitalmente.
-        </p>
-        <div class="table-responsive">
+        <div class="table-responsive" style="margin-top:16px;">
           <table class="data-table">
             <thead>
               <tr>
@@ -586,8 +581,6 @@
             <tbody id="history-requests-tbody"></tbody>
           </table>
         </div>
-      </div>
-
       </div>
 
       <!-- DETALHES DA TURMA -->
@@ -1029,304 +1022,17 @@
       `;
     }
 
-    function printParentBulletin(code) {
-      const records = [];
-      state.classes.forEach(c => {
-        (c.students || []).forEach(s => {
-          if ((s.code || "").toLowerCase().trim() === code.toLowerCase().trim()) {
-            records.push({ class: c, student: s, status: calcStudentAcademicStatus(s, c) });
-          }
-        });
-      });
-      if (records.length === 0) return;
+    
 
-      const st = records[0].student;
-      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
+    
 
-      let rowsHtml = records.map(r => `
-        <tr>
-          <td style="border:1px solid #000; padding:8px;"><strong>${r.class.discipline}</strong> (Prof. ${r.class.teacherName})</td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.sumA1 ?? '-'}</td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.sumA2 ?? '-'}</td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.a3Note ?? '-'}</td>
-          <td style="border:1px solid #000; padding:8px;"><strong>${r.status.finalGrade}</strong></td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.absencesInfo}</td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.displayStatus}</td>
-        </tr>
-      `).join('');
+    
 
-      const printEl = document.getElementById('printable-document');
-      if (!printEl) return;
-      printEl.innerHTML = `
-        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:20px;">
-          <h2 style="margin:0;">${schoolName}</h2>
-          <h4 style="margin-top:4px; font-weight:normal;">BOLETIM ACADÊMICO OFICIAL DO ALUNO</h4>
-        </div>
-        <div style="margin-bottom:20px;">
-          <p><strong>Nome do Aluno:</strong> ${st.name}</p>
-          <p><strong>Código de Registro:</strong> ${st.code}</p>
-          <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-        </div>
-        <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
-          <thead>
-            <tr style="background:#f1f5f9;">
-              <th style="border:1px solid #000; padding:8px;">Disciplina / Docente</th>
-              <th style="border:1px solid #000; padding:8px;">A1</th>
-              <th style="border:1px solid #000; padding:8px;">A2</th>
-              <th style="border:1px solid #000; padding:8px;">A3</th>
-              <th style="border:1px solid #000; padding:8px;">Média Final</th>
-              <th style="border:1px solid #000; padding:8px;">Faltas</th>
-              <th style="border:1px solid #000; padding:8px;">Situação</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-      `;
 
-      window.print();
-    }
 
-    function requestOfficialHistory() {
-      if (state.matchedStudentRecords.length === 0) return;
-      const st = state.matchedStudentRecords[0].student;
+    
 
-      if (!state.historyRequests) state.historyRequests = [];
-      const existing = state.historyRequests.find(r => r.studentCode === st.code && r.status === 'pending');
-      if (existing) { showToast("Você já possui um pedido de histórico em análise!"); return; }
-
-      state.historyRequests.push({
-        id: "req-" + Date.now(), studentCode: st.code, studentName: st.name,
-        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-        status: "pending", signedData: null
-      });
-
-      saveData();
-      renderStudentHistoryTab();
-      showToast("📜 Solicitação enviada ao Administrador!");
-    }
-
-    function openDirectSignHistoryModal() {
-      const allStudents = state.globalStudents || [];
-      if (allStudents.length === 0) {
-        showAlertModal("Aviso", "Nenhum aluno cadastrado no Banco Geral de Alunos.");
-        return;
-      }
-
-      const studentOptions = allStudents.map(s => `<option value="${s.code}">${s.name} (Código: ${s.code})</option>`).join('');
-      const defaultName = state.currentUser ? state.currentUser.name : "Prof. Thyago Gomes";
-
-      const contentHtml = `
-        <p style="font-size:0.9rem; color:#475569; margin-bottom:14px; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
-          Selecione um aluno para emitir e assinar digitalmente o Histórico Oficial no padrão Gov.br:
-        </p>
-        <div class="form-group">
-          <label>Selecionar Aluno</label>
-          <select id="m-direct-student-code">${studentOptions}</select>
-        </div>
-        <div class="form-group">
-          <label>Nome do Autorizador / Gestor</label>
-          <input type="text" id="m-direct-sign-name" value="${defaultName}" required>
-        </div>
-        <div class="form-group">
-          <label>Cargo / Função Exercida no Momento</label>
-          <input type="text" id="m-direct-sign-role" value="Diretor Geral & Coordenador Pedagógico" required>
-        </div>
-        <div class="form-group">
-          <label>Estilo da Fonte da Assinatura Manuscrita Digital</label>
-          <select id="m-direct-sign-font">
-            <option value="'Dancing Script', cursive">Dancing Script (Elegante)</option>
-            <option value="'Great Vibes', cursive">Great Vibes (Clássica)</option>
-            <option value="'Pacifico', cursive">Pacifico (Moderna)</option>
-            <option value="'Caveat', cursive">Caveat (Despojada)</option>
-          </select>
-        </div>
-      `;
-
-      showCustomModal("✒️ Emitir e Assinar Histórico Direto (Gov.br)", contentHtml, () => {
-        const stCode = document.getElementById('m-direct-student-code').value;
-        const name = document.getElementById('m-direct-sign-name').value.trim();
-        const role = document.getElementById('m-direct-sign-role').value.trim();
-        const font = document.getElementById('m-direct-sign-font').value;
-
-        const stObj = allStudents.find(s => s.code === stCode);
-        const stName = stObj ? stObj.name : "Aluno";
-
-        if (!state.historyRequests) state.historyRequests = [];
-        
-        let req = state.historyRequests.find(r => r.studentCode === stCode);
-        if (!req) {
-          req = {
-            id: "req-" + Date.now(),
-            studentCode: stCode,
-            studentName: stName,
-            date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-            status: 'approved',
-            signedData: null
-          };
-          state.historyRequests.push(req);
-        }
-
-        req.status = 'approved';
-        req.signedData = {
-          signerName: name || defaultName,
-          signerRole: role || "Diretor Geral",
-          fontFamily: font,
-          signedAt: new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-          verificationCode: "GOV-BR-VERIFIED-" + Math.floor(100000 + Math.random() * 900000)
-        };
-
-        saveData();
-        renderAdminHistoryRequests();
-        showToast("✒️ Histórico emitido, assinado digitalmente e liberado!");
-        printOfficialSignedHistory(stCode);
-      }, "✒️ Emitir, Assinar e Imprimir");
-    }
-
-function renderAdminHistoryRequests() {
-      const tbody = document.getElementById('history-requests-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      const reqs = state.historyRequests || [];
-
-      let pendingCount = 0;
-      reqs.forEach(r => {
-        if (r.status === 'pending') pendingCount++;
-        const actionBtn = r.status === 'pending'
-          ? `<button onclick="openSignHistoryModal('${r.id}')" class="btn btn-primary btn-sm">✒️ Assinar e Aprovar</button>`
-          : `<button onclick="printOfficialSignedHistory('${r.studentCode}')" class="btn btn-success btn-sm">🖨️ Imprimir Histórico Assinado</button>`;
-
-        tbody.innerHTML += `
-          <tr>
-            <td>${r.date}</td>
-            <td><code>${r.studentCode}</code></td>
-            <td><strong>${r.studentName}</strong></td>
-            <td><span class="status-badge ${r.status === 'approved' ? 'status-aprovado' : 'status-cursando'}">${r.status === 'approved' ? 'Aprovado & Assinado' : 'Pendente'}</span></td>
-            <td>${actionBtn}</td>
-          </tr>
-        `;
-      });
-
-      if (reqs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b;">Nenhuma solicitação de histórico registrada até o momento.</td></tr>';
-      }
-
-      const reqBadge = document.getElementById('requests-badge');
-      if (reqBadge) {
-        if (pendingCount > 0) {
-          reqBadge.textContent = pendingCount;
-          reqBadge.classList.remove('hidden');
-        } else {
-          reqBadge.classList.add('hidden');
-        }
-      }
-    }
-
-    function openSignHistoryModal(reqId) {
-      const req = (state.historyRequests || []).find(r => r.id === reqId);
-      if (!req) return;
-
-      const contentHtml = `
-        <p style="font-size:0.9rem; color:#475569; margin-bottom:12px;">Assinatura Digital Oficial (Padrão Gov.br) para o aluno <strong>${req.studentName}</strong>:</p>
-        <div class="form-group">
-          <label>Nome do Autorizador / Gestor</label>
-          <input type="text" id="m-sign-name" value="${state.currentUser ? state.currentUser.name : 'Prof. Thyago Gomes'}" required>
-        </div>
-        <div class="form-group">
-          <label>Cargo / Função Exercida no Momento</label>
-          <input type="text" id="m-sign-role" value="Diretor Geral & Coordenador Pedagógico" required>
-        </div>
-        <div class="form-group">
-          <label>Estilo de Fonte da Assinatura Manuscrita</label>
-          <select id="m-sign-font">
-            <option value="'Dancing Script', cursive">Dancing Script (Elegante)</option>
-            <option value="'Great Vibes', cursive">Great Vibes (Clássica)</option>
-            <option value="'Pacifico', cursive">Pacifico (Moderna)</option>
-            <option value="'Caveat', cursive">Caveat (Despojada)</option>
-          </select>
-        </div>
-      `;
-
-      showCustomModal("✒️ Assinar Histórico Digital (Gov.br)", contentHtml, () => {
-        const name = document.getElementById('m-sign-name').value.trim();
-        const role = document.getElementById('m-sign-role').value.trim();
-        const font = document.getElementById('m-sign-font').value;
-
-        req.status = 'approved';
-        req.signedData = {
-          signerName: name, signerRole: role, fontFamily: font,
-          signedAt: new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR'),
-          code: 'GOV-BR-' + Date.now().toString(36).toUpperCase()
-        };
-
-        saveData();
-        renderAdminHistoryRequests();
-        showToast("Histórico assinado com sucesso!");
-      }, "✒️ Assinar e Liberar");
-    }
-
-    function printOfficialSignedHistory(code) {
-      const records = [];
-      state.classes.forEach(c => {
-        (c.students || []).forEach(s => {
-          if ((s.code || "").toLowerCase().trim() === code.toLowerCase().trim()) {
-            records.push({ class: c, student: s, status: calcStudentAcademicStatus(s, c) });
-          }
-        });
-      });
-      if (records.length === 0) return;
-
-      const st = records[0].student;
-      const req = (state.historyRequests || []).find(r => r.studentCode === st.code && r.status === 'approved');
-      const sd = req ? req.signedData : { signerName: "Direção Escolar", signerRole: "Diretor Geral", fontFamily: "'Dancing Script', cursive", signedAt: new Date().toLocaleDateString('pt-BR'), code: "GOV-BR-2026" };
-
-      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
-
-      let rowsHtml = records.map(r => `
-        <tr>
-          <td style="border:1px solid #000; padding:8px;">${r.class.year || 2026}</td>
-          <td style="border:1px solid #000; padding:8px;"><strong>${r.class.discipline}</strong></td>
-          <td style="border:1px solid #000; padding:8px;">Prof. ${r.class.teacherName}</td>
-          <td style="border:1px solid #000; padding:8px;"><strong>${r.status.finalGrade}</strong></td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.absencesInfo}</td>
-          <td style="border:1px solid #000; padding:8px;">${r.status.displayStatus}</td>
-        </tr>
-      `).join('');
-
-      const printEl = document.getElementById('printable-document');
-      if (!printEl) return;
-      printEl.innerHTML = `
-        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:20px;">
-          <h2 style="margin:0;">${schoolName}</h2>
-          <h4 style="margin-top:4px; font-weight:normal;">HISTÓRICO ACADÊMICO OFICIAL PERMANENTE</h4>
-        </div>
-        <div style="margin-bottom:20px;">
-          <p><strong>Nome do Aluno:</strong> ${st.name}</p>
-          <p><strong>Código Único de Registro:</strong> ${st.code}</p>
-          <p><strong>Data da Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-        </div>
-        <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:30px;">
-          <thead>
-            <tr style="background:#f1f5f9;">
-              <th style="border:1px solid #000; padding:8px;">Ano</th>
-              <th style="border:1px solid #000; padding:8px;">Componente Curricular</th>
-              <th style="border:1px solid #000; padding:8px;">Docente</th>
-              <th style="border:1px solid #000; padding:8px;">Média Final</th>
-              <th style="border:1px solid #000; padding:8px;">Faltas</th>
-              <th style="border:1px solid #000; padding:8px;">Situação</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-        <div style="border:2px dashed #000; padding:16px; border-radius:6px; margin-top:20px;">
-          <p style="margin:0; font-weight:bold;">ASSINATURA DIGITAL OFICIAL (PADRÃO GOV.BR)</p>
-          <p style="margin:4px 0 0 0; font-size:0.9rem;">Documento assinado eletronicamente por <strong>${sd.signerName}</strong> (${sd.signerRole}).</p>
-          <div style="font-family:${sd.fontFamily}; font-size:1.8rem; margin:10px 0;">${sd.signerName}</div>
-          <p style="margin:0; font-size:0.8rem;">Código de Validação: <code>${sd.code}</code> | Data/Hora: ${sd.signedAt}</p>
-        </div>
-      `;
-
-      window.print();
-    }
+    
 
     function renderGlobalStudents() {
       const tbody = document.getElementById('global-students-tbody');
@@ -1353,41 +1059,9 @@ function renderAdminHistoryRequests() {
       });
     }
 
-    function openAddGlobalStudentModal() {
-      const contentHtml = `
-        <div class="form-group">
-          <label>Nome Completo do Aluno</label>
-          <input type="text" id="m-gst-name" placeholder="Ex: Thyago Gomes Barreto" required>
-        </div>
-        <div class="form-group">
-          <label>Código Único do Aluno (Até 10 dígitos)</label>
-          <input type="text" id="m-gst-code" placeholder="Ex: 2026001" maxlength="10" required>
-        </div>
-      `;
+    
 
-      showCustomModal("👨‍🎓 Cadastrar Novo Aluno no Banco Geral", contentHtml, () => {
-        const name = document.getElementById('m-gst-name').value.trim();
-        const code = document.getElementById('m-gst-code').value.trim();
-
-        if (!name || !code) { alert("Preencha nome e código."); return false; }
-
-        if (!state.globalStudents) state.globalStudents = [];
-        state.globalStudents.push({ id: "gst-" + Date.now(), name, code, photo: null });
-
-        saveData();
-        renderGlobalStudents();
-        showToast("Aluno cadastrado no Banco Geral!");
-      }, "💾 Cadastrar Aluno");
-    }
-
-    function deleteGlobalStudent(id) {
-      showConfirmModal("🗑️ Excluir Aluno do Banco", "Deseja remover este aluno do Banco Geral?", () => {
-        state.globalStudents = (state.globalStudents || []).filter(s => s.id !== id);
-        saveData();
-        renderGlobalStudents();
-        showToast("Aluno removido!");
-      });
-    }
+    
 
 
     function loadData() {
@@ -4026,10 +3700,9 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      loadData();
-      switchProfile(state.activeProfile || 'portal');
-    });
+
+
+
   
 
     // ==========================================
@@ -4461,10 +4134,20 @@ function renderAdminHistoryRequests() {
       window.print();
     }
 
+
+  <!-- ÁREA DE IMPRESSÃO ISOLADA A4 -->
+  
+
+  
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+      switchProfile(state.activeProfile || 'portal');
+    });
 </script>
   <!-- ÁREA DE IMPRESSÃO ISOLADA A4 -->
   <div id="printable-document" class="hidden"></div>
-
-  <div id="printable-document"></div>
 </body>
 </html>
