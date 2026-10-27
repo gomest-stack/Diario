@@ -182,20 +182,22 @@
   <main class="container">
 
     <!-- ==================== TELA INICIAL UNIFICADA / PORTAL ==================== -->
+        <!-- ==================== TELA INICIAL UNIFICADA / PORTAL ==================== -->
     <section id="screen-portal">
       <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
-        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Sistema de Ensino</h1>
-        <p style="color: #64748b; font-size: 1rem; margin-top: 6px;">Selecione o seu tipo de acesso para continuar:</p>
+        <h1 style="font-size: 2rem; color: #1e293b;">Bem-vindo ao Sistema de Ensino Digital</h1>
+        <p style="color: #64748b; font-size: 1rem; margin-top: 6px;">Selecione o seu perfil de acesso abaixo para continuar:</p>
       </div>
 
-      <div class="portal-welcome-grid">
-        <!-- CARD ACESSO ALUNO -->
-        <div class="portal-card">
+      <div class="portal-welcome-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 24px;">
+        
+        <!-- CARD 1: ACESSO ALUNO -->
+        <div class="portal-card" style="border-top: 4px solid #6d28d9;">
           <div>
             <div class="portal-card-icon">👨‍🎓</div>
-            <h2 style="margin-bottom: 8px;">Área do Aluno</h2>
+            <h2 style="margin-bottom: 8px; color:#6d28d9;">Área do Aluno</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Consulte seu boletim escolar, notas, diário de presença por etapa, fale com seus professores e acesse a Sala de Aula Virtual.
+              Consulte seu boletim escolar, faltas por etapa, fale com seus professores e acesse suas provas na Sala de Aula Virtual.
             </p>
             <form onsubmit="handlePortalStudentAccess(event)">
               <div class="form-group">
@@ -206,17 +208,38 @@
             </form>
           </div>
           <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
-            Acesso rápido direto pelo seu código individual de até 10 dígitos
+            Acesso individual rápido pelo seu código
           </div>
         </div>
 
-        <!-- CARD ACESSO PROFESSOR / GESTOR -->
-        <div class="portal-card">
+        <!-- CARD 2: ACESSO PAIS / RESPONSÁVEIS -->
+        <div class="portal-card" style="border-top: 4px solid #16a34a;">
+          <div>
+            <div class="portal-card-icon">👨‍👩‍👧</div>
+            <h2 style="margin-bottom: 8px; color:#16a34a;">Área dos Pais / Responsáveis</h2>
+            <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
+              Acompanhamento exclusivo do Boletim Oficial, notas por etapa, frequência e situação acadêmica do seu filho.
+            </p>
+            <form onsubmit="handlePortalParentAccess(event)">
+              <div class="form-group">
+                <label>Código Único do Aluno / Filho</label>
+                <input type="text" id="portal-parent-code" placeholder="Digite o código do aluno (ex: 2026001)" maxlength="10" required>
+              </div>
+              <button type="submit" class="btn btn-success btn-block" style="background-color:#16a34a; border-color:#16a34a;">📊 Acessar Boletim dos Pais</button>
+            </form>
+          </div>
+          <div style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8; text-align: center;">
+            Acesso exclusivo para consulta do Boletim do Aluno
+          </div>
+        </div>
+
+        <!-- CARD 3: ACESSO PROFESSOR / GESTOR -->
+        <div class="portal-card" style="border-top: 4px solid #0f172a;">
           <div>
             <div class="portal-card-icon">👨‍🏫</div>
-            <h2 style="margin-bottom: 8px;">Acesso do Docente / Gestor</h2>
+            <h2 style="margin-bottom: 8px; color:#0f172a;">Acesso do Docente / Gestor</h2>
             <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
-              Lançamento de notas, faltas por etapa, cadastro de provas com tempo e imagens, fechamento oficial e banco geral de alunos.
+              Lançamento de notas, diário de faltas por etapa, criação de provas online com tempo e banco de alunos.
             </p>
             
             <div id="portal-login-box">
@@ -230,7 +253,7 @@
                   <input type="password" id="password" placeholder="Sua senha" required>
                 </div>
                 <div id="login-error" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 12px;" class="hidden">Usuário/senha incorretos ou cadastro pendente.</div>
-                <button type="submit" class="btn btn-primary btn-block">Entrar no Painel de Gestão</button>
+                <button type="submit" class="btn btn-purple btn-block">Entrar no Painel de Gestão</button>
               </form>
               <div style="text-align:center; margin-top:16px;">
                 <button onclick="toggleRegisterForm(true)" class="btn btn-secondary btn-sm">📝 Solicitar Cadastro de Professor</button>
@@ -275,14 +298,25 @@
     </section>
 
     <!-- ==================== PORTAL DOS PAIS ==================== -->
+        <!-- ==================== PORTAL DOS PAIS ==================== -->
     <section id="screen-pais" class="hidden">
       <div class="boletim-card" style="margin-bottom: 16px; padding: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; border-bottom:2px solid #6d28d9; padding-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; border-bottom:2px solid #16a34a; padding-bottom:12px;">
           <div>
             <h2 style="color:#1e293b;">👨‍👩‍👧 Portal dos Pais / Responsáveis</h2>
             <p style="color:#64748b; font-size:0.9rem; margin-top:2px;">Acompanhamento do Boletim Acadêmico Oficial e Frequência</p>
           </div>
-          <button onclick="showPortalHome()" class="btn btn-secondary btn-sm">← Sair</button>
+          <div>
+            <button onclick="printParentBulletin()" class="btn btn-secondary btn-sm" style="margin-right:8px;">🖨️ Imprimir Boletim Oficial (A4)</button>
+            <button onclick="showPortalHome()" class="btn btn-secondary btn-sm">← Voltar ao Início / Sair</button>
+          </div>
+        </div>
+
+        <div id="parent-search-box" style="margin-bottom:16px;">
+          <form onsubmit="handlePortalParentAccess(event)" style="display:flex; gap:8px; align-items:center;">
+            <input type="text" id="parent-search-input" placeholder="Digite o Código Único do Aluno (ex: 2026001)" style="flex:1; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;" maxlength="10">
+            <button type="submit" class="btn btn-success" style="background-color:#16a34a; border-color:#16a34a;">🔍 Buscar Boletim</button>
+          </form>
         </div>
 
         <div id="parent-student-header" style="display:flex; align-items:center; gap:16px; margin-bottom:20px; background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #e2e8f0;"></div>
@@ -1244,12 +1278,14 @@
       const codeStored = localStorage.getItem("diario_last_student_code_v12") || localStorage.getItem("diario_last_student_code_v18");
       if (codeStored) state.lastSearchedCode = codeStored;
 
+      window.state = state;
       saveData();
       applySettingsUI();
       initCloudSync();
     }
 
     function saveData() {
+      window.state = state;
       localStorage.setItem("diario_settings_v12", JSON.stringify(state.settings));
       localStorage.setItem("diario_global_students_v12", JSON.stringify(state.globalStudents));
       localStorage.setItem("diario_teachers_v12", JSON.stringify(state.teachers));
@@ -1957,7 +1993,7 @@
         `;
       }
 
-      let questionsHtml = '';
+            let questionsHtml = '';
       (ex.questions || []).forEach((q, idx) => {
         const qImgHtml = q.questionImage ? `<img src="${q.questionImage}" class="exam-question-img">` : '';
 
@@ -1970,6 +2006,34 @@
               <div style="margin-top:8px;">
                 <label style="font-size:0.85rem; font-weight:600; color:#475569;">Digite sua Resposta por Escrito:</label>
                 <textarea id="exam_disc_q_${q.id}" rows="4" placeholder="Escreva sua resposta com suas palavras..." style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem; margin-top:4px;"></textarea>
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'true_false') {
+          questionsHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <strong>Questão ${idx + 1} (${q.points} pts — Verdadeiro ou Falso):</strong>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              ${qImgHtml}
+              <div style="display:flex; gap:16px; margin-top:10px;">
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#fff; border:1px solid #cbd5e1; padding:8px 16px; border-radius:6px; font-weight:600; color:#15803d;">
+                  <input type="radio" name="exam_tf_q_${q.id}" value="V"> ✅ Verdadeiro (V)
+                </label>
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#fff; border:1px solid #cbd5e1; padding:8px 16px; border-radius:6px; font-weight:600; color:#b91c1c;">
+                  <input type="radio" name="exam_tf_q_${q.id}" value="F"> ❌ Falso (F)
+                </label>
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'fill_blanks') {
+          questionsHtml += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <strong>Questão ${idx + 1} (${q.points} pts — Completar Lacuna):</strong>
+              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              ${qImgHtml}
+              <div style="margin-top:8px;">
+                <label style="font-size:0.85rem; font-weight:600; color:#475569;">Preencha a palavra / termo correspondente:</label>
+                <input type="text" id="exam_blank_q_${q.id}" placeholder="Digite o termo para completar..." style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.95rem; margin-top:4px;">
               </div>
             </div>
           `;
@@ -1993,7 +2057,7 @@
           questionsHtml += `
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin-bottom:14px;">
               <strong>Questão ${idx + 1} (${q.points} pts — Múltipla Escolha):</strong>
-              <p style="margin:6px 0; color:#1e293b;">${q.text}</p>
+              <p style="margin:6px 0 10px 0; color:#1e293b;">${q.text}</p>
               ${qImgHtml}
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
                 ${optionsListHtml}
@@ -2069,6 +2133,20 @@
           hasDiscursive = true;
           const txtEl = document.getElementById(`exam_disc_q_${q.id}`);
           discursiveAnswers[q.id] = txtEl ? txtEl.value.trim() : '';
+        } else if (q.type === 'true_false') {
+          const selectedTF = document.querySelector(`input[name="exam_tf_q_${q.id}"]:checked`);
+          if (selectedTF) {
+            const val = selectedTF.value;
+            multipleAnswers[q.id] = val;
+            if (val === (q.correctTF || 'V')) autoScore += parseFloat(q.points) || 0;
+          }
+        } else if (q.type === 'fill_blanks') {
+          const blankEl = document.getElementById(`exam_blank_q_${q.id}`);
+          const val = blankEl ? blankEl.value.trim() : '';
+          discursiveAnswers[q.id] = val;
+          if (q.correctBlank && val.toLowerCase() === q.correctBlank.toLowerCase().trim()) {
+            autoScore += parseFloat(q.points) || 0;
+          }
         } else {
           const selected = document.querySelector(`input[name="exam_q_${q.id}"]:checked`);
           if (selected) {
@@ -3449,6 +3527,12 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
 
           if (type === 'discursive') {
             questions.push({ id: "q-" + Date.now() + "-" + idx, type: "discursive", text, points, questionImage: qImgData });
+          } else if (type === 'true_false') {
+            const correctTF = card.querySelector('.q-tf-correct-select').value || "V";
+            questions.push({ id: "q-" + Date.now() + "-" + idx, type: "true_false", text, correctTF, points, questionImage: qImgData });
+          } else if (type === 'fill_blanks') {
+            const correctBlank = card.querySelector('.q-blank-input').value.trim();
+            questions.push({ id: "q-" + Date.now() + "-" + idx, type: "fill_blanks", text, correctBlank, points, questionImage: qImgData });
           } else {
             const opts = [
               card.querySelector('.q-opt-a').value.trim() || "Opção A",
@@ -3483,84 +3567,89 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
 
       const qIndex = container.children.length + 1;
       const card = document.createElement('div');
-      card.className = 'q-builder-card';
-      card.style.cssText = 'background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:16px; margin-bottom:14px; position:relative;';
+      card.className = 'card q-builder-card';
+      card.style.cssText = 'margin-bottom:12px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;';
 
       card.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <strong style="color:#6d28d9;">Questão ${qIndex}</strong>
-          <button type="button" onclick="this.closest('.q-builder-card').remove()" class="btn btn-danger btn-sm">🗑️ Remover Questão</button>
+          <strong>Questão #${qIndex}</strong>
+          <button type="button" onclick="this.closest('.q-builder-card').remove()" class="btn btn-danger btn-sm">🗑️ Remover</button>
         </div>
-        <div style="display:flex; gap:10px; margin-bottom:10px;">
-          <div style="flex:1;">
-            <label style="font-size:0.8rem; font-weight:600;">Tipo de Questão</label>
-            <select class="q-type-select" onchange="toggleQTypeFields(this)" style="padding:6px; font-size:0.85rem;">
-              <option value="multiple">Múltipla Escolha (Objetiva)</option>
-              <option value="discursive">Discursiva (Texto Livre)</option>
-            </select>
-          </div>
-          <div style="width:120px;">
-            <label style="font-size:0.8rem; font-weight:600;">Pontuação</label>
-            <input type="number" step="0.5" class="q-points-input" value="2.5" style="padding:6px; font-size:0.85rem;">
-          </div>
+        <div class="form-group">
+          <label>Tipo de Questão</label>
+          <select class="q-type-select" onchange="toggleQBuilderType(this)">
+            <option value="multiple">⚡ Múltipla Escolha (Opções A, B, C, D)</option>
+            <option value="true_false">🔘 Verdadeiro ou Falso (V ou F)</option>
+            <option value="fill_blanks">✏️ Completar Lacuna (Termo Correto)</option>
+            <option value="discursive">📝 Discursiva (Resposta Aberta por Escrito)</option>
+          </select>
         </div>
-
-        <div class="form-group" style="margin-bottom:10px;">
-          <label style="font-size:0.8rem; font-weight:600;">Enunciado da Pergunta</label>
-          <textarea class="q-text-input" rows="2" placeholder="Digite a pergunta ou orientação..." required style="font-size:0.9rem;"></textarea>
+        <div class="form-group">
+          <label>Enunciado / Pergunta</label>
+          <textarea class="q-text-input" rows="2" placeholder="Digite a pergunta da questão..." required></textarea>
         </div>
-
-        <div style="margin-bottom:12px;">
-          <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
-            📷 Anexar Imagem na Pergunta
-            <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'q')" style="display:none;">
-          </label>
+        <div class="form-group">
+          <label>Anexar Imagem no Enunciado (opcional)</label>
+          <input type="file" accept="image/*" onchange="uploadQBuilderImage(this, 'qImg')">
           <div class="q-img-preview" style="margin-top:4px;"></div>
         </div>
+        <div class="form-group">
+          <label>Pontuação / Valor desta Questão</label>
+          <input type="number" step="0.5" class="q-points-input" value="1.0" required style="width:100px;">
+        </div>
 
-        <div class="q-multiple-fields">
-          <label style="font-size:0.8rem; font-weight:600; color:#475569; display:block; margin-bottom:6px;">Alternativas & Gabarito:</label>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
-              <input type="text" class="q-opt-a" placeholder="Alternativa A" value="Opção A" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
-              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem A <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt0')" style="display:none;"></label>
-            </div>
-            <div>
-              <input type="text" class="q-opt-b" placeholder="Alternativa B" value="Opção B" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
-              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem B <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt1')" style="display:none;"></label>
-            </div>
-            <div>
-              <input type="text" class="q-opt-c" placeholder="Alternativa C" value="Opção C" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
-              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem C <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt2')" style="display:none;"></label>
-            </div>
-            <div>
-              <input type="text" class="q-opt-d" placeholder="Alternativa D" value="Opção D" style="padding:6px; font-size:0.85rem; margin-bottom:4px;">
-              <label class="btn btn-secondary btn-sm" style="cursor:pointer; font-size:0.75rem;">📷 Imagem D <input type="file" accept="image/*" onchange="uploadQBuilderImage(event, this, 'opt3')" style="display:none;"></label>
-            </div>
-          </div>
-          <div style="margin-top:10px;">
-            <label style="font-size:0.8rem; font-weight:600; color:#15803d;">Alternativa Correta (Gabarito):</label>
-            <select class="q-correct-select" style="padding:6px; font-size:0.85rem;">
-              <option value="0">Opção A é a correta</option>
-              <option value="1">Opção B é a correta</option>
-              <option value="2">Opção C é a correta</option>
-              <option value="3">Opção D é a correta</option>
+        <!-- OPÇÕES DE MÚLTIPLA ESCOLHA -->
+        <div class="q-opts-box" style="background:#fff; padding:12px; border:1px solid #cbd5e1; border-radius:6px; margin-top:10px;">
+          <label style="font-weight:600; font-size:0.85rem; color:#475569; display:block; margin-bottom:8px;">Alternativas de Múltipla Escolha:</label>
+          <div style="margin-bottom:8px;"><input type="text" class="q-opt-a" placeholder="Alternativa A" value="Opção A"> <input type="file" accept="image/*" onchange="uploadQBuilderImage(this, 'opt0')" title="Foto para Opção A"></div>
+          <div style="margin-bottom:8px;"><input type="text" class="q-opt-b" placeholder="Alternativa B" value="Opção B"> <input type="file" accept="image/*" onchange="uploadQBuilderImage(this, 'opt1')" title="Foto para Opção B"></div>
+          <div style="margin-bottom:8px;"><input type="text" class="q-opt-c" placeholder="Alternativa C" value="Opção C"> <input type="file" accept="image/*" onchange="uploadQBuilderImage(this, 'opt2')" title="Foto para Opção C"></div>
+          <div style="margin-bottom:8px;"><input type="text" class="q-opt-d" placeholder="Alternativa D" value="Opção D"> <input type="file" accept="image/*" onchange="uploadQBuilderImage(this, 'opt3')" title="Foto para Opção D"></div>
+          
+          <div class="form-group" style="margin-top:10px; margin-bottom:0;">
+            <label>Qual a Alternativa Correta?</label>
+            <select class="q-correct-select">
+              <option value="0">Opção A</option>
+              <option value="1">Opção B</option>
+              <option value="2">Opção C</option>
+              <option value="3">Opção D</option>
             </select>
           </div>
+        </div>
+
+        <!-- OPÇÃO V OU F -->
+        <div class="q-tf-box hidden" style="background:#fff; padding:12px; border:1px solid #cbd5e1; border-radius:6px; margin-top:10px;">
+          <label style="font-weight:600; font-size:0.85rem; color:#475569; display:block; margin-bottom:6px;">Gabarito Correto da Afirmação:</label>
+          <select class="q-tf-correct-select">
+            <option value="V">✅ Verdadeiro (V)</option>
+            <option value="F">❌ Falso (F)</option>
+          </select>
+        </div>
+
+        <!-- OPÇÃO LAGUNAS -->
+        <div class="q-blanks-box hidden" style="background:#fff; padding:12px; border:1px solid #cbd5e1; border-radius:6px; margin-top:10px;">
+          <label style="font-weight:600; font-size:0.85rem; color:#475569; display:block; margin-bottom:6px;">Palavra / Termo Correto Esperado:</label>
+          <input type="text" class="q-blank-input" placeholder="Ex: digestório, célula, 1945">
         </div>
       `;
 
       container.appendChild(card);
     }
 
-    function toggleQTypeFields(selectEl) {
+    function toggleQBuilderType(selectEl) {
       const card = selectEl.closest('.q-builder-card');
-      const mFields = card.querySelector('.q-multiple-fields');
-      if (selectEl.value === 'discursive') {
-        mFields.classList.add('hidden');
-      } else {
-        mFields.classList.remove('hidden');
-      }
+      const type = selectEl.value;
+      const optsBox = card.querySelector('.q-opts-box');
+      const tfBox = card.querySelector('.q-tf-box');
+      const blanksBox = card.querySelector('.q-blanks-box');
+
+      optsBox.classList.add('hidden');
+      tfBox.classList.add('hidden');
+      blanksBox.classList.add('hidden');
+
+      if (type === 'multiple') optsBox.classList.remove('hidden');
+      else if (type === 'true_false') tfBox.classList.remove('hidden');
+      else if (type === 'fill_blanks') blanksBox.classList.remove('hidden');
     }
 
     function uploadQBuilderImage(e, btnEl, target) {
