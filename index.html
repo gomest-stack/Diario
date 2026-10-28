@@ -106,22 +106,44 @@
       .no-print { display: none !important; }
     }
   
-    /* SISTEMA DE MODAIS VISUAIS (V9) */
+    /* SISTEMA DE MODAIS VISUAIS CENTRALIZADOS PERFEITOS (V21) */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px);
-      display: flex; justify-content: center; align-items: center; z-index: 99999;
-      padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      z-index: 999999 !important;
+      padding: 20px;
+      overflow-y: auto !important;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-overlay.active { opacity: 1 !important; pointer-events: auto !important; }
     .modal-card {
-      background: #ffffff; border-radius: 12px; max-width: 650px; width: 100%;
-      max-height: 90vh; overflow-y: auto; padding: 28px;
+      background: #ffffff;
+      border-radius: 12px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px;
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.04);
-      border: 1px solid #cbd5e1; transform: translateY(10px); transition: transform 0.2s ease;
+      border: 1px solid #cbd5e1;
+      margin: auto !important;
+      transform: translateY(0) !important;
     }
     .modal-card-lg { max-width: 850px; }
-    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-overlay.active .modal-card { transform: translateY(0) !important; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px; }
     .modal-header h3 { color: #6d28d9; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
     .modal-close-btn { background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; padding: 0 4px; line-height: 1; }
@@ -194,7 +216,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v20.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v21.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -789,6 +811,8 @@
       const existing = document.getElementById('app-custom-modal');
       if (existing) existing.remove();
 
+      document.body.style.overflow = 'hidden';
+
       const overlay = document.createElement('div');
       overlay.id = 'app-custom-modal';
       overlay.className = 'modal-overlay active';
@@ -819,8 +843,9 @@
     }
 
     function closeCustomModal() {
+      document.body.style.overflow = '';
       const el = document.getElementById('app-custom-modal');
-      if (el) el.remove();
+      document.body.style.overflow = ''; if (el) el.remove();
     }
 
     function showConfirmModal(title, message, onConfirm, confirmBtnText = "Sim, Confirmar") {
@@ -1917,7 +1942,7 @@
 
       const examOverlay = document.createElement('div');
       examOverlay.id = 'exam-modal-overlay';
-      examOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.8); backdrop-filter:blur(4px); display:flex; justify-content:center; align-items:center; z-index:99999; padding:20px;';
+      examOverlay.className = 'modal-overlay active'; document.body.style.overflow = 'hidden';
 
       examOverlay.innerHTML = `
         <div style="background:#fff; border-radius:12px; max-width:700px; width:100%; max-height:92vh; overflow-y:auto; padding:28px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2);">
@@ -1961,7 +1986,7 @@
     function cancelStudentExamTake() {
       if (state.examTimerInterval) { clearInterval(state.examTimerInterval); state.examTimerInterval = null; }
       const el = document.getElementById('exam-modal-overlay');
-      if (el) el.remove();
+      document.body.style.overflow = ''; if (el) el.remove();
     }
 
     function submitStudentExamAnswers(classId, examId, studentId, autoTimeOut = false) {
