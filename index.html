@@ -216,7 +216,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v23.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v24.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -424,6 +424,7 @@
           <button id="st-tab-diarios" class="student-nav-btn" onclick="switchStudentTab('diarios')">📖 3. Diários</button>
           <button id="st-tab-mensagens" class="student-nav-btn" onclick="switchStudentTab('mensagens')">💬 4. Caixa de Mensagens</button>
           <button id="st-tab-historico" class="student-nav-btn" onclick="switchStudentTab('historico')">📜 5. Histórico</button>
+        <button id="st-tab-dados" class="student-nav-btn" onclick="switchStudentTab('dados')">👤 6. Meus Dados</button>
         </div>
 
         <!-- SEÇÃO 1: SALA DE AULA VIRTUAL -->
@@ -484,6 +485,9 @@
 
         <!-- SEÇÃO 5: HISTÓRICO ACADÊMICO -->
         <div id="st-section-historico" class="boletim-card hidden">
+
+      <!-- MEUS DADOS CADASTRAIS -->
+      <div id="st-section-dados" class="hidden card"></div>
           <h3 style="color:#1e293b; margin-bottom:8px;">📜 Histórico Acadêmico do Aluno</h3>
           <div id="student-history-content"></div>
         </div>
@@ -515,6 +519,7 @@
             👨‍🏫 Professores <span id="pending-badge" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;" class="hidden">0</span>
           </button>
           <button id="btn-manage-requests" onclick="switchMainTab('history-requests')" class="btn btn-secondary hidden" style="margin-right:4px;">📜 Solicitações de Histórico <span id="requests-badge" class="hidden" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;">0</span></button>
+          <button id="btn-manage-profile-requests" onclick="switchMainTab('profile-requests')" class="btn btn-secondary hidden" style="margin-right:4px;">👤 Aprovações Cadastrais <span id="profile-requests-badge" class="hidden" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;">0</span></button>
           <button onclick="switchMainTab('mural')" class="btn btn-secondary" style="margin-right:4px;">📢 Mural</button>
           <button onclick="switchMainTab('classes')" class="btn btn-secondary" style="margin-right:4px;">🏫 Turmas</button>
           <button onclick="openClassModal()" class="btn btn-primary">+ Nova Turma</button>
@@ -602,6 +607,24 @@
       </div>
 
       <!-- SOLICITAÇÕES DE HISTÓRICO (ADMIN) -->
+      <!-- APROVAÇÕES DE MUDANÇAS CADASTRAIS DE ALUNOS (ADMIN) -->
+      <div id="view-profile-requests-section" class="hidden card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3>👤 Solicitações de Atualização Cadastral de Alunos</h3>
+        </div>
+        <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">
+          Examine e aprove as alterações de dados pessoais e documentos solicitadas pelos alunos.
+        </p>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr><th>Data / Hora</th><th>Código Aluno</th><th>Nome do Aluno</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="profile-requests-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
       <div id="view-history-requests-section" class="hidden card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; border-bottom:2px solid #6d28d9; padding-bottom:12px;">
           <div>
@@ -929,6 +952,7 @@
         classes: state.classes,
         mural: state.mural,
         historyRequests: state.historyRequests || [],
+        profileUpdateRequests: state.profileUpdateRequests || [],
         updatedAt: new Date().toISOString()
       };
       firebaseDb.ref("diario_escola_data_v10").set(payload).catch(err => {});
@@ -942,6 +966,7 @@
       if (cloudVal.classes) state.classes = cloudVal.classes;
       if (cloudVal.mural) state.mural = cloudVal.mural;
       if (cloudVal.historyRequests) state.historyRequests = cloudVal.historyRequests;
+      if (cloudVal.profileUpdateRequests) state.profileUpdateRequests = cloudVal.profileUpdateRequests;
 
       localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
       localStorage.setItem("diario_global_students_v18", JSON.stringify(state.globalStudents));
@@ -949,6 +974,7 @@
       localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
       localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
       localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
 
       applySettingsUI();
 
@@ -958,6 +984,7 @@
       } else if (state.activeProfile === 'professor') {
         setupDashboardPermissions();
         renderAdminHistoryRequests();
+        renderAdminProfileRequests();
         if (state.currentClassId) {
           const c = state.classes.find(i => i.id === state.currentClassId);
           if (c) {
@@ -1157,6 +1184,7 @@
       localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
       localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
       localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
       localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
       localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "sala");
       localStorage.setItem("diario_last_student_code_v18", state.lastSearchedCode || "");
@@ -1263,7 +1291,18 @@
         if (isA3Needed) {
           const a3Val = parseFloat(gA3.a3Note);
           if (!isNaN(a3Val)) {
-            finalGrade = Math.max(avgPartial, a3Val);
+            const calcType = c.gradeCalcType || 'replace_avg';
+            if (calcType === 'replace_lowest') {
+              if (sumA1 <= sumA2) {
+                const newA1 = Math.max(sumA1, a3Val);
+                finalGrade = (newA1 + sumA2) / 2;
+              } else {
+                const newA2 = Math.max(sumA2, a3Val);
+                finalGrade = (sumA1 + newA2) / 2;
+              }
+            } else {
+              finalGrade = Math.max(avgPartial, a3Val);
+            }
             isGradePassed = finalGrade >= 6.0;
           } else {
             isGradePassed = false;
@@ -1414,7 +1453,11 @@
           document.getElementById('pending-badge').classList.add('hidden');
         }
 
+        const profReqBtn = document.getElementById('btn-manage-profile-requests');
+        if (profReqBtn) profReqBtn.classList.remove('hidden');
+
         renderAdminHistoryRequests();
+        renderAdminProfileRequests();
       } else {
         document.getElementById('user-role-badge').textContent = `Prof. (${u.discipline})`;
         document.getElementById('btn-manage-teachers').classList.add('hidden');
@@ -1430,7 +1473,7 @@
       state.activeStudentTab = tab;
       saveData();
 
-      const tabs = ['sala', 'boletim', 'diarios', 'mensagens', 'historico'];
+      const tabs = ['sala', 'boletim', 'diarios', 'mensagens', 'historico', 'dados'];
       tabs.forEach(t => {
         const btn = document.getElementById(`st-tab-${t}`);
         const sec = document.getElementById(`st-section-${t}`);
@@ -1442,6 +1485,10 @@
       const activeSec = document.getElementById(`st-section-${tab}`);
       if (activeBtn) activeBtn.classList.add('active');
       if (activeSec) activeSec.classList.remove('hidden');
+
+      if (tab === 'dados') {
+        renderStudentProfileDataTab();
+      }
     }
 
     function handleStudentSearch(e) {
@@ -2287,9 +2334,14 @@
       document.getElementById('class-detail-view').classList.add('hidden');
 
       document.getElementById('view-history-requests-section').classList.add('hidden');
+      document.getElementById('view-profile-requests-section').classList.add('hidden');
+
       if (tab === 'history-requests') {
         document.getElementById('view-history-requests-section').classList.remove('hidden');
         renderAdminHistoryRequests();
+      } else if (tab === 'profile-requests') {
+        document.getElementById('view-profile-requests-section').classList.remove('hidden');
+        renderAdminProfileRequests();
       } else if (tab === 'classes') {
         document.getElementById('view-classes-section').classList.remove('hidden');
         renderClassesGrid();
@@ -2470,6 +2522,13 @@
           <label>Professor Principal</label>
           <select id="m-edit-class-teacher">${teacherOptions}</select>
         </div>
+        <div class="form-group">
+          <label>Regra de Substituição da Prova A3 (Recuperação)</label>
+          <select id="m-edit-class-calc-type">
+            <option value="replace_avg" ${ (c.gradeCalcType || 'replace_avg') === 'replace_avg' ? 'selected' : '' }>Substituição da Média Parcial (Padrão)</option>
+            <option value="replace_lowest" ${ (c.gradeCalcType || 'replace_avg') === 'replace_lowest' ? 'selected' : '' }>Substituição da Menor Nota (A1 ou A2)</option>
+          </select>
+        </div>
       `;
 
       showCustomModal("✏️ Editar Turma", contentHtml, () => {
@@ -2482,6 +2541,7 @@
 
         c.name = newName;
         if (newDisc) c.discipline = newDisc;
+        c.gradeCalcType = document.getElementById('m-edit-class-calc-type').value;
         if (teacherObj) { c.teacherId = teacherObj.id; c.teacherName = teacherObj.name; }
 
         saveData();
@@ -3296,6 +3356,13 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
             <option value="bimestral">Bimestral (1º, 2º, 3º, 4º Bimestre)</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Regra de Substituição da Prova A3 (Recuperação)</label>
+          <select id="m-new-class-calc-type">
+            <option value="replace_avg">Substituição da Média Parcial (Padrão)</option>
+            <option value="replace_lowest">Substituição da Menor Nota (A1 ou A2)</option>
+          </select>
+        </div>
       `;
 
       showCustomModal("➕ Nova Turma", contentHtml, () => {
@@ -3309,6 +3376,7 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
         const teacherObj = approvedTeachers.find(t => t.id === teacherId);
 
         const isSemestral = mode === 'semestral';
+        const gradeCalcType = document.getElementById('m-new-class-calc-type').value;
         const periodsObj = isSemestral ? { "A1": [], "A2": [], "A3 (Prova Final)": [] } : { "1º Bimestre": [], "2º Bimestre": [], "3º Bimestre": [], "4º Bimestre": [] };
 
         state.classes.push({
@@ -3316,7 +3384,7 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
           teacherId: teacherObj ? teacherObj.id : "prof-thyago",
           teacherName: teacherObj ? teacherObj.name : "Prof. Responsável",
           coTeacherIds: [],
-          name, discipline: disc, mode, year: 2026,
+          name, discipline: disc, mode, gradeCalcType, year: 2026,
           closedPeriods: { "A1": false, "A2": false, "A3 (Prova Final)": false },
           closedSnapshots: {},
           exams: [], examSubmissions: [], periods: periodsObj, lessons: [], students: []
@@ -3829,6 +3897,11 @@ Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
             <option value="official_channels">🟡 Apenas Aprovar (Envio Posterior via Canais Oficiais)</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Prazo de Validade para Impressão no Portal (em Dias)</label>
+          <input type="number" id="m-direct-sign-valid-days" value="10" min="1" max="365" required>
+          <small style="color:#64748b;">Após este período, a liberação de impressão expira automaticamente para o aluno.</small>
+        </div>
       `;
 
       showCustomModal("✒️ Emitir e Assinar Histórico Direto (Gov.br)", contentHtml, () => {
@@ -3947,6 +4020,11 @@ function renderAdminHistoryRequests() {
             <option value="official_channels">🟡 Apenas Aprovar (Envio Posterior via Canais Oficiais)</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Prazo de Validade para Impressão no Portal (em Dias)</label>
+          <input type="number" id="m-sign-valid-days" value="10" min="1" max="365" required>
+          <small style="color:#64748b;">Após este período, a liberação de impressão expira automaticamente para o aluno.</small>
+        </div>
       `;
 
       showCustomModal("✒️ Assinar e Aprovar Histórico Oficial", contentHtml, () => {
@@ -3954,13 +4032,29 @@ function renderAdminHistoryRequests() {
         const role = document.getElementById('m-sign-role').value.trim();
         const font = document.getElementById('m-sign-font').value;
         const deliveryMode = document.getElementById('m-sign-delivery').value;
+        const validDays = parseInt(document.getElementById('m-sign-valid-days').value) || 10;
 
         if (!name || !role) {
           showAlertModal("Atenção", "Preencha o nome e o cargo para assinar.");
           return false;
         }
 
+        const approvedAtTimestamp = Date.now();
+        const expiresAtTimestamp = approvedAtTimestamp + (validDays * 24 * 3600 * 1000);
+
+        const currentEnrolledClassIds = [];
+        state.classes.forEach(c => {
+          if ((c.students || []).some(s => (s.code || "").toLowerCase().trim() === (req.studentCode || "").toLowerCase().trim())) {
+            currentEnrolledClassIds.push(c.id);
+          }
+        });
+
         req.status = 'approved';
+        req.validDays = validDays;
+        req.approvedAtTimestamp = approvedAtTimestamp;
+        req.expiresAtTimestamp = expiresAtTimestamp;
+        req.enrolledClassIds = currentEnrolledClassIds;
+
         req.signedData = {
           signerName: name,
           signerRole: role,
@@ -3976,7 +4070,39 @@ function renderAdminHistoryRequests() {
       }, "✒️ Confirmar Assinatura");
     }
 
+    function checkAndInvalidateHistoryRequests() {
+      if (!state.historyRequests) return;
+      const now = Date.now();
+
+      state.historyRequests.forEach(req => {
+        if (req.status === 'approved') {
+          // 1. Check expiration by timestamp
+          if (req.expiresAtTimestamp && now > req.expiresAtTimestamp) {
+            req.status = 'expired';
+            req.invalidatedReason = 'Prazo de validade expirado';
+          }
+
+          // 2. Check if student was enrolled in a new class since approval
+          if (req.status === 'approved' && req.enrolledClassIds) {
+            const currentClassIds = [];
+            state.classes.forEach(c => {
+              if ((c.students || []).some(s => (s.code || "").toLowerCase().trim() === (req.studentCode || "").toLowerCase().trim())) {
+                currentClassIds.push(c.id);
+              }
+            });
+            const hasNewClass = currentClassIds.some(cid => !req.enrolledClassIds.includes(cid));
+            if (hasNewClass) {
+              req.status = 'invalidated';
+              req.invalidatedReason = 'Nova matrícula realizada em turma';
+            }
+          }
+        }
+      });
+    }
+
     function renderStudentHistoryTab() {
+      checkAndInvalidateHistoryRequests();
+
       const container = document.getElementById('student-history-content');
       if (state.matchedStudentRecords.length === 0) return;
 
@@ -3996,6 +4122,27 @@ function renderAdminHistoryRequests() {
               </p>
             </div>
             <button onclick="requestOfficialHistory()" class="btn btn-purple">📜 Solicitar Histórico Assinado</button>
+          </div>
+        `;
+      } else if (req.status === 'expired') {
+        const expDateStr = req.expiresAtTimestamp ? new Date(req.expiresAtTimestamp).toLocaleDateString('pt-BR') : 'data recente';
+        requestCardHtml = `
+          <div style="background:#fffbeb; border:1px solid #fde68a; padding:18px; border-radius:10px; margin-bottom:20px; box-shadow:0 2px 8px rgba(180,83,9,0.08);">
+            <strong style="color:#b45309; font-size:1.1rem; display:block; margin-bottom:4px;">⚠️ Histórico Anterior Expirado</strong>
+            <p style="font-size:0.88rem; color:#78350f; margin-bottom:12px;">
+              O histórico assinado anteriormente expirou seu prazo de validade de <strong>${req.validDays || 10} dias</strong> (Venceu em ${expDateStr}).
+            </p>
+            <button onclick="requestOfficialHistory()" class="btn btn-purple">📜 Solicitar Nova Emissão de Histórico</button>
+          </div>
+        `;
+      } else if (req.status === 'invalidated') {
+        requestCardHtml = `
+          <div style="background:#fffbeb; border:1px solid #fde68a; padding:18px; border-radius:10px; margin-bottom:20px; box-shadow:0 2px 8px rgba(180,83,9,0.08);">
+            <strong style="color:#b45309; font-size:1.1rem; display:block; margin-bottom:4px;">⚠️ Histórico Anteriror Invalidador por Nova Matrícula</strong>
+            <p style="font-size:0.88rem; color:#78350f; margin-bottom:12px;">
+              Seu histórico anterior foi cancelado pois você foi vinculado a uma nova disciplina/turma. Solicite um novo histórico para incluir todas as disciplinas atualizadas.
+            </p>
+            <button onclick="requestOfficialHistory()" class="btn btn-purple">📜 Solicitar Novo Histórico Atualizado</button>
           </div>
         `;
       } else if (req.status === 'pending') {
@@ -4025,12 +4172,18 @@ function renderAdminHistoryRequests() {
             </div>
           `;
         } else {
+          const now = Date.now();
+          const expTime = req.expiresAtTimestamp || (now + 10 * 24 * 3600 * 1000);
+          const daysRemaining = Math.max(0, Math.ceil((expTime - now) / (24 * 3600 * 1000)));
+          const expDateStr = new Date(expTime).toLocaleDateString('pt-BR');
+
           requestCardHtml = `
             <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:18px; border-radius:10px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow:0 2px 8px rgba(22,163,74,0.08);">
               <div>
                 <strong style="color:#15803d; font-size:1.1rem; display:block; margin-bottom:4px;">✅ Histórico Oficial Assinado Digitalmente (Gov.br)</strong>
                 <p style="font-size:0.88rem; color:#166534; margin:0;">
-                  Documento assinado eletronicamente por <strong>${sd.signerName || 'Direção'}</strong> (${sd.signerRole || 'Gestor'}) em ${sd.signedAt || 'data recente'}.
+                  Documento assinado eletronicamente por <strong>${sd.signerName || 'Direção'}</strong> (${sd.signerRole || 'Gestor'}) em ${sd.signedAt || 'data recente'}.<br>
+                  <span style="font-weight:700; color:#047857; font-size:0.82rem;">⏱️ Válido para impressão até ${expDateStr} (Faltam ${daysRemaining} dias)</span>
                 </p>
               </div>
               <button onclick="printOfficialSignedHistory('${stCode}')" class="btn btn-success">🖨️ Imprimir Histórico Oficial Assinado</button>
@@ -4158,6 +4311,239 @@ function renderAdminHistoryRequests() {
 
       window.print();
     }
+
+    
+    // ==========================================
+    // CADASTRO DE DADOS PESSOAIS & APROVAÇÃO ADM (V24)
+    // ==========================================
+
+    function renderStudentProfileDataTab() {
+      const container = document.getElementById('st-section-dados');
+      if (!container || state.matchedStudentRecords.length === 0) return;
+
+      const primary = state.matchedStudentRecords[0].student;
+      const stCode = primary.code;
+
+      const pendingReq = (state.profileUpdateRequests || []).find(r => r.studentCode === stCode && r.status === 'pending');
+
+      let statusAlertHtml = '';
+      if (pendingReq) {
+        statusAlertHtml = `
+          <div style="background:#fffbeb; border:1px solid #fde68a; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <strong style="color:#b45309; font-size:1rem; display:block; margin-bottom:4px;">⏳ Solicitação de Alteração Cadastral em Análise</strong>
+            <p style="font-size:0.85rem; color:#78350f; margin:0;">
+              Sua solicitação enviada em ${pendingReq.date} está aguardando revisão e aprovação da Direção/ADM.
+            </p>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        ${statusAlertHtml}
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3>👤 Meus Dados Cadastrais e Pessoais</h3>
+        </div>
+        <p style="color:#64748b; font-size:0.88rem; margin-bottom:20px;">
+          Mantenha seus dados cadastrais sempre atualizados. Qualquer alteração solicitada passará pela aprovação do Administrador antes de ser alterada oficialmente no sistema.
+        </p>
+        
+        <form onsubmit="handleStudentProfileUpdateRequest(event)">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+            <div class="form-group">
+              <label>Nome Completo do Aluno</label>
+              <input type="text" id="st-p-name" value="${primary.name || ''}" required readonly style="background:#f1f5f9;">
+            </div>
+            <div class="form-group">
+              <label>Código Único de Registro</label>
+              <input type="text" value="${primary.code || ''}" readonly style="background:#f1f5f9;">
+            </div>
+            <div class="form-group">
+              <label>CPF do Aluno</label>
+              <input type="text" id="st-p-cpf" value="${primary.cpf || ''}" placeholder="000.000.000-00">
+            </div>
+            <div class="form-group">
+              <label>RG do Aluno</label>
+              <input type="text" id="st-p-rg" value="${primary.rg || ''}" placeholder="MG-00.000.000">
+            </div>
+            <div class="form-group">
+              <label>Data de Nascimento</label>
+              <input type="date" id="st-p-birthdate" value="${primary.birthDate || ''}">
+            </div>
+            <div class="form-group">
+              <label>Telefone / WhatsApp de Contato</label>
+              <input type="text" id="st-p-phone" value="${primary.phone || ''}" placeholder="(00) 90000-0000">
+            </div>
+            <div class="form-group">
+              <label>Nome do Pai</label>
+              <input type="text" id="st-p-father" value="${primary.fatherName || ''}" placeholder="Nome completo do pai">
+            </div>
+            <div class="form-group">
+              <label>Nome da Mãe</label>
+              <input type="text" id="st-p-mother" value="${primary.motherName || ''}" placeholder="Nome completo da mãe">
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Endereço Residencial Completo</label>
+              <input type="text" id="st-p-address" value="${primary.address || ''}" placeholder="Rua, Número, Bairro, Cidade - UF, CEP">
+            </div>
+          </div>
+
+          <div style="margin-top:20px; text-align:right;">
+            <button type="submit" class="btn btn-primary">📩 Solicitar Atualização Cadastral</button>
+          </div>
+        </form>
+      `;
+    }
+
+    function handleStudentProfileUpdateRequest(e) {
+      e.preventDefault();
+      if (state.matchedStudentRecords.length === 0) return;
+
+      const primary = state.matchedStudentRecords[0].student;
+      const stCode = primary.code;
+
+      if (!state.profileUpdateRequests) state.profileUpdateRequests = [];
+
+      const existingPending = state.profileUpdateRequests.find(r => r.studentCode === stCode && r.status === 'pending');
+      if (existingPending) {
+        showAlertModal("Aviso", "Você já possui uma solicitação de atualização cadastral em análise pela Direção.");
+        return;
+      }
+
+      const requestedData = {
+        cpf: document.getElementById('st-p-cpf').value.trim(),
+        rg: document.getElementById('st-p-rg').value.trim(),
+        birthDate: document.getElementById('st-p-birthdate').value,
+        phone: document.getElementById('st-p-phone').value.trim(),
+        fatherName: document.getElementById('st-p-father').value.trim(),
+        motherName: document.getElementById('st-p-mother').value.trim(),
+        address: document.getElementById('st-p-address').value.trim()
+      };
+
+      state.profileUpdateRequests.push({
+        id: "preq-" + Date.now(),
+        studentCode: stCode,
+        studentName: primary.name,
+        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+        status: 'pending',
+        requestedData: requestedData
+      });
+
+      saveData();
+      renderStudentProfileDataTab();
+      showToast("📩 Solicitação de alteração cadastral enviada ao Administrador!");
+    }
+
+    function renderAdminProfileRequests() {
+      const tbody = document.getElementById('profile-requests-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const reqs = state.profileUpdateRequests || [];
+
+      let pendingCount = 0;
+      reqs.forEach(r => {
+        if (r.status === 'pending') pendingCount++;
+        const actionBtn = r.status === 'pending'
+          ? `<button onclick="openReviewProfileModal('${r.id}')" class="btn btn-primary btn-sm">🔍 Revisar e Comparar Dados</button>`
+          : `<span style="color:${r.status === 'approved' ? '#15803d' : '#dc2626'}; font-weight:700;">${r.status === 'approved' ? '✅ Aprovado' : '❌ Recusado'}</span>`;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${r.date}</td>
+            <td><code>${r.studentCode}</code></td>
+            <td><strong>${r.studentName}</strong></td>
+            <td><span class="status-badge ${r.status === 'approved' ? 'status-aprovado' : (r.status === 'pending' ? 'status-cursando' : 'status-reprovado')}">${r.status === 'approved' ? 'Aprovado' : (r.status === 'pending' ? 'Pendente' : 'Recusado')}</span></td>
+            <td>${actionBtn}</td>
+          </tr>
+        `;
+      });
+
+      if (reqs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b;">Nenhuma solicitação de alteração cadastral no momento.</td></tr>';
+      }
+
+      const reqBadge = document.getElementById('profile-requests-badge');
+      if (reqBadge) {
+        if (pendingCount > 0) {
+          reqBadge.textContent = pendingCount;
+          reqBadge.classList.remove('hidden');
+        } else {
+          reqBadge.classList.add('hidden');
+        }
+      }
+    }
+
+    function openReviewProfileModal(reqId) {
+      const req = (state.profileUpdateRequests || []).find(r => r.id === reqId);
+      if (!req) return;
+
+      let currentStudent = null;
+      (state.globalStudents || []).forEach(s => {
+        if (s.code === req.studentCode) currentStudent = s;
+      });
+      if (!currentStudent) {
+        state.classes.forEach(c => {
+          (c.students || []).forEach(s => {
+            if (s.code === req.studentCode) currentStudent = s;
+          });
+        });
+      }
+
+      const cur = currentStudent || {};
+      const reqD = req.requestedData || {};
+
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:14px; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+          Compare os dados atuais do aluno <strong>${req.studentName}</strong> (Código: <code>${req.studentCode}</code>) com os novos dados solicitados:
+        </p>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+          <div style="background:#f1f5f9; padding:14px; border-radius:8px; border:1px solid #cbd5e1;">
+            <h4 style="color:#334155; margin-bottom:10px; border-bottom:1px solid #cbd5e1; padding-bottom:6px;">📋 Dados Atuais no Sistema</h4>
+            <p><strong>CPF:</strong> ${cur.cpf || '<em>Não informado</em>'}</p>
+            <p><strong>RG:</strong> ${cur.rg || '<em>Não informado</em>'}</p>
+            <p><strong>Nascimento:</strong> ${cur.birthDate || '<em>Não informado</em>'}</p>
+            <p><strong>Telefone:</strong> ${cur.phone || '<em>Não informado</em>'}</p>
+            <p><strong>Nome do Pai:</strong> ${cur.fatherName || '<em>Não informado</em>'}</p>
+            <p><strong>Nome da Mãe:</strong> ${cur.motherName || '<em>Não informado</em>'}</p>
+            <p><strong>Endereço:</strong> ${cur.address || '<em>Não informado</em>'}</p>
+          </div>
+
+          <div style="background:#f0fdf4; padding:14px; border-radius:8px; border:1px solid #bbf7d0;">
+            <h4 style="color:#15803d; margin-bottom:10px; border-bottom:1px solid #bbf7d0; padding-bottom:6px;">✨ Novos Dados Solicitados</h4>
+            <p><strong>CPF:</strong> <span style="color:#15803d; font-weight:700;">${reqD.cpf || '<em>Não informado</em>'}</span></p>
+            <p><strong>RG:</strong> <span style="color:#15803d; font-weight:700;">${reqD.rg || '<em>Não informado</em>'}</span></p>
+            <p><strong>Nascimento:</strong> <span style="color:#15803d; font-weight:700;">${reqD.birthDate || '<em>Não informado</em>'}</span></p>
+            <p><strong>Telefone:</strong> <span style="color:#15803d; font-weight:700;">${reqD.phone || '<em>Não informado</em>'}</span></p>
+            <p><strong>Nome do Pai:</strong> <span style="color:#15803d; font-weight:700;">${reqD.fatherName || '<em>Não informado</em>'}</span></p>
+            <p><strong>Nome da Mãe:</strong> <span style="color:#15803d; font-weight:700;">${reqD.motherName || '<em>Não informado</em>'}</span></p>
+            <p><strong>Endereço:</strong> <span style="color:#15803d; font-weight:700;">${reqD.address || '<em>Não informado</em>'}</span></p>
+          </div>
+        </div>
+      `;
+
+      showCustomModal("👤 Aprovação Cadastral de Aluno", contentHtml, () => {
+        req.status = 'approved';
+
+        (state.globalStudents || []).forEach(s => {
+          if (s.code === req.studentCode) {
+            Object.assign(s, reqD);
+          }
+        });
+
+        state.classes.forEach(c => {
+          (c.students || []).forEach(s => {
+            if (s.code === req.studentCode) {
+              Object.assign(s, reqD);
+            }
+          });
+        });
+
+        saveData();
+        renderAdminProfileRequests();
+        showToast("✅ Dados cadastrais aprovados e atualizados oficialmente!");
+      }, "✅ Aprovar Alterações", true);
+    }
+
 
     function printStudentBulletin(code) {
       printParentBulletin(code);
