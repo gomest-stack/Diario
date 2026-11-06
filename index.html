@@ -216,7 +216,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v24.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v26.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -485,12 +485,12 @@
 
         <!-- SEÇÃO 5: HISTÓRICO ACADÊMICO -->
         <div id="st-section-historico" class="boletim-card hidden">
-
-      <!-- MEUS DADOS CADASTRAIS -->
-      <div id="st-section-dados" class="hidden card"></div>
           <h3 style="color:#1e293b; margin-bottom:8px;">📜 Histórico Acadêmico do Aluno</h3>
           <div id="student-history-content"></div>
         </div>
+
+        <!-- SEÇÃO 6: MEUS DADOS CADASTRAIS -->
+        <div id="st-section-dados" class="card hidden"></div>
       </div>
 
       <div id="student-not-found" class="hidden" style="text-align: center; color: #dc2626; margin-top: 20px;">
@@ -968,12 +968,12 @@
       if (cloudVal.historyRequests) state.historyRequests = cloudVal.historyRequests;
       if (cloudVal.profileUpdateRequests) state.profileUpdateRequests = cloudVal.profileUpdateRequests;
 
-      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v18", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_settings_v25", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v25", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v25", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v25", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v25", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v25", JSON.stringify(state.historyRequests || []));
       localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
 
       applySettingsUI();
@@ -1140,22 +1140,22 @@
 
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v18") || localStorage.getItem("diario_settings_v18");
+      const sStored = localStorage.getItem("diario_settings_v25") || localStorage.getItem("diario_settings_v25");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const gsStored = localStorage.getItem("diario_global_students_v18");
+      const gsStored = localStorage.getItem("diario_global_students_v25");
       state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
 
-      const tStored = localStorage.getItem("diario_teachers_v18") || localStorage.getItem("diario_teachers_v18");
+      const tStored = localStorage.getItem("diario_teachers_v25") || localStorage.getItem("diario_teachers_v25");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v18") || localStorage.getItem("diario_classes_v18");
+      const cStored = localStorage.getItem("diario_classes_v25") || localStorage.getItem("diario_classes_v25");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v18") || localStorage.getItem("diario_mural_v18");
+      const mStored = localStorage.getItem("diario_mural_v25") || localStorage.getItem("diario_mural_v25");
       state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const hrStored = localStorage.getItem("diario_history_requests_v18");
+      const hrStored = localStorage.getItem("diario_history_requests_v25");
       state.historyRequests = hrStored ? JSON.parse(hrStored) : INITIAL_HISTORY_REQUESTS;
 
       const uStored = localStorage.getItem("diario_session_v18") || localStorage.getItem("diario_session_v18");
@@ -1178,12 +1178,12 @@
 
     function saveData() {
       window.state = state;
-      localStorage.setItem("diario_settings_v18", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v18", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v18", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v18", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v18", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v18", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_settings_v25", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v25", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v25", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v25", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v25", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v25", JSON.stringify(state.historyRequests || []));
       localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
       localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
       localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "sala");
@@ -1284,40 +1284,50 @@
         }
 
         const avgPartial = (sumA1 + sumA2) / 2;
-        let finalGrade = avgPartial;
-        let isA3Needed = avgPartial < 6.0;
-        let isGradePassed = avgPartial >= 6.0;
 
-        if (isA3Needed) {
-          const a3Val = parseFloat(gA3.a3Note);
-          if (!isNaN(a3Val)) {
-            const calcType = c.gradeCalcType || 'replace_avg';
-            if (calcType === 'replace_lowest') {
-              if (sumA1 <= sumA2) {
-                const newA1 = Math.max(sumA1, a3Val);
-                finalGrade = (newA1 + sumA2) / 2;
-              } else {
-                const newA2 = Math.max(sumA2, a3Val);
-                finalGrade = (sumA1 + newA2) / 2;
-              }
-            } else {
-              finalGrade = Math.max(avgPartial, a3Val);
+        let a3Val = parseFloat(gA3.a3Note);
+        if (isNaN(a3Val)) {
+          let sumA3 = 0;
+          let hasA3Act = false;
+          (c.periods["A3 (Prova Final)"] || []).forEach(a => {
+            if (gA3[a.id] !== undefined && gA3[a.id] !== null && gA3[a.id] !== '') {
+              sumA3 += parseFloat(gA3[a.id]) || 0;
+              hasA3Act = true;
             }
-            isGradePassed = finalGrade >= 6.0;
+          });
+          if (hasA3Act) a3Val = sumA3;
+        }
+
+        const hasA3 = !isNaN(a3Val);
+        const calcType = c.gradeCalcType || 'replace_avg';
+
+        let finalGrade = avgPartial;
+
+        if (hasA3) {
+          if (calcType === 'replace_lowest') {
+            if (sumA1 <= sumA2) {
+              const newA1 = Math.max(sumA1, a3Val);
+              finalGrade = (newA1 + sumA2) / 2;
+            } else {
+              const newA2 = Math.max(sumA2, a3Val);
+              finalGrade = (sumA1 + newA2) / 2;
+            }
           } else {
-            isGradePassed = false;
+            finalGrade = Math.max(avgPartial, a3Val);
           }
         }
 
+        const isGradePassed = finalGrade >= 6.0;
+        const isA3Needed = avgPartial < 6.0;
         const isPassed = isGradePassed && hasMinAttendance;
 
         let displayStatus = "🟢 Cursando";
-        const isStagesEvaluated = (closed["A1"] && closed["A2"]) || (gA3.a3Note !== undefined && gA3.a3Note !== null);
+        const isStagesEvaluated = (closed["A1"] && closed["A2"]) || hasA3;
 
         if (isStagesEvaluated) {
           if (finalGrade >= 6.0) {
             displayStatus = "Aprovado";
-          } else if (closed["A1"] && closed["A2"] && isA3Needed) {
+          } else if (closed["A1"] && closed["A2"] && isA3Needed && !hasA3) {
             displayStatus = "Em A3 (Prova Final)";
           } else if (!isGradePassed) {
             displayStatus = "Retido por Nota";
@@ -1339,7 +1349,7 @@
           sumA1: sumA1.toFixed(1),
           sumA2: sumA2.toFixed(1),
           avgPartial: avgPartial.toFixed(1),
-          a3Note: gA3.a3Note ?? null,
+          a3Note: hasA3 ? a3Val.toFixed(1) : null,
           finalGrade: finalGrade.toFixed(1),
           isA3Needed, isGradePassed, hasMinAttendance, isPassed,
           closedPeriods: closed, closedSnapshots: snapshots,
@@ -1518,6 +1528,18 @@
           }
         });
       });
+
+      if (state.matchedStudentRecords.length === 0 && state.globalStudents) {
+        const gs = state.globalStudents.find(g => (g.code || "").toLowerCase().trim() === queryClean || (g.name || "").toLowerCase().trim().includes(queryClean));
+        if (gs) {
+          state.matchedStudentRecords.push({
+            class: { id: "global", name: "Cadastro Geral", discipline: "--", teacherName: "--", year: 2026 },
+            student: gs,
+            status: { finalGrade: "--", displayStatus: "🟢 Cadastrado no Banco Geral" },
+            attendance: { frequency: "100.0%", absences: 0 }
+          });
+        }
+      }
 
       const portalContent = document.getElementById('student-portal-content');
       const notFoundCard = document.getElementById('student-not-found');
@@ -2912,11 +2934,13 @@
       const a3Students = [];
       (c.students || []).forEach(s => {
         const st = calcStudentAcademicStatus(s, c);
-        if (parseFloat(st.avgPartial) < 6.0) {
+        if (parseFloat(st.avgPartial) < 6.0 || st.a3Note !== null) {
           a3Students.push({ student: s, status: st });
         }
       });
       if (a3Students.length === 0) return '';
+
+      const ruleText = (c.gradeCalcType === 'replace_lowest') ? 'Substituição da Menor Nota (A1 ou A2)' : 'Substituição da Média Parcial';
 
       let rows = a3Students.map(item => {
         const s = item.student;
@@ -2924,9 +2948,9 @@
         const a3Val = st.a3Note ?? null;
         let statusLabel = '';
         if (a3Val !== null && a3Val !== undefined) {
-          statusLabel = parseFloat(a3Val) >= 6.0 
-            ? `<span style="color:#15803d; font-weight:700;">✅ Nota A3: ${a3Val} (Aprovado!)</span>` 
-            : `<span style="color:#dc2626; font-weight:700;">❌ Nota A3: ${a3Val} (Retido)</span>`;
+          statusLabel = parseFloat(st.finalGrade) >= 6.0 
+            ? `<span style="color:#15803d; font-weight:700;">✅ Nota A3: ${a3Val} (Média Final: ${st.finalGrade} - Aprovado!)</span>` 
+            : `<span style="color:#dc2626; font-weight:700;">❌ Nota A3: ${a3Val} (Média Final: ${st.finalGrade} - Retido)</span>`;
         } else {
           statusLabel = `<span style="color:#b45309; font-weight:700;">⏳ Aguardando A3 (Precisa de 6.0)</span>`;
         }
@@ -2943,13 +2967,11 @@
 
       return `
         <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:#9f1239; margin-bottom:6px;">🚨 Alunos Convocados para a A3 (Prova Final / Recuperação)</h4>
-          <p style="font-size:0.85rem; color:#881337; margin-bottom:10px;">
-            Alunos com média parcial (A1 + A2) abaixo de 6,0:
-          </p>
+          <h4 style="color:#9f1239; margin-bottom:4px;">⚠️ Alunos em Situação de Prova Final (A3)</h4>
+          <p style="font-size:0.85rem; color:#9f1239; margin-bottom:12px;">Regra da Turma: <strong>${ruleText}</strong></p>
           <div class="table-responsive">
             <table class="data-table">
-              <thead><tr><th>Aluno</th><th>Média Parcial (A1+A2)/2</th><th>Status da A3</th><th>Ação Rápida</th></tr></thead>
+              <thead><tr><th>Aluno</th><th>Média Parcial</th><th>Status / Nota A3</th><th>Ação</th></tr></thead>
               <tbody>${rows}</tbody>
             </table>
           </div>
@@ -4385,6 +4407,13 @@ function renderAdminHistoryRequests() {
               <label>Endereço Residencial Completo</label>
               <input type="text" id="st-p-address" value="${primary.address || ''}" placeholder="Rua, Número, Bairro, Cidade - UF, CEP">
             </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Foto de Perfil do Aluno</label>
+              <input type="file" id="st-p-photo-file" accept="image/*">
+              <div id="st-p-photo-preview" style="margin-top:8px;">
+                ${primary.photo ? `<img src="${primary.photo}" style="max-height:80px; border-radius:50%; border:2px solid #6d28d9;">` : '<em>Nenhuma foto enviada.</em>'}
+              </div>
+            </div>
           </div>
 
           <div style="margin-top:20px; text-align:right;">
@@ -4409,28 +4438,42 @@ function renderAdminHistoryRequests() {
         return;
       }
 
-      const requestedData = {
-        cpf: document.getElementById('st-p-cpf').value.trim(),
-        rg: document.getElementById('st-p-rg').value.trim(),
-        birthDate: document.getElementById('st-p-birthdate').value,
-        phone: document.getElementById('st-p-phone').value.trim(),
-        fatherName: document.getElementById('st-p-father').value.trim(),
-        motherName: document.getElementById('st-p-mother').value.trim(),
-        address: document.getElementById('st-p-address').value.trim()
+      const photoFileInput = document.getElementById('st-p-photo-file');
+      const photoFile = photoFileInput && photoFileInput.files ? photoFileInput.files[0] : null;
+
+      const submitRequest = (photoUrl) => {
+        const requestedData = {
+          cpf: document.getElementById('st-p-cpf').value.trim(),
+          rg: document.getElementById('st-p-rg').value.trim(),
+          birthDate: document.getElementById('st-p-birthdate').value,
+          phone: document.getElementById('st-p-phone').value.trim(),
+          fatherName: document.getElementById('st-p-father').value.trim(),
+          motherName: document.getElementById('st-p-mother').value.trim(),
+          address: document.getElementById('st-p-address').value.trim(),
+          photo: photoUrl || primary.photo || null
+        };
+
+        state.profileUpdateRequests.push({
+          id: "preq-" + Date.now(),
+          studentCode: stCode,
+          studentName: primary.name,
+          date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+          status: 'pending',
+          requestedData: requestedData
+        });
+
+        saveData();
+        renderStudentProfileDataTab();
+        showToast("📩 Solicitação de alteração cadastral enviada com sucesso ao Administrador!");
       };
 
-      state.profileUpdateRequests.push({
-        id: "preq-" + Date.now(),
-        studentCode: stCode,
-        studentName: primary.name,
-        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-        status: 'pending',
-        requestedData: requestedData
-      });
-
-      saveData();
-      renderStudentProfileDataTab();
-      showToast("📩 Solicitação de alteração cadastral enviada ao Administrador!");
+      if (photoFile) {
+        const reader = new FileReader();
+        reader.onload = (evt) => submitRequest(evt.target.result);
+        reader.readAsDataURL(photoFile);
+      } else {
+        submitRequest(null);
+      }
     }
 
     function renderAdminProfileRequests() {
