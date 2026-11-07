@@ -216,7 +216,7 @@
     <div class="header-container">
       <div class="logo-box" onclick="showPortalHome()">
         <img id="header-logo" class="logo-img hidden" alt="Logo da Escola">
-        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v26.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
+        <div id="header-school-name" class="logo-text">🎓 Sistema de Ensino <span style="font-size:0.75rem; background:#6d28d9; color:#fff; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600;">v27.0</span></div><div class="cloud-status-indicator" style="margin-left:12px; display:inline-block;"></div>
       </div>
       <div id="header-user-nav">
         <button id="btn-header-back" onclick="showPortalHome()" class="btn btn-secondary btn-sm hidden">← Sair / Voltar ao Início</button>
@@ -514,6 +514,7 @@
         <div>
           <button onclick="openProfileModal()" class="btn btn-secondary" style="margin-right:4px;">✏️ Meus Dados</button>
           <button id="btn-global-students" onclick="switchMainTab('global-students')" class="btn btn-secondary hidden" style="margin-right:4px;">👨‍🎓 Banco Geral de Alunos</button>
+          <button id="btn-manage-evaluations" onclick="switchMainTab('evaluations')" class="btn btn-secondary" style="margin-right:4px;">📝 Avaliações</button>
           <button id="btn-customize-theme" onclick="switchMainTab('settings')" class="btn btn-secondary hidden" style="margin-right:4px;">⚙️ Personalizar</button>
           <button id="btn-manage-teachers" onclick="switchMainTab('teachers')" class="btn btn-secondary hidden" style="margin-right:4px;">
             👨‍🏫 Professores <span id="pending-badge" style="background:#dc2626; color:#fff; border-radius:10px; padding:1px 6px; font-size:0.75rem;" class="hidden">0</span>
@@ -532,20 +533,45 @@
         <div id="classes-grid" class="classes-grid"></div>
       </div>
 
+      <!-- CENTRAL DE AVALIAÇÕES E TRABALHOS (ADMIN/PROFESSOR) -->
+      <div id="view-evaluations-section" class="hidden card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3>📝 Central de Avaliações & Trabalhos</h3>
+            <p style="color:#64748b; font-size:0.88rem; margin-top:2px;">
+              Crie provas online, simulados e trabalhos com entrega de arquivo para vincular e aplicar nas turmas da instituição.
+            </p>
+          </div>
+          <button onclick="openCreateEvaluationModal()" class="btn btn-primary">+ Criar Nova Avaliação / Trabalho</button>
+        </div>
+        <div id="evaluations-central-list"></div>
+      </div>
+
       <!-- BANCO / CADASTRO GERAL DE ALUNOS (GESTOR) -->
       <div id="view-global-students-section" class="hidden card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
           <div>
             <h3>👨‍🎓 Banco / Cadastro Geral de Alunos</h3>
-            <p style="color:#64748b; font-size:0.88rem;">Cadastre e gerencie os alunos da instituição. Ao criar turmas, basta digitar o código do aluno para vinculá-lo instantaneamente!</p>
+            <p style="color:#64748b; font-size:0.88rem;">Cadastre e gerencie os alunos da instituição. Ao criar turmas, basta selecionar o grupo ou digitar o código do aluno!</p>
           </div>
-          <button onclick="openAddGlobalStudentModal()" class="btn btn-primary btn-sm">+ Cadastrar Novo Aluno no Banco</button>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button onclick="printGlobalStudentsList()" class="btn btn-secondary btn-sm">🖨️ Imprimir Lista de Alunos</button>
+            <button onclick="printManualGradeSheet()" class="btn btn-purple btn-sm">📊 Imprimir Planilha de Notas (Papel)</button>
+            <button onclick="openAddGlobalStudentModal()" class="btn btn-primary btn-sm">+ Cadastrar Novo Aluno no Banco</button>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0; flex-wrap:wrap;">
+          <strong style="color:#334155; font-size:0.9rem;">🔍 Filtrar por Grupo / Série:</strong>
+          <select id="filter-global-group" onchange="renderGlobalStudentsTable()" style="padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.9rem; min-width:200px;">
+            <option value="">Todos os Grupos / Séries</option>
+          </select>
         </div>
 
         <div class="table-responsive">
           <table class="data-table">
             <thead>
-              <tr><th>Foto</th><th>Código Único</th><th>Nome Completo</th><th>Turmas Vinculadas</th><th>Ações</th></tr>
+              <tr><th>Foto</th><th>Código Único</th><th>Nome Completo</th><th>Grupo / Série</th><th>Turmas Vinculadas</th><th>Ações</th></tr>
             </thead>
             <tbody id="global-students-tbody"></tbody>
           </table>
@@ -968,13 +994,13 @@
       if (cloudVal.historyRequests) state.historyRequests = cloudVal.historyRequests;
       if (cloudVal.profileUpdateRequests) state.profileUpdateRequests = cloudVal.profileUpdateRequests;
 
-      localStorage.setItem("diario_settings_v25", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v25", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v25", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v25", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v25", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v25", JSON.stringify(state.historyRequests || []));
-      localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
+      localStorage.setItem("diario_settings_v27", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v27", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v27", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v27", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v27", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v27", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_profile_requests_v27", JSON.stringify(state.profileUpdateRequests || []));
 
       applySettingsUI();
 
@@ -1140,22 +1166,22 @@
 
 
     function loadData() {
-      const sStored = localStorage.getItem("diario_settings_v25") || localStorage.getItem("diario_settings_v25");
+      const sStored = localStorage.getItem("diario_settings_v27") || localStorage.getItem("diario_settings_v27");
       state.settings = sStored ? JSON.parse(sStored) : INITIAL_SETTINGS;
 
-      const gsStored = localStorage.getItem("diario_global_students_v25");
+      const gsStored = localStorage.getItem("diario_global_students_v27");
       state.globalStudents = gsStored ? JSON.parse(gsStored) : INITIAL_GLOBAL_STUDENTS;
 
-      const tStored = localStorage.getItem("diario_teachers_v25") || localStorage.getItem("diario_teachers_v25");
+      const tStored = localStorage.getItem("diario_teachers_v27") || localStorage.getItem("diario_teachers_v27");
       state.teachers = tStored ? JSON.parse(tStored) : INITIAL_TEACHERS;
 
-      const cStored = localStorage.getItem("diario_classes_v25") || localStorage.getItem("diario_classes_v25");
+      const cStored = localStorage.getItem("diario_classes_v27") || localStorage.getItem("diario_classes_v27");
       state.classes = cStored ? JSON.parse(cStored) : INITIAL_CLASSES;
 
-      const mStored = localStorage.getItem("diario_mural_v25") || localStorage.getItem("diario_mural_v25");
+      const mStored = localStorage.getItem("diario_mural_v27") || localStorage.getItem("diario_mural_v27");
       state.mural = mStored ? JSON.parse(mStored) : [];
 
-      const hrStored = localStorage.getItem("diario_history_requests_v25");
+      const hrStored = localStorage.getItem("diario_history_requests_v27");
       state.historyRequests = hrStored ? JSON.parse(hrStored) : INITIAL_HISTORY_REQUESTS;
 
       const uStored = localStorage.getItem("diario_session_v18") || localStorage.getItem("diario_session_v18");
@@ -1178,13 +1204,13 @@
 
     function saveData() {
       window.state = state;
-      localStorage.setItem("diario_settings_v25", JSON.stringify(state.settings));
-      localStorage.setItem("diario_global_students_v25", JSON.stringify(state.globalStudents));
-      localStorage.setItem("diario_teachers_v25", JSON.stringify(state.teachers));
-      localStorage.setItem("diario_classes_v25", JSON.stringify(state.classes));
-      localStorage.setItem("diario_mural_v25", JSON.stringify(state.mural));
-      localStorage.setItem("diario_history_requests_v25", JSON.stringify(state.historyRequests || []));
-      localStorage.setItem("diario_profile_requests_v24", JSON.stringify(state.profileUpdateRequests || []));
+      localStorage.setItem("diario_settings_v27", JSON.stringify(state.settings));
+      localStorage.setItem("diario_global_students_v27", JSON.stringify(state.globalStudents));
+      localStorage.setItem("diario_teachers_v27", JSON.stringify(state.teachers));
+      localStorage.setItem("diario_classes_v27", JSON.stringify(state.classes));
+      localStorage.setItem("diario_mural_v27", JSON.stringify(state.mural));
+      localStorage.setItem("diario_history_requests_v27", JSON.stringify(state.historyRequests || []));
+      localStorage.setItem("diario_profile_requests_v27", JSON.stringify(state.profileUpdateRequests || []));
       localStorage.setItem("diario_active_profile_v18", state.activeProfile || "portal");
       localStorage.setItem("diario_active_student_tab_v18", state.activeStudentTab || "sala");
       localStorage.setItem("diario_last_student_code_v18", state.lastSearchedCode || "");
@@ -1862,31 +1888,57 @@
         const sub = (c.examSubmissions || []).find(sub => sub.examId === ex.id && sub.studentId === s.id);
         const isSubmitted = !!sub;
 
-        const timerBadge = ex.timeLimitMinutes > 0 
-          ? `<span style="font-size:0.75rem; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:12px; font-weight:600;">⏱️ Tempo Limite: ${ex.timeLimitMinutes} min</span>`
-          : `<span style="font-size:0.75rem; background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-weight:600;">⏱️ Sem limite de tempo</span>`;
+        const isFileAssignment = ex.evaluationType === 'file_assignment';
+
+        const typeBadge = isFileAssignment
+          ? `<span style="font-size:0.75rem; background:#f3e8ff; color:#6d28d9; padding:2px 8px; border-radius:12px; font-weight:700;">📎 Trabalho por Anexo</span>`
+          : `<span style="font-size:0.75rem; background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:12px; font-weight:700;">📝 Prova Online</span>`;
 
         let actionBtnHtml = '';
-        if (!isSubmitted) {
-          actionBtnHtml = `<button onclick="openStudentTakeExamModal('${c.id}', '${ex.id}')" class="btn btn-primary btn-sm">✍️ Entrar na Sala & Fazer Prova</button>`;
-        } else if (sub.status === 'pending_manual') {
-          actionBtnHtml = `
-            <div style="text-align:right;">
-              <span class="status-badge" style="background:#fef3c7; color:#92400e;">⏳ Entregue (Aguardando Correção Discursiva)</span>
-              <div style="margin-top:6px;">
-                <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Minha Resposta</button>
+        if (isFileAssignment) {
+          if (!isSubmitted) {
+            actionBtnHtml = `<button onclick="openStudentSubmitAssignmentModal('${c.id}', '${ex.id}')" class="btn btn-purple btn-sm">📎 Enviar Trabalho / Anexo</button>`;
+          } else if (sub.finalScore !== null && sub.finalScore !== undefined) {
+            actionBtnHtml = `
+              <div style="text-align:right;">
+                <span class="status-badge status-aprovado">✅ Trabalho Corrigido (Nota: ${sub.finalScore} / ${ex.maxGrade})</span>
+                <div style="margin-top:6px;">
+                  <button onclick="openStudentSubmitAssignmentModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Detalhes & Feedback</button>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            actionBtnHtml = `
+              <div style="text-align:right;">
+                <span class="status-badge" style="background:#fef3c7; color:#92400e;">⏳ Entregue (Aguardando Correção)</span>
+                <div style="margin-top:6px;">
+                  <button onclick="openStudentSubmitAssignmentModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Meu Trabalho Enviado</button>
+                </div>
+              </div>
+            `;
+          }
         } else {
-          actionBtnHtml = `
-            <div style="text-align:right;">
-              <span class="status-badge status-aprovado">✅ Concluído (Nota: ${(sub.finalScore ?? sub.autoScore).toFixed(1)} / ${ex.maxGrade})</span>
-              <div style="margin-top:6px;">
-                <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Resultado & Feedback</button>
+          if (!isSubmitted) {
+            actionBtnHtml = `<button onclick="openStudentTakeExamModal('${c.id}', '${ex.id}')" class="btn btn-primary btn-sm">✍️ Entrar na Sala & Fazer Prova</button>`;
+          } else if (sub.status === 'pending_manual') {
+            actionBtnHtml = `
+              <div style="text-align:right;">
+                <span class="status-badge" style="background:#fef3c7; color:#92400e;">⏳ Entregue (Aguardando Correção Discursiva)</span>
+                <div style="margin-top:6px;">
+                  <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Minha Resposta</button>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            actionBtnHtml = `
+              <div style="text-align:right;">
+                <span class="status-badge status-aprovado">✅ Concluído (Nota: ${(sub.finalScore ?? sub.autoScore).toFixed(1)} / ${ex.maxGrade})</span>
+                <div style="margin-top:6px;">
+                  <button onclick="openStudentViewSubmissionModal('${c.id}', '${ex.id}')" class="btn btn-secondary btn-sm">👁️ Ver Resultado & Feedback</button>
+                </div>
+              </div>
+            `;
+          }
         }
 
         html += `
@@ -1894,14 +1946,14 @@
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
               <div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
-                  <strong style="color:#6d28d9; font-size:1.1rem;">📝 ${ex.title}</strong>
-                  ${timerBadge}
+                  <strong style="color:#6d28d9; font-size:1.1rem;">${ex.title}</strong>
+                  ${typeBadge}
                 </div>
                 <div style="font-size:0.88rem; color:#475569;">
                   Disciplina: <strong>${c.discipline}</strong> | Prof. ${c.teacherName || 'Responsável'} | Etapa: <strong>${ex.period}</strong>
                 </div>
                 <div style="font-size:0.85rem; color:#64748b; margin-top:2px;">
-                  Pontuação Máxima: <strong>${ex.maxGrade} pts</strong> | Total de Questões: <strong>${(ex.questions || []).length}</strong>
+                  Pontuação Máxima: <strong>${ex.maxGrade} pts</strong>
                 </div>
                 ${ex.description ? `<div style="font-size:0.88rem; color:#334155; margin-top:6px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1;">${ex.description}</div>` : ''}
               </div>
@@ -1912,6 +1964,105 @@
       });
 
       container.innerHTML = html;
+    }
+
+    function openStudentSubmitAssignmentModal(classId, examId) {
+      const c = state.classes.find(item => item.id === classId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!ex) return;
+
+      const rec = state.matchedStudentRecords.find(r => r.class.id === classId);
+      if (!rec) return;
+      const s = rec.student;
+
+      const sub = (c.examSubmissions || []).find(sub => sub.examId === examId && sub.studentId === s.id);
+
+      const teacherFileDownloadHtml = ex.teacherAttachment 
+        ? `<div style="margin:12px 0; background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:6px;">
+             <strong style="color:#15803d; font-size:0.9rem; display:block; margin-bottom:4px;">📥 Arquivo do Professor / Roteiro da Atividade:</strong>
+             <a href="${ex.teacherAttachment.data}" download="${ex.teacherAttachment.name}" class="btn btn-secondary btn-sm" style="color:#15803d; font-weight:700;">
+               📥 Baixar Roteiro (${ex.teacherAttachment.name})
+             </a>
+           </div>`
+        : '';
+
+      let submissionAreaHtml = '';
+      if (!sub) {
+        submissionAreaHtml = `
+          <form id="student-assignment-form" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label>Anexar Seu Arquivo de Resposta / Trabalho (PDF, Word, Imagem)</label>
+              <input type="file" id="m-stu-file-attachment" required>
+            </div>
+            <div class="form-group">
+              <label>Observações / Comentários (Opcional)</label>
+              <textarea id="m-stu-file-comment" rows="2" placeholder="Digite algum comentário sobre sua entrega para o professor..."></textarea>
+            </div>
+          </form>
+        `;
+      } else {
+        const studentFileDownload = sub.studentFile 
+          ? `<a href="${sub.studentFile.data}" download="${sub.studentFile.name}" class="btn btn-secondary btn-sm" style="color:#2563eb;">📥 Baixar Seu Arquivo Enviado (${sub.studentFile.name})</a>`
+          : '<em>Nenhum arquivo gravado</em>';
+
+        submissionAreaHtml = `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:8px;">
+            <strong style="color:#15803d; display:block; margin-bottom:6px;">✅ Seu Trabalho Já Foi Entregue em ${new Date(sub.submittedAt).toLocaleDateString('pt-BR')}</strong>
+            <div style="margin-bottom:10px;">${studentFileDownload}</div>
+            ${sub.finalScore !== null && sub.finalScore !== undefined ? `<div style="font-size:1rem; font-weight:700; color:#15803d;">Nota Atribuída pelo Professor: ${sub.finalScore} / ${ex.maxGrade} pts</div>` : '<div style="color:#b45309; font-weight:600;">⏳ Aguardando correção do professor</div>'}
+            ${sub.feedback ? `<div style="margin-top:8px; font-size:0.88rem; color:#334155; background:#fff; padding:8px; border-radius:6px; border:1px solid #cbd5e1;"><strong>Parecer do Professor:</strong> ${sub.feedback}</div>` : ''}
+          </div>
+        `;
+      }
+
+      const contentHtml = `
+        <div style="border-bottom:2px solid #6d28d9; padding-bottom:10px; margin-bottom:14px;">
+          <h3 style="color:#6d28d9;">📎 ${ex.title}</h3>
+          <p style="color:#64748b; font-size:0.88rem; margin-top:2px;">
+            Disciplina: <strong>${c.discipline}</strong> | Prof. ${c.teacherName || 'Responsável'} | Valor: <strong>${ex.maxGrade} pts</strong>
+          </p>
+        </div>
+        ${ex.description ? `<div style="font-size:0.9rem; color:#1e293b; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:12px;"><strong>Instruções:</strong><br>${ex.description}</div>` : ''}
+        ${teacherFileDownloadHtml}
+        ${submissionAreaHtml}
+      `;
+
+      showCustomModal(`📎 Entrega de Trabalho — ${ex.title}`, contentHtml, () => {
+        if (sub) return true;
+
+        const fileInput = document.getElementById('m-stu-file-attachment');
+        const commentEl = document.getElementById('m-stu-file-comment');
+
+        if (!fileInput || !fileInput.files[0]) {
+          showAlertModal("Atenção", "Selecione um arquivo para enviar o seu trabalho.");
+          return false;
+        }
+
+        const file = fileInput.files[0];
+        const comment = commentEl ? commentEl.value.trim() : '';
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          if (!c.examSubmissions) c.examSubmissions = [];
+          c.examSubmissions.push({
+            id: "sub-" + Date.now(),
+            examId: ex.id,
+            studentId: s.id,
+            studentFile: { name: file.name, data: evt.target.result },
+            studentComment: comment,
+            status: 'pending_manual',
+            submittedAt: new Date().toISOString()
+          });
+
+          saveData();
+          renderStudentClassroomTab();
+          showToast("✅ Trabalho enviado com sucesso ao professor!");
+          closeCustomModal();
+        };
+        reader.readAsDataURL(file);
+        return false;
+      }, sub ? "Fechar" : "📤 Enviar Trabalho Finalizado");
     }
 
     // ABRIR E RESPONDER PROVA COM SUPORTE A TEMPO LIMITE, DISCURSIVAS E IMAGENS
@@ -2353,6 +2504,7 @@
       document.getElementById('view-mural-section').classList.add('hidden');
       document.getElementById('view-settings-section').classList.add('hidden');
       document.getElementById('view-global-students-section').classList.add('hidden');
+      document.getElementById('view-evaluations-section').classList.add('hidden');
       document.getElementById('class-detail-view').classList.add('hidden');
 
       document.getElementById('view-history-requests-section').classList.add('hidden');
@@ -2379,6 +2531,9 @@
       } else if (tab === 'global-students') {
         document.getElementById('view-global-students-section').classList.remove('hidden');
         renderGlobalStudentsTable();
+      } else if (tab === 'evaluations') {
+        document.getElementById('view-evaluations-section').classList.remove('hidden');
+        renderEvaluationsCentral();
       }
     }
 
@@ -2415,22 +2570,40 @@
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      if (state.globalStudents.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="color:#94a3b8; text-align:center;">Nenhum aluno cadastrado no banco geral. Clique em "+ Cadastrar Novo Aluno no Banco" acima.</td></tr>';
+      const students = state.globalStudents || [];
+
+      const groupSelect = document.getElementById('filter-global-group');
+      if (groupSelect) {
+        const currentSelected = groupSelect.value;
+        const groups = Array.from(new Set(students.map(s => s.group || 'Geral'))).filter(Boolean);
+        groupSelect.innerHTML = '<option value="">Todos os Grupos / Séries</option>' + 
+          groups.map(g => `<option value="${g}" ${g === currentSelected ? 'selected' : ''}>${g}</option>`).join('');
+      }
+
+      const activeGroupFilter = groupSelect ? groupSelect.value : '';
+
+      const filteredStudents = activeGroupFilter 
+        ? students.filter(s => (s.group || 'Geral') === activeGroupFilter)
+        : students;
+
+      if (filteredStudents.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="color:#94a3b8; text-align:center;">Nenhum aluno encontrado neste grupo ou banco de dados.</td></tr>';
         return;
       }
 
-      state.globalStudents.forEach(gst => {
+      filteredStudents.forEach(gst => {
         const linkedClasses = state.classes.filter(c => (c.students || []).some(s => (s.code || "").toLowerCase() === (gst.code || "").toLowerCase()));
         const classNamesStr = linkedClasses.map(c => c.name).join(', ') || '<em>Nenhuma turma</em>';
 
         const photoHtml = gst.photo ? `<img src="${gst.photo}" class="student-avatar">` : `<div class="student-avatar">👤</div>`;
+        const groupBadge = `<span style="background:#e0e7ff; color:#3730a3; padding:2px 8px; border-radius:12px; font-weight:600; font-size:0.8rem;">${gst.group || 'Geral'}</span>`;
 
         tbody.innerHTML += `
           <tr>
             <td>${photoHtml}</td>
             <td><code>${gst.code}</code></td>
             <td><strong>${gst.name}</strong></td>
+            <td>${groupBadge}</td>
             <td>${classNamesStr}</td>
             <td>
               <button onclick="openEditGlobalStudentModal('${gst.id}')" class="btn btn-secondary btn-sm" style="margin-right:4px;">✏️ Editar</button>
@@ -2451,11 +2624,16 @@
           <label>Código Único (Até 10 dígitos)</label>
           <input type="text" id="m-gst-code" placeholder="Ex: 2026002" maxlength="10" required>
         </div>
+        <div class="form-group">
+          <label>Grupo / Série / Turma Base</label>
+          <input type="text" id="m-gst-group" placeholder="Ex: 2º Ano, 3º Ano, Ensino Médio" value="Geral">
+        </div>
       `;
 
       showCustomModal("👨‍🎓 Cadastrar Novo Aluno no Banco Geral", contentHtml, () => {
         const name = document.getElementById('m-gst-name').value.trim();
         let code = document.getElementById('m-gst-code').value.trim();
+        const group = document.getElementById('m-gst-group').value.trim() || 'Geral';
 
         if (!name || !code) { showAlertModal("Atenção", "Preencha nome e código único do aluno."); return false; }
 
@@ -2464,7 +2642,7 @@
         const exists = state.globalStudents.some(g => (g.code || "").toLowerCase() === code.toLowerCase());
         if (exists) { showAlertModal("Atenção", `Já existe um aluno cadastrado no banco geral com o código "${code}".`); return false; }
 
-        state.globalStudents.push({ id: "gst-" + Date.now(), name, code, photo: null });
+        state.globalStudents.push({ id: "gst-" + Date.now(), name, code, group, photo: null });
         saveData();
         renderGlobalStudentsTable();
         showToast(`Aluno ${name} (Código: ${code}) cadastrado no banco geral!`);
@@ -2484,17 +2662,23 @@
           <label>Código Único (Até 10 dígitos)</label>
           <input type="text" id="m-edit-gst-code" value="${gst.code}" maxlength="10" required>
         </div>
+        <div class="form-group">
+          <label>Grupo / Série / Turma Base</label>
+          <input type="text" id="m-edit-gst-group" value="${gst.group || 'Geral'}">
+        </div>
       `;
 
       showCustomModal("✏️ Editar Aluno no Banco Geral", contentHtml, () => {
         const newName = document.getElementById('m-edit-gst-name').value.trim();
         const newCode = document.getElementById('m-edit-gst-code').value.trim();
+        const newGroup = document.getElementById('m-edit-gst-group').value.trim() || 'Geral';
 
         if (!newName || !newCode) { showAlertModal("Atenção", "Preencha nome e código único."); return false; }
 
         const oldCode = gst.code;
         gst.name = newName;
         gst.code = newCode;
+        gst.group = newGroup;
 
         state.classes.forEach(c => {
           (c.students || []).forEach(s => {
@@ -2521,6 +2705,144 @@
         renderGlobalStudentsTable();
         showToast("Aluno removido do banco geral!");
       }, "Sim, Apagar");
+    }
+
+    function printGlobalStudentsList() {
+      const groupSelect = document.getElementById('filter-global-group');
+      const activeGroup = groupSelect ? groupSelect.value : '';
+
+      const students = state.globalStudents || [];
+      const filtered = activeGroup ? students.filter(s => (s.group || 'Geral') === activeGroup) : students;
+
+      if (filtered.length === 0) {
+        showAlertModal("Aviso", "Nenhum aluno encontrado para impressão.");
+        return;
+      }
+
+      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
+
+      let rowsHtml = filtered.map((s, idx) => `
+        <tr>
+          <td style="border:1px solid #000; padding:8px; text-align:center;">${idx + 1}</td>
+          <td style="border:1px solid #000; padding:8px; text-align:center;"><code>${s.code}</code></td>
+          <td style="border:1px solid #000; padding:8px;"><strong>${s.name}</strong></td>
+          <td style="border:1px solid #000; padding:8px; text-align:center;">${s.group || 'Geral'}</td>
+          <td style="border:1px solid #000; padding:8px; text-align:center;">${s.cpf || s.phone || 'S/ Registro'}</td>
+          <td style="border:1px solid #000; padding:8px; text-align:center;">Ativo</td>
+        </tr>
+      `).join('');
+
+      const printEl = document.getElementById('printable-document');
+      if (!printEl) return;
+
+      printEl.classList.remove('hidden');
+      printEl.style.display = 'block';
+
+      printEl.innerHTML = `
+        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:20px;">
+          <h2 style="margin:0; font-size:1.5rem; color:#000;">${schoolName}</h2>
+          <h4 style="margin-top:4px; font-weight:bold; color:#000;">LISTA OFICIAL DE ALUNOS - BANCO GERAL DE CADASTRO</h4>
+          ${activeGroup ? `<p style="margin-top:2px; font-size:0.9rem;"><strong>Filtro por Grupo / Série:</strong> ${activeGroup}</p>` : ''}
+        </div>
+
+        <div style="margin-bottom:16px; font-size:0.9rem;">
+          <p><strong>Total de Alunos Listados:</strong> ${filtered.length} | <strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:20px; font-size:0.9rem;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="border:1px solid #000; padding:8px; width:40px;">#</th>
+              <th style="border:1px solid #000; padding:8px;">Código Único</th>
+              <th style="border:1px solid #000; padding:8px;">Nome Completo do Aluno</th>
+              <th style="border:1px solid #000; padding:8px;">Grupo / Série</th>
+              <th style="border:1px solid #000; padding:8px;">CPF / Contato</th>
+              <th style="border:1px solid #000; padding:8px;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+
+        <div style="margin-top:40px; display:flex; justify-content:space-between; text-align:center; font-size:0.85rem;">
+          <div style="border-top:1px solid #000; width:45%; padding-top:6px;">Assinatura do Secretário(a) Escolar</div>
+          <div style="border-top:1px solid #000; width:45%; padding-top:6px;">Assinatura do Diretor(a) / Gestor</div>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    function printManualGradeSheet() {
+      const groupSelect = document.getElementById('filter-global-group');
+      const activeGroup = groupSelect ? groupSelect.value : '';
+
+      const students = state.globalStudents || [];
+      const filtered = activeGroup ? students.filter(s => (s.group || 'Geral') === activeGroup) : students;
+
+      if (filtered.length === 0) {
+        showAlertModal("Aviso", "Nenhum aluno encontrado para gerar a planilha de notas.");
+        return;
+      }
+
+      const schoolName = (state.settings && state.settings.schoolName) ? state.settings.schoolName : "Sistema de Ensino";
+
+      let rowsHtml = filtered.map((s, idx) => `
+        <tr style="height:38px;">
+          <td style="border:1px solid #000; padding:6px; text-align:center; font-size:0.8rem;"><code>${s.code}</code></td>
+          <td style="border:1px solid #000; padding:6px; font-size:0.85rem;"><strong>${s.name}</strong></td>
+          <td style="border:1px solid #000; padding:6px; text-align:center; width:90px;"></td>
+          <td style="border:1px solid #000; padding:6px; text-align:center; width:90px;"></td>
+          <td style="border:1px solid #000; padding:6px; text-align:center; width:90px;"></td>
+          <td style="border:1px solid #000; padding:6px; text-align:center; width:70px;"></td>
+          <td style="border:1px solid #000; padding:6px; text-align:center; width:120px;"></td>
+        </tr>
+      `).join('');
+
+      const printEl = document.getElementById('printable-document');
+      if (!printEl) return;
+
+      printEl.classList.remove('hidden');
+      printEl.style.display = 'block';
+
+      printEl.innerHTML = `
+        <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:16px;">
+          <h2 style="margin:0; font-size:1.4rem; color:#000;">${schoolName}</h2>
+          <h4 style="margin-top:4px; font-weight:bold; color:#000;">PLANILHA DE LANÇAMENTO MANUAL DE NOTAS E FREQUÊNCIA (PAPEL)</h4>
+        </div>
+
+        <div style="margin-bottom:14px; font-size:0.85rem; display:flex; justify-content:space-between; flex-wrap:wrap;">
+          <div><strong>Disciplina / Turma:</strong> ___________________________</div>
+          <div><strong>Professor(a):</strong> ___________________________</div>
+          <div><strong>Grupo / Série:</strong> ${activeGroup || 'Geral'}</div>
+          <div><strong>Data:</strong> ___/___/2026</div>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:20px;">
+          <thead>
+            <tr style="background:#f1f5f9; font-size:0.8rem;">
+              <th style="border:1px solid #000; padding:6px; width:80px;">Código</th>
+              <th style="border:1px solid #000; padding:6px;">Nome do Aluno</th>
+              <th style="border:1px solid #000; padding:6px;">Atividade 1<br><small>(Vale: ____)</small></th>
+              <th style="border:1px solid #000; padding:6px;">Atividade 2<br><small>(Vale: ____)</small></th>
+              <th style="border:1px solid #000; padding:6px;">Prova / Aval<br><small>(Vale: ____)</small></th>
+              <th style="border:1px solid #000; padding:6px;">Faltas</th>
+              <th style="border:1px solid #000; padding:6px;">Média / Parecer</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+
+        <div style="margin-top:30px; display:flex; justify-content:space-between; text-align:center; font-size:0.8rem;">
+          <div style="border-top:1px solid #000; width:45%; padding-top:4px;">Assinatura do Docente Responsável</div>
+          <div style="border-top:1px solid #000; width:45%; padding-top:4px;">Visto da Coordenação Pedagógica</div>
+        </div>
+      `;
+
+      window.print();
     }
 
     // TURMA - EDIÇÃO E EXCLUSÃO
@@ -3293,66 +3615,142 @@
 
     function openStudentModal() {
       const c = state.classes.find(item => item.id === state.currentClassId);
+      if (!c) return;
 
-      let optionsHtml = state.globalStudents.map(gst => 
-        `<option value="${gst.code}">${gst.name} (Código: ${gst.code})</option>`
-      ).join('');
+      const students = state.globalStudents || [];
+      const groups = Array.from(new Set(students.map(s => s.group || 'Geral'))).filter(Boolean);
+
+      let groupOptionsHtml = groups.map(g => `<option value="${g}">${g}</option>`).join('');
+      let singleOptionsHtml = students.map(gst => `<option value="${gst.code}">${gst.name} (Código: ${gst.code} — Grupo: ${gst.group || 'Geral'})</option>`).join('');
 
       const contentHtml = `
-        <div class="form-group">
-          <label>Selecione um Aluno do Banco Geral</label>
-          <select id="m-select-global-student">
-            <option value="">-- Selecionar do Banco Geral --</option>
-            ${optionsHtml}
-          </select>
+        <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">
+          <button type="button" id="btn-mode-single" onclick="switchLinkMode('single')" class="btn btn-primary btn-sm">👤 Vincular Aluno Individual</button>
+          <button type="button" id="btn-mode-batch" onclick="switchLinkMode('batch')" class="btn btn-secondary btn-sm">👥 Vincular por Grupo / Série Inteira</button>
         </div>
-        <p style="text-align:center; font-weight:600; color:#64748b; margin:10px 0;">OU</p>
-        <div class="form-group">
-          <label>Digite o Código Único do Aluno (Até 10 dígitos)</label>
-          <input type="text" id="m-input-student-code" placeholder="Ex: 2026001" maxlength="10">
+
+        <div id="link-mode-single-box">
+          <div class="form-group">
+            <label>Selecione um Aluno do Banco Geral</label>
+            <select id="m-select-global-student">
+              <option value="">-- Selecionar do Banco Geral --</option>
+              ${singleOptionsHtml}
+            </select>
+          </div>
+          <p style="text-align:center; font-weight:600; color:#64748b; margin:8px 0;">OU</p>
+          <div class="form-group">
+            <label>Digite o Código Único do Aluno (Até 10 dígitos)</label>
+            <input type="text" id="m-input-student-code" placeholder="Ex: 2026001" maxlength="10">
+          </div>
+        </div>
+
+        <div id="link-mode-batch-box" class="hidden">
+          <p style="font-size:0.88rem; color:#64748b; margin-bottom:12px;">
+            Selecione um Grupo / Série do Banco Geral para vincular todos os alunos desse grupo a esta turma de uma só vez:
+          </p>
+          <div class="form-group">
+            <label>Selecionar Grupo / Série</label>
+            <select id="m-select-group-batch">${groupOptionsHtml || '<option value="Geral">Geral</option>'}</select>
+          </div>
         </div>
       `;
 
-      showCustomModal(`👥 Vincular Aluno na Turma (${c.name})`, contentHtml, () => {
-        const selectedCode = document.getElementById('m-select-global-student').value;
-        const typedCode = document.getElementById('m-input-student-code').value.trim();
+      showCustomModal(`👥 Vincular Alunos na Turma (${c.name})`, contentHtml, () => {
+        const isBatch = document.getElementById('link-mode-batch-box').classList.contains('hidden') === false;
 
-        const codeToLink = typedCode || selectedCode;
+        if (isBatch) {
+          const selectedGroup = document.getElementById('m-select-group-batch').value;
+          const groupStudents = students.filter(s => (s.group || 'Geral') === selectedGroup);
 
-        if (!codeToLink) { showAlertModal("Atenção", "Informe o código único ou selecione um aluno do banco."); return false; }
+          if (groupStudents.length === 0) {
+            showAlertModal("Aviso", `Nenhum aluno encontrado no grupo "${selectedGroup}".`);
+            return false;
+          }
 
-        const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === codeToLink.toLowerCase());
-        if (alreadyInClass) { showAlertModal("Atenção", `Este aluno (Código: ${codeToLink}) já está vinculado a esta turma!`); return false; }
+          let addedCount = 0;
+          groupStudents.forEach(gst => {
+            const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === (gst.code || "").toLowerCase());
+            if (!alreadyInClass) {
+              c.students.push({
+                id: "al-" + Date.now() + Math.floor(Math.random() * 1000),
+                name: gst.name,
+                code: gst.code,
+                photo: gst.photo,
+                grades: {},
+                messages: []
+              });
+              addedCount++;
+            }
+          });
 
-        let gst = state.globalStudents.find(g => (g.code || "").toLowerCase() === codeToLink.toLowerCase());
+          saveData();
+          renderStudentsTable();
+          renderTeacherGradesTable(c);
+          showToast(`✅ ${addedCount} aluno(s) do grupo "${selectedGroup}" vinculados à turma!`);
+          return true;
+        } else {
+          const selectedCode = document.getElementById('m-select-global-student').value;
+          const typedCode = document.getElementById('m-input-student-code').value.trim();
+          const codeToLink = typedCode || selectedCode;
 
-        let studentName = gst ? gst.name : null;
-        let studentPhoto = gst ? gst.photo : null;
+          if (!codeToLink) { showAlertModal("Atenção", "Informe o código único ou selecione um aluno do banco."); return false; }
 
-        if (!gst) {
-          const nameInput = prompt(`O código "${codeToLink}" não foi encontrado no Banco Geral.
+          const alreadyInClass = c.students.some(s => (s.code || "").toLowerCase() === codeToLink.toLowerCase());
+          if (alreadyInClass) { showAlertModal("Atenção", `Este aluno (Código: ${codeToLink}) já está vinculado a esta turma!`); return false; }
+
+          let gst = state.globalStudents.find(g => (g.code || "").toLowerCase() === codeToLink.toLowerCase());
+          let studentName = gst ? gst.name : null;
+          let studentPhoto = gst ? gst.photo : null;
+
+          if (!gst) {
+            const nameInput = prompt(`O código "${codeToLink}" não foi encontrado no Banco Geral.
 
 Digite o NOME COMPLETO do novo aluno para cadastrá-lo:`);
-          if (!nameInput) return false;
-          studentName = nameInput.trim();
-          gst = { id: "gst-" + Date.now(), name: studentName, code: codeToLink, photo: null };
-          state.globalStudents.push(gst);
+            if (!nameInput) return false;
+            studentName = nameInput.trim();
+            gst = { id: "gst-" + Date.now(), name: studentName, code: codeToLink, group: 'Geral', photo: null };
+            state.globalStudents.push(gst);
+          }
+
+          c.students.push({
+            id: "al-" + Date.now(),
+            name: studentName,
+            code: codeToLink,
+            photo: studentPhoto,
+            grades: {},
+            messages: []
+          });
+
+          saveData();
+          renderStudentsTable();
+          renderTeacherGradesTable(c);
+          showToast(`Aluno ${studentName} (Código: ${codeToLink}) vinculado à turma!`);
+          return true;
         }
+      }, "🔗 Confirmar Vinculação");
+    }
 
-        c.students.push({
-          id: "al-" + Date.now(),
-          name: studentName,
-          code: codeToLink,
-          photo: studentPhoto,
-          grades: {},
-          messages: []
-        });
+    function switchLinkMode(mode) {
+      const singleBox = document.getElementById('link-mode-single-box');
+      const batchBox = document.getElementById('link-mode-batch-box');
+      const btnSingle = document.getElementById('btn-mode-single');
+      const btnBatch = document.getElementById('btn-mode-batch');
 
-        saveData();
-        renderStudentsTable();
-        renderTeacherGradesTable(c);
-        showToast(`Aluno ${studentName} (Código: ${codeToLink}) vinculado à turma!`);
-      }, "🔗 Vincular Aluno");
+      if (mode === 'batch') {
+        singleBox.classList.add('hidden');
+        batchBox.classList.remove('hidden');
+        btnSingle.classList.remove('btn-primary');
+        btnSingle.classList.add('btn-secondary');
+        btnBatch.classList.remove('btn-secondary');
+        btnBatch.classList.add('btn-primary');
+      } else {
+        batchBox.classList.add('hidden');
+        singleBox.classList.remove('hidden');
+        btnBatch.classList.remove('btn-primary');
+        btnBatch.classList.add('btn-secondary');
+        btnSingle.classList.remove('btn-secondary');
+        btnSingle.classList.add('btn-primary');
+      }
     }
 
     function deleteStudent(studentId) {
@@ -4668,7 +5066,315 @@ function renderAdminHistoryRequests() {
 
 
 
+    
+    // ==========================================
+    // CENTRAL DE AVALIAÇÕES E TRABALHOS COM ANEXO (V27)
+    // ==========================================
+
+    function renderEvaluationsCentral() {
+      const container = document.getElementById('evaluations-central-list');
+      if (!container) return;
+
+      const classes = state.classes || [];
+      const allExams = [];
+
+      classes.forEach(c => {
+        (c.exams || []).forEach(ex => {
+          allExams.push({ class: c, exam: ex });
+        });
+      });
+
+      if (allExams.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:30px; color:#64748b; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:8px;">
+            <p style="font-size:1rem; font-weight:600; margin-bottom:6px;">Nenhuma avaliação ou trabalho cadastrado até o momento.</p>
+            <p style="font-size:0.85rem; margin-bottom:12px;">Clique no botão "+ Criar Nova Avaliação / Trabalho" acima para criar sua primeira avaliação online ou trabalho por anexo de arquivo!</p>
+            <button onclick="openCreateEvaluationModal()" class="btn btn-primary btn-sm">+ Criar Nova Avaliação / Trabalho</button>
+          </div>
+        `;
+        return;
+      }
+
+      let cardsHtml = allExams.map(item => {
+        const c = item.class;
+        const ex = item.exam;
+        const subs = c.examSubmissions ? c.examSubmissions.filter(s => s.examId === ex.id) : [];
+
+        const isFileAssignment = ex.evaluationType === 'file_assignment';
+        const typeBadge = isFileAssignment 
+          ? `<span style="background:#f3e8ff; color:#6d28d9; padding:2px 8px; border-radius:12px; font-size:0.8rem; font-weight:700;">📎 Trabalho por Anexo</span>`
+          : `<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:12px; font-size:0.8rem; font-weight:700;">📝 Prova Online</span>`;
+
+        const attachmentInfo = ex.teacherAttachment 
+          ? `<div style="font-size:0.8rem; color:#15803d; margin-top:4px;">📎 Anexo do Professor: <strong>${ex.teacherAttachment.name}</strong></div>`
+          : '';
+
+        return `
+          <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:18px; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 style="margin:0; color:#1e293b; font-size:1.1rem;">${ex.title}</h4>
+                  ${typeBadge}
+                </div>
+                <p style="color:#64748b; font-size:0.88rem; margin:0;">
+                  Turma: <strong>${c.name}</strong> (${c.discipline}) | Etapa: <strong>${ex.period || 'A1'}</strong> | Valor Máximo: <strong>${ex.maxGrade} pts</strong>
+                </p>
+                ${attachmentInfo}
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button onclick="openTeacherSubmissionsModal('${c.id}', '${ex.id}')" class="btn btn-purple btn-sm">👁️ Ver Entregas (${subs.length}) & Corrigir</button>
+                <button onclick="deleteExam('${ex.id}')" class="btn btn-danger btn-sm">🗑️ Excluir</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = cardsHtml;
+    }
+
+    function openCreateEvaluationModal() {
+      const classes = state.classes || [];
+      if (classes.length === 0) {
+        showAlertModal("Aviso", "Crie pelo menos uma turma antes de criar uma avaliação.");
+        return;
+      }
+
+      const classCheckboxesHtml = classes.map(c => `
+        <label style="display:flex; align-items:center; gap:6px; background:#fff; border:1px solid #cbd5e1; padding:6px 12px; border-radius:6px; font-size:0.88rem; cursor:pointer;">
+          <input type="checkbox" name="m-eval-classes" value="${c.id}" checked>
+          <span><strong>${c.name}</strong> (${c.discipline})</span>
+        </label>
+      `).join('');
+
+      const contentHtml = `
+        <div class="form-group">
+          <label>Título da Avaliação / Trabalho</label>
+          <input type="text" id="m-eval-title" placeholder="Ex: Trabalho de Pesquisa sobre Nutrição e Biologia" required>
+        </div>
+        <div class="form-group">
+          <label>Tipo de Avaliação</label>
+          <select id="m-eval-type" onchange="toggleEvaluationTypeFields()">
+            <option value="file_assignment">📎 Trabalho / Atividade com Entrega de Arquivo (Upload & Download)</option>
+            <option value="online_exam">📝 Prova Online / Simulado (Múltipla Escolha, Discursiva e Tempo Limite)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Vincular às Turmas</label>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+            ${classCheckboxesHtml}
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Etapa de Nota</label>
+            <select id="m-eval-period">
+              <option value="A1">Etapa A1</option>
+              <option value="A2">Etapa A2</option>
+              <option value="A3 (Prova Final)">Etapa A3 (Prova Final)</option>
+              <option value="1º Bimestre">1º Bimestre</option>
+              <option value="2º Bimestre">2º Bimestre</option>
+              <option value="3º Bimestre">3º Bimestre</option>
+              <option value="4º Bimestre">4º Bimestre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Valor Máximo da Nota (Pts)</label>
+            <input type="number" step="0.5" id="m-eval-maxval" value="10.0" required>
+          </div>
+        </div>
+
+        <div id="eval-file-assignment-box">
+          <div class="form-group">
+            <label>Orientações e Instruções do Trabalho</label>
+            <textarea id="m-eval-desc" rows="3" placeholder="Digite aqui todas as orientações, temas e critérios de avaliação para os alunos..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Anexar Arquivo de Apoio / Roteiro (Opcional - PDF, Word, Imagem)</label>
+            <input type="file" id="m-eval-file-attachment">
+            <p style="font-size:0.75rem; color:#64748b; margin-top:2px;">Este arquivo ficará disponível para os alunos baixarem no portal.</p>
+          </div>
+        </div>
+      `;
+
+      showCustomModal("📝 Criar Nova Avaliação / Trabalho", contentHtml, () => {
+        const title = document.getElementById('m-eval-title').value.trim();
+        const evalType = document.getElementById('m-eval-type').value;
+        const period = document.getElementById('m-eval-period').value;
+        const maxVal = parseFloat(document.getElementById('m-eval-maxval').value) || 10.0;
+        const desc = document.getElementById('m-eval-desc') ? document.getElementById('m-eval-desc').value.trim() : '';
+
+        const selectedClassEls = document.querySelectorAll('input[name="m-eval-classes"]:checked');
+        const selectedClassIds = Array.from(selectedClassEls).map(el => el.value);
+
+        if (!title) { showAlertModal("Atenção", "Digite o título da avaliação."); return false; }
+        if (selectedClassIds.length === 0) { showAlertModal("Atenção", "Selecione pelo menos uma turma para aplicar a avaliação."); return false; }
+
+        const fileInput = document.getElementById('m-eval-file-attachment');
+        const fileObj = fileInput && fileInput.files[0] ? fileInput.files[0] : null;
+
+        const processSave = (teacherAttachment) => {
+          const examObj = {
+            id: "exam-" + Date.now(),
+            title: title,
+            description: desc,
+            evaluationType: evalType,
+            period: period,
+            maxGrade: maxVal,
+            teacherAttachment: teacherAttachment,
+            timeLimitMinutes: 0,
+            questions: []
+          };
+
+          selectedClassIds.forEach(classId => {
+            const c = classes.find(item => item.id === classId);
+            if (c) {
+              if (!c.exams) c.exams = [];
+              c.exams.push({ ...examObj, id: "exam-" + Date.now() + Math.floor(Math.random()*100) });
+            }
+          });
+
+          saveData();
+          renderEvaluationsCentral();
+          showToast(`Avaliação "${title}" publicada para ${selectedClassIds.length} turma(s)!`);
+        };
+
+        if (fileObj) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            processSave({ name: fileObj.name, data: evt.target.result });
+          };
+          reader.readAsDataURL(fileObj);
+        } else {
+          processSave(null);
+        }
+      }, "🚀 Publicar Avaliação");
+    }
+
+    function toggleEvaluationTypeFields() {
+      const type = document.getElementById('m-eval-type').value;
+      const fileBox = document.getElementById('eval-file-assignment-box');
+      if (fileBox) {
+        if (type === 'file_assignment') fileBox.classList.remove('hidden');
+        else fileBox.classList.add('hidden');
+      }
+    }
+
+    function openTeacherSubmissionsModal(classId, examId) {
+      const c = state.classes.find(item => item.id === classId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!ex) return;
+
+      const subs = c.examSubmissions || [];
+
+      let rowsHtml = (c.students || []).map(s => {
+        const sub = subs.find(item => item.examId === examId && item.studentId === s.id);
+
+        let statusText = '<span style="color:#b45309; font-weight:600;">⏳ Não Entregue</span>';
+        let fileLink = '<em>Nenhum arquivo enviado</em>';
+        let currentScore = '';
+        let currentFeedback = '';
+
+        if (sub) {
+          statusText = sub.finalScore !== null && sub.finalScore !== undefined
+            ? `<span style="color:#15803d; font-weight:700;">✅ Corrigido (Nota: ${sub.finalScore})</span>`
+            : `<span style="color:#7c3aed; font-weight:700;">📩 Entregue em ${sub.submittedAt ? new Date(sub.submittedAt).toLocaleDateString('pt-BR') : 'Data recente'}</span>`;
+
+          if (sub.studentFile) {
+            fileLink = `<a href="${sub.studentFile.data}" download="${sub.studentFile.name}" class="btn btn-secondary btn-sm" style="color:#2563eb;">📥 Baixar Arquivo (${sub.studentFile.name})</a>`;
+          }
+          currentScore = sub.finalScore !== null && sub.finalScore !== undefined ? sub.finalScore : (sub.autoScore || '');
+          currentFeedback = sub.feedback || '';
+        }
+
+        return `
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:14px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <strong>👤 ${s.name} (Código: ${s.code})</strong>
+              <div>${statusText}</div>
+            </div>
+            <div style="margin-bottom:10px;">${fileLink}</div>
+            
+            <div style="display:grid; grid-template-columns: 120px 1fr; gap:10px; align-items:center;">
+              <div>
+                <label style="font-size:0.8rem; font-weight:600; color:#475569;">Nota (${ex.maxGrade} pts):</label>
+                <input type="number" step="0.5" id="m-score-sub-${s.id}" value="${currentScore}" placeholder="0.0" style="padding:6px; border:1px solid #cbd5e1; border-radius:4px; width:100%;">
+              </div>
+              <div>
+                <label style="font-size:0.8rem; font-weight:600; color:#475569;">Parecer / Observações do Professor:</label>
+                <input type="text" id="m-fb-sub-${s.id}" value="${currentFeedback}" placeholder="Escreva aqui o seu parecer para o aluno..." style="padding:6px; border:1px solid #cbd5e1; border-radius:4px; width:100%;">
+              </div>
+            </div>
+            <div style="text-align:right; margin-top:8px;">
+              <button onclick="saveStudentAssignmentGrade('${c.id}', '${ex.id}', '${s.id}')" class="btn btn-primary btn-sm">💾 Salvar Nota e Parecer</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const contentHtml = `
+        <p style="font-size:0.9rem; color:#475569; margin-bottom:14px;">
+          Examine os arquivos enviados pelos alunos para o trabalho <strong>${ex.title}</strong> da turma <strong>${c.name}</strong>, atribua as notas e salve:
+        </p>
+        <div>${rowsHtml}</div>
+      `;
+
+      showCustomModal(`✏️ Correção & Entregas — ${ex.title}`, contentHtml, null, "Entendido", true);
+    }
+
+    function saveStudentAssignmentGrade(classId, examId, studentId) {
+      const c = state.classes.find(item => item.id === classId);
+      if (!c) return;
+      const ex = (c.exams || []).find(e => e.id === examId);
+      if (!ex) return;
+
+      const scoreEl = document.getElementById(`m-score-sub-${studentId}`);
+      const fbEl = document.getElementById(`m-fb-sub-${studentId}`);
+
+      const scoreVal = scoreEl ? parseFloat(scoreEl.value) : null;
+      const fbVal = fbEl ? fbEl.value.trim() : '';
+
+      if (scoreVal === null || isNaN(scoreVal)) {
+        showAlertModal("Atenção", "Digite um valor de nota válido.");
+        return;
+      }
+
+      if (!c.examSubmissions) c.examSubmissions = [];
+      let sub = c.examSubmissions.find(s => s.examId === examId && s.studentId === studentId);
+
+      if (!sub) {
+        sub = { id: "sub-" + Date.now(), examId, studentId, studentFile: null, submittedAt: new Date().toISOString() };
+        c.examSubmissions.push(sub);
+      }
+
+      sub.finalScore = scoreVal;
+      sub.feedback = fbVal;
+      sub.status = 'graded';
+
+      const st = c.students.find(s => s.id === studentId);
+      if (st) {
+        const period = ex.period || "A1";
+        if (!c.periods[period]) c.periods[period] = [];
+
+        let act = c.periods[period].find(a => a.name === `Trabalho: ${ex.title}` || a.name === `Prova: ${ex.title}`);
+        if (!act) {
+          act = { id: "act-exam-" + Date.now(), name: `Trabalho: ${ex.title}`, maxVal: ex.maxGrade, description: "Atividade / Trabalho Avaliativo" };
+          c.periods[period].push(act);
+        }
+
+        if (!st.grades) st.grades = {};
+        if (!st.grades[period]) st.grades[period] = {};
+        st.grades[period][act.id] = scoreVal;
+      }
+
+      saveData();
+      showToast(`Nota ${scoreVal} e parecer salvos com sucesso!`);
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+
       loadData();
       switchProfile(state.activeProfile || 'portal');
     });
